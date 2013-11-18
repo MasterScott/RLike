@@ -6,11 +6,39 @@ import java.util.ArrayList;
 import roguelike.actors.Actor;
 import roguelike.actors.Tile;
 
-
+/**
+ * Cave-based floor.
+ * 
+ * @author Dan
+ * 
+ */
 public class Cave extends Floor {
 
+	double tolerance;
+
+	/**
+	 * Creates a cave with default enclosed area.
+	 */
 	public Cave() {
 		actors = new ArrayList<Actor>();
+		tolerance = 0.51;
+	}
+
+	/**
+	 * * Creates a cave with the specified tolerance for determining which areas
+	 * are wall and which are open. For best results, use a tolerance of around
+	 * 0.50.
+	 * 
+	 * @param tolerance
+	 *            Double between 0.0 - 1.0
+	 * @throws IllegalArgumentException
+	 *             If tolerance is outside the expected range.
+	 */
+	public Cave(int tolerance) throws IllegalArgumentException {
+		if (tolerance < 0.0 || tolerance > 1.0)
+			throw new IllegalArgumentException();
+		actors = new ArrayList<Actor>();
+		this.tolerance = tolerance;
 	}
 
 	@Override
@@ -19,7 +47,7 @@ public class Cave extends Floor {
 		// Generate random grid
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
-				if (Math.random() > 0.5) {
+				if (Math.random() > tolerance) {
 					actors.add(new Tile('#', Color.WHITE, x, y, false));
 				}
 			}
@@ -32,7 +60,7 @@ public class Cave extends Floor {
 		int count = 1;
 		while (count != 0) {
 			count = 0;
-			
+
 			for (int x = 0; x < XMAX; x++) {
 				for (int y = 0; y < YMAX; y++) {
 					int n = numberOfNeighbors(x, y);
