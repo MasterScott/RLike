@@ -66,10 +66,10 @@ public class Cave extends Floor {
 					int n = numberOfNeighbors(x, y);
 					Actor a = getActorAt(x, y);
 
-					if (n >= 6 && a == null) {
+					if (n >= 6 && a == null) { // If birth conditions are met
 						actors.add(new Tile('#', Color.WHITE, x, y, false));
 						count++;
-					} else if (n < 3 && a != null) {
+					} else if (n < 3 && a != null) { // If survival not met
 						actors.remove(a);
 						count++;
 					}
@@ -77,6 +77,7 @@ public class Cave extends Floor {
 			}
 		}
 
+		encloseLevel();
 	}
 
 	/**

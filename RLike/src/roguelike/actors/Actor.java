@@ -114,4 +114,7 @@ public abstract class Actor {
 		this.traversable = traversable;
 	}
 
+	public String toString() {
+		return "Character: " + icon + " Color: " + color.toString() + " x: " + x + " y: " + y;
+	}
 }
