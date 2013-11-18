@@ -5,11 +5,10 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import roguelike.actors.Player;
-import roguelike.actors.Tile;
 import roguelike.etc.Session;
 import roguelike.ui.ActionPanel;
 import roguelike.ui.StatsPanel;
-import roguelike.world.BasicDungeon;
+import roguelike.world.Cave;
 import roguelike.world.Floor;
 
 public class Main {
@@ -27,7 +26,8 @@ public class Main {
 		ActionPanel p = new ActionPanel();
 		StatsPanel s = new StatsPanel();
 		
-		Floor f = new BasicDungeon();
+		Floor f = new Cave();
+		f.generateFloor();
 		f.actors.add(Session.player);
 
 		p.setFloor(f);

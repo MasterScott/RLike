@@ -39,7 +39,7 @@ public abstract class Floor {
 	/**
 	 * Create initial layout for floor.
 	 */
-	protected abstract void generateFloor();
+	public abstract void generateFloor();
 	
 	/**
 	 * Returns actor at the specified coordinate. If there is no actor present, returns null.

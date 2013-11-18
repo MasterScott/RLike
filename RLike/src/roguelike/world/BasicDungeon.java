@@ -37,7 +37,7 @@ public class BasicDungeon extends Floor {
 	}
 
 	@Override
-	protected void generateFloor() {
+	public void generateFloor() {
 		Random random = new Random();
 
 		int nRooms = random.nextInt(numRoomsMax - numRoomsMin + 1)
