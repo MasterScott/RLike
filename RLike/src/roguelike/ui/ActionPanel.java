@@ -2,9 +2,11 @@ package roguelike.ui;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import roguelike.actors.Actor;
 import roguelike.etc.ActionKeyListener;
+import roguelike.etc.Session;
 import roguelike.world.Floor;
 
 /**
@@ -48,16 +50,20 @@ public class ActionPanel extends ActionKeyListener {
 		 * Draw each actor currently in this floor to the screen.
 		 */
 		Actor[][] actorGrid = floor.getCurrentGrid();
-		for (int x = 0; x < actorGrid.length; ++x) {
-			for (int y = 0; y < actorGrid[0].length; ++y) {
-				if (actorGrid[x][y] != null) {
-					Actor actor = actorGrid[x][y];
-					g.setColor(actor.getColor());
-					g.drawString(String.valueOf(actor.getIcon()), actor.getX()
-							* xScale + 1, actor.getY() * yScale + 11);
-				}
-			}
+
+		/*
+		 * I think I want to change this to just do a search for tiles that are
+		 * immediately visible, tiles that are not currently visible but have
+		 * been seen before, and tiles that have not been seen before.
+		 */
+		ArrayList<Actor> inSight = Session.player.getLOS().getVisible(floor);
+
+		for (Actor actor : inSight) {
+			g.setColor(actor.getColor());
+			g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale
+					+ 1, actor.getY() * yScale + 11);
 		}
+
 	}
 
 	/**

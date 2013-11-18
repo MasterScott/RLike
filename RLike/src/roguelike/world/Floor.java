@@ -11,12 +11,12 @@ public abstract class Floor {
 	/**
 	 * Width of floor.
 	 */
-	protected final int XMAX = 64;
+	public final int XMAX = 64;
 
 	/**
 	 * Height of floor.
 	 */
-	protected final int YMAX = 27;
+	public final int YMAX = 27;
 
 	/**
 	 * All actors on this floor.

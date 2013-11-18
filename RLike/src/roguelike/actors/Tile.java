@@ -10,6 +10,8 @@ import java.awt.Color;
  */
 public class Tile extends Actor {
 
+	private Color obscuredColor;
+
 	/**
 	 * Creates a tile that is not traversable by default.
 	 * 
@@ -25,7 +27,8 @@ public class Tile extends Actor {
 	public Tile(char icon, Color color, int x, int y) {
 		super(icon, color, x, y);
 
-		traversable = false;
+		this.traversable = false;
+		this.obscuredColor = Color.GRAY;
 	}
 
 	/**
@@ -39,11 +42,56 @@ public class Tile extends Actor {
 	 *            x-coordinate.
 	 * @param y
 	 *            y-coordinate.
+	 * @param traversable
+	 *            Whether or not this tile can be walked over.
 	 */
 	public Tile(char icon, Color color, int x, int y, boolean traversable) {
 		super(icon, color, x, y);
 
 		this.traversable = traversable;
+		this.obscuredColor = Color.GRAY;
 	}
 
+	/**
+	 * Creates a tile with the specified traversability and obscured color.
+	 * 
+	 * @param icon
+	 *            Icon used to represent this tile.
+	 * @param color
+	 *            Color of icon used to represent this tile.
+	 * @param obscuredColor
+	 *            Color when tile is not visible.
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @param traversable
+	 *            Whether or not this tile can be walked over.
+	 */
+	public Tile(char icon, Color color, Color obscuredColor, int x, int y,
+			boolean traversable) {
+		super(icon, color, x, y);
+
+		this.traversable = traversable;
+		this.obscuredColor = obscuredColor;
+	}
+
+	/**
+	 * Returns color when tile is not visible.
+	 * 
+	 * @return Color when tile is not visible.
+	 */
+	public Color getObscuredColor() {
+		return obscuredColor;
+	}
+
+	/**
+	 * Sets color when tile is not visible.
+	 * 
+	 * @param color
+	 *            Color to set.
+	 */
+	public void setObscuredColor(Color color) {
+		obscuredColor = color;
+	}
 }
