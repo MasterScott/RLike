@@ -1,7 +1,9 @@
 package roguelike.world;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Tile;
@@ -22,6 +24,11 @@ public abstract class Floor {
 	 * All actors on this floor.
 	 */
 	public ArrayList<Actor> actors;
+
+	/**
+	 * All open coordinates on this floor.
+	 */
+	protected ArrayList<Point> openings;
 
 	/**
 	 * Checks to see if there is an actor at the specified location that is not
@@ -89,6 +96,27 @@ public abstract class Floor {
 	}
 
 	/**
+	 * Returns a random point containing no actors.
+	 * 
+	 * @return Random eligible point.
+	 */
+	public Point getRandomOpenTile() {
+		openings = new ArrayList<Point>();
+		Actor[][] actorGrid = getCurrentGrid();
+
+		for (int x = 0; x < actorGrid.length; x++) {
+			for (int y = 0; y < actorGrid[0].length; y++) {
+				if (actorGrid[x][y] == null)
+					openings.add(new Point(x, y));
+			}
+		}
+
+		Random r = new Random();
+		Point p = openings.get(r.nextInt(openings.size()));
+		return p;
+	}
+
+	/**
 	 * Encloses the current level with walls around the edges to prevent actors
 	 * trying to escape.
 	 */
@@ -104,7 +132,7 @@ public abstract class Floor {
 				System.out.println("x: " + x + " y: " + (YMAX - 1));
 			}
 		}
-		
+
 		// Create walls along left and right.
 		for (int y = 0; y < YMAX; y++) {
 			if (getActorAt(0, y) == null) {

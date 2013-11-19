@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Tile;
 import roguelike.etc.ActionKeyListener;
 import roguelike.etc.Session;
 import roguelike.world.Floor;
@@ -46,22 +47,25 @@ public class ActionPanel extends ActionKeyListener {
 			throw new NullPointerException(
 					"A floor was not defined for this ActionPanel.");
 
-		/*
-		 * Draw each actor currently in this floor to the screen.
-		 */
-		Actor[][] actorGrid = floor.getCurrentGrid();
+		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
 
 		/*
-		 * I think I want to change this to just do a search for tiles that are
-		 * immediately visible, tiles that are not currently visible but have
-		 * been seen before, and tiles that have not been seen before.
+		 * If actor is in sight, display in normal color and set previously seen
+		 * to true. If not in sight, display at an obscured color if the actor
+		 * is a tile and has been seen before. Otherwise, do nothing.
 		 */
-		ArrayList<Actor> inSight = Session.player.getLOS().getVisible(floor);
-
-		for (Actor actor : inSight) {
-			g.setColor(actor.getColor());
-			g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale
-					+ 1, actor.getY() * yScale + 11);
+		for (Actor actor : floor.actors) {
+			if (inSight.contains(actor)) {
+				g.setColor(actor.getColor());
+				g.drawString(String.valueOf(actor.getIcon()), actor.getX()
+						* xScale + 1, actor.getY() * yScale + 11);
+				actor.setPreviouslySeen(true);
+			} else if (actor.getPreviouslySeen()
+					&& actor.getClass() == Tile.class) {
+				g.setColor(((Tile) actor).getObscuredColor());
+				g.drawString(String.valueOf(actor.getIcon()), actor.getX()
+						* xScale + 1, actor.getY() * yScale + 11);
+			}
 		}
 
 	}

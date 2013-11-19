@@ -2,6 +2,8 @@ package roguelike.actors;
 
 import java.awt.Color;
 
+import roguelike.world.Floor;
+
 /**
  * Base class for object being displayed on-screen.
  * 
@@ -14,12 +16,15 @@ public abstract class Actor {
 	Color color;
 	int x, y;
 	boolean traversable;
+	boolean previouslySeen;
+	Floor floor;
 
 	public Actor(char icon, Color color, int x, int y) {
 		this.icon = icon;
 		this.color = color;
 		this.x = x;
 		this.y = y;
+		this.previouslySeen = false;
 	}
 
 	/**
@@ -97,24 +102,66 @@ public abstract class Actor {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	/**
 	 * Returns whether or not this actor is able to be 'walked' over.
+	 * 
 	 * @return True if traversable; false otherwise.
 	 */
 	public boolean isTraversable() {
 		return traversable;
 	}
-	
+
 	/**
 	 * Sets whether or not this actor is able to be 'walked' over.
-	 * @param traversable True if traversable; false otherwise.
+	 * 
+	 * @param traversable
+	 *            True if traversable; false otherwise.
 	 */
 	public void setTraversable(boolean traversable) {
 		this.traversable = traversable;
 	}
 
+	/**
+	 * Returns floor this actor is located on.
+	 * 
+	 * @return Floor this actor is located on.
+	 */
+	public Floor getFloor() {
+		return floor;
+	}
+
+	/**
+	 * Sets floor this actor is located on.
+	 * 
+	 * @param floor
+	 *            Floor to set.
+	 */
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
+
+	/**
+	 * Returns whether or not this actor has been seen by the player.
+	 * 
+	 * @return Whether or not this actor has been seen by the player.
+	 */
+	public boolean getPreviouslySeen() {
+		return previouslySeen;
+	}
+
+	/**
+	 * Sets whether or not this actor has been previously seen by the player.
+	 * 
+	 * @param previouslySeen
+	 *            True if previously seen; false otherwise.
+	 */
+	public void setPreviouslySeen(boolean previouslySeen) {
+		this.previouslySeen = previouslySeen;
+	}
+
 	public String toString() {
-		return "Character: " + icon + " Color: " + color.toString() + " x: " + x + " y: " + y;
+		return "Character: " + icon + " Color: " + color.toString() + " x: "
+				+ x + " y: " + y;
 	}
 }

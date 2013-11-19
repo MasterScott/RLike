@@ -34,9 +34,10 @@ public class LOS {
 	 *            Floor the actor is on.
 	 * @return List of things that are visible to this actor.
 	 */
-	public ArrayList<Actor> getVisible(Floor floor) {
-		// TODO Store floor inside actor rather than passing here.
+	public ArrayList<Actor> getVisible() {
+		Floor floor = actor.getFloor();
 		ArrayList<Actor> result = new ArrayList<Actor>();
+		
 		int x = actor.getX();
 		int y = actor.getY();
 

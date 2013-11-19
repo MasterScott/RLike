@@ -1,6 +1,7 @@
 package roguelike.main;
 
 import java.awt.Color;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 
@@ -28,6 +29,9 @@ public class Main {
 		
 		Floor f = new Cave();
 		f.generateFloor();
+		
+		Point point = f.getRandomOpenTile();
+		Session.player = new Player('@', Color.WHITE, point.x, point.y);
 		f.actors.add(Session.player);
 
 		p.setFloor(f);
