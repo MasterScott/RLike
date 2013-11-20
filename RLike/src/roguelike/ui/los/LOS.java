@@ -23,7 +23,7 @@ public class LOS {
 	 *            Actor to create LOS for.
 	 */
 	public LOS(Actor actor) {
-		this.range = 7;
+		this.range = 6;
 		this.actor = actor;
 	}
 
@@ -37,20 +37,42 @@ public class LOS {
 	public ArrayList<Actor> getVisible() {
 		Floor floor = actor.getFloor();
 		ArrayList<Actor> result = new ArrayList<Actor>();
-		
-		int x = actor.getX();
-		int y = actor.getY();
 
-		for (int i = x - range; i < x + range; ++i) {
-			for (int j = y - range; j < y + range; ++j) {
-				if (i >= 0 && i < floor.XMAX && j >= 0 && j < floor.YMAX) {
-					Actor thisActor = floor.getActorAt(i, j);
-					if (thisActor != null)
+		int x1 = actor.getX();
+		int y1 = actor.getY();
+
+		// Upper portion of circle sqrt(49-x^2)
+		// Bottom portion of circle -sqrt(49-x^2)
+
+		for (int i = 0; i < floor.XMAX; i++) {
+			for (int j = 0; j < floor.YMAX; j++) {
+				int a = i - x1;
+				int b = j - y1;
+				if (a * a + b * b <= range * range) {
+					Actor thisActor = floor.getActorAt(x1 + a, y1 + b);
+					if (thisActor != null) {
 						result.add(thisActor);
+					}
 				}
 			}
 		}
 
+		return result;
+	}
+
+	protected int calculateY(int x, boolean isPositive) {
+		int sign;
+		if (isPositive) {
+			sign = 1;
+		} else
+			sign = -1;
+
+		float y = (float) (sign * Math
+				.sqrt(Math.pow(range, 2) - Math.pow(x, 2)));
+		System.out.println("Y: " + y);
+		int result = Math.round(y);
+
+		System.out.println(result);
 		return result;
 	}
 }

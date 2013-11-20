@@ -125,11 +125,9 @@ public abstract class Floor {
 		for (int x = 0; x < XMAX; x++) {
 			if (getActorAt(x, 0) == null) {
 				actors.add(new Tile('#', Color.WHITE, x, 0));
-				System.out.println("x: " + x + " y: 0");
 			}
 			if (getActorAt(x, YMAX) == null) {
 				actors.add(new Tile('#', Color.WHITE, x, YMAX - 1));
-				System.out.println("x: " + x + " y: " + (YMAX - 1));
 			}
 		}
 
@@ -137,11 +135,9 @@ public abstract class Floor {
 		for (int y = 0; y < YMAX; y++) {
 			if (getActorAt(0, y) == null) {
 				actors.add(new Tile('#', Color.WHITE, 0, y));
-				System.out.println("x: 0 y: " + y);
 			}
 			if (getActorAt(XMAX, y) == null) {
 				actors.add(new Tile('#', Color.WHITE, XMAX - 1, y));
-				System.out.println("x: " + (XMAX - 1) + " y: " + y);
 			}
 		}
 	}

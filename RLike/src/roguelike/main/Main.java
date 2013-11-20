@@ -32,6 +32,7 @@ public class Main {
 		
 		Point point = f.getRandomOpenTile();
 		Session.player = new Player('@', Color.WHITE, point.x, point.y);
+		Session.player.setFloor(f);
 		f.actors.add(Session.player);
 
 		p.setFloor(f);
