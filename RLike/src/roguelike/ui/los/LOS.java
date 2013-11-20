@@ -8,6 +8,7 @@ import java.util.Iterator;
 import roguelike.actors.Actor;
 import roguelike.actors.Player;
 import roguelike.etc.LineIterator;
+import roguelike.etc.Session;
 import roguelike.world.Floor;
 
 /**
@@ -64,24 +65,10 @@ public class LOS {
 				} 
             }
             
+            result.add(Session.player);
         }
 
 		return result;
 	}
 
-	protected int calculateY(int x, boolean isPositive) {
-		int sign;
-		if (isPositive) {
-			sign = 1;
-		} else
-			sign = -1;
-
-		float y = (float) (sign * Math
-				.sqrt(Math.pow(range, 2) - Math.pow(x, 2)));
-		System.out.println("Y: " + y);
-		int result = Math.round(y);
-
-		System.out.println(result);
-		return result;
-	}
 }

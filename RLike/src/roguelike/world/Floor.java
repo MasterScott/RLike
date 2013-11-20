@@ -96,7 +96,7 @@ public abstract class Floor {
 	}
 
 	/**
-	 * Returns a random point containing no actors.
+	 * Returns a random point containing no non-traversable actors.
 	 * 
 	 * @return Random eligible point.
 	 */
@@ -106,7 +106,9 @@ public abstract class Floor {
 
 		for (int x = 0; x < actorGrid.length; x++) {
 			for (int y = 0; y < actorGrid[0].length; y++) {
-				if (actorGrid[x][y] == null)
+				if (actorGrid[x][y] == null
+						|| (actorGrid[x][y].getClass() == Tile.class && actorGrid[x][y]
+								.isTraversable()))
 					openings.add(new Point(x, y));
 			}
 		}
@@ -138,6 +140,23 @@ public abstract class Floor {
 			}
 			if (getActorAt(XMAX, y) == null) {
 				actors.add(new Tile('#', Color.WHITE, XMAX - 1, y));
+			}
+		}
+	}
+
+	/**
+	 * Creates a 'floor' for the level with the specified tile's attributes.
+	 * 
+	 * @param tile
+	 *            Tile to take attributes from.
+	 */
+	protected void fillLevelWithTiles(Tile tile) {
+		for (int x = 0; x < XMAX; x++) {
+			for (int y = 0; y < YMAX; y++) {
+				if (getActorAt(x, y) == null) {
+					actors.add(new Tile(tile.getIcon(), tile.getColor(), tile
+							.getObscuredColor(), x, y, true));
+				}
 			}
 		}
 	}
