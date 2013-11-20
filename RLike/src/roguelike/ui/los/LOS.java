@@ -1,8 +1,13 @@
 package roguelike.ui.los;
 
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Player;
+import roguelike.etc.LineIterator;
 import roguelike.world.Floor;
 
 /**
@@ -38,24 +43,28 @@ public class LOS {
 		Floor floor = actor.getFloor();
 		ArrayList<Actor> result = new ArrayList<Actor>();
 
-		int x1 = actor.getX();
-		int y1 = actor.getY();
+		int x = actor.getX();
+		int y = actor.getY();
 
-		// Upper portion of circle sqrt(49-x^2)
-		// Bottom portion of circle -sqrt(49-x^2)
-
-		for (int i = 0; i < floor.XMAX; i++) {
-			for (int j = 0; j < floor.YMAX; j++) {
-				int a = i - x1;
-				int b = j - y1;
-				if (a * a + b * b <= range * range) {
-					Actor thisActor = floor.getActorAt(x1 + a, y1 + b);
-					if (thisActor != null) {
-						result.add(thisActor);
-					}
-				}
-			}
-		}
+		int n = 50;
+		for (int i = 0; i < n; i++) {
+            double t = 2 * Math.PI * i / n;
+            int x1 = (int) Math.round(x + range * Math.cos(t));
+            int y1 = (int) Math.round(y + range * Math.sin(t));
+            Line2D line = new Line2D.Double(x, y, x1, y1);
+            
+            Point2D current;
+            boolean blocked = false;
+            for(Iterator<Point2D> iter = new LineIterator(line); iter.hasNext();) {
+                current = iter.next();
+                Actor thisActor = floor.getActorAt((int) current.getX(), (int) current.getY());
+				if (thisActor != null && !blocked) {
+					result.add(thisActor);
+					if (!thisActor.isTraversable() && thisActor.getClass() != Player.class) blocked = true;
+				} 
+            }
+            
+        }
 
 		return result;
 	}
