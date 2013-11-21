@@ -1,14 +1,8 @@
 package roguelike.ui.los;
 
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import roguelike.actors.Actor;
-import roguelike.actors.Player;
-import roguelike.etc.LineIterator;
-import roguelike.etc.Session;
 import roguelike.world.Floor;
 
 /**
@@ -19,8 +13,14 @@ import roguelike.world.Floor;
  */
 public class LOS {
 
+	private Delta[] deltas = { new Delta(0, -1, -1, -1),
+			new Delta(-1, 0, -1, 1), new Delta(-1, 0, -1, -1),
+			new Delta(0, 1, -1, 1), new Delta(0, 1, 1, 1),
+			new Delta(1, 0, 1, 1), new Delta(1, 0, 1, -1),
+			new Delta(0, -1, 1, -1) };
 	private int range;
 	private Actor actor;
+	private ArrayList<Actor> inSight;
 
 	/**
 	 * Create a new line of sight object for the specified actor.
@@ -41,34 +41,51 @@ public class LOS {
 	 * @return List of things that are visible to this actor.
 	 */
 	public ArrayList<Actor> getVisible() {
-		Floor floor = actor.getFloor();
-		ArrayList<Actor> result = new ArrayList<Actor>();
+		inSight = new ArrayList<Actor>();
 
-		int x = actor.getX();
-		int y = actor.getY();
+		for (Delta d : deltas) {
+			recursiveShadowCast(actor.getX(), actor.getY(), d, 0);
+		}
 
-		int n = 50;
-		for (int i = 0; i < n; i++) {
-            double t = 2 * Math.PI * i / n;
-            int x1 = (int) Math.round(x + range * Math.cos(t));
-            int y1 = (int) Math.round(y + range * Math.sin(t));
-            Line2D line = new Line2D.Double(x, y, x1, y1);
-            
-            Point2D current;
-            boolean blocked = false;
-            for(Iterator<Point2D> iter = new LineIterator(line); iter.hasNext();) {
-                current = iter.next();
-                Actor thisActor = floor.getActorAt((int) current.getX(), (int) current.getY());
-				if (thisActor != null && !blocked) {
-					result.add(thisActor);
-					if (!thisActor.isTraversable() && thisActor.getClass() != Player.class) blocked = true;
-				} 
-            }
-            
-            result.add(Session.player);
-        }
+		inSight.add(actor);
 
-		return result;
+		return inSight;
 	}
 
+	/**
+	 * Recursive shadow-casting method. Adds all actors in a direction up until
+	 * an object obscures view.
+	 * 
+	 * @param x x-coordinate of actor.
+	 * @param y y-coordinate of actor.
+	 * @param d Delta for the specified direction.
+	 * @param dist Distance from actor.
+	 */
+	private void recursiveShadowCast(int x, int y, Delta d, int dist) {
+		Floor floor = actor.getFloor();
+		Actor thisActor = floor.getActorAt(x, y);
+		if (dist + 1 <= range) {
+			if (thisActor != null && !thisActor.isTraversable()) {
+				if (!inSight.contains(thisActor))
+					inSight.add(thisActor);
+			} else {
+				if (thisActor != null && !inSight.contains(thisActor))
+					inSight.add(thisActor);
+
+				recursiveShadowCast(x + d.dx1, y + d.dy1, d, dist + 1);
+				recursiveShadowCast(x + d.dx2, y + d.dy2, d, dist + 1);
+			}
+		}
+	}
+
+	private class Delta {
+		int dx1, dx2, dy1, dy2;
+
+		public Delta(int dx1, int dy1, int dx2, int dy2) {
+			this.dx1 = dx1;
+			this.dy1 = dy1;
+			this.dx2 = dx2;
+			this.dy2 = dy2;
+		}
+	}
 }
