@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Feature;
 import roguelike.actors.Tile;
 
 public abstract class Floor {
@@ -65,6 +66,7 @@ public abstract class Floor {
 	 * @return Actor at the specified coordinate.
 	 */
 	public Actor getActorAt(int x, int y) {
+		// TODO Need to account for more than one actor on the same tile.
 		for (Actor actor : actors) {
 			if (actor.getX() == x && actor.getY() == y) {
 				return actor;
@@ -145,6 +147,30 @@ public abstract class Floor {
 	}
 
 	/**
+	 * Create a staircase leading downwards at a random open location within the
+	 * level.
+	 */
+	protected void createDownStairs() {
+		// TODO Make sure this occurs at a spot the player can reach.
+		Point p = getRandomOpenTile();
+		actors.add(new Feature('>', Color.WHITE, p.x, p.y, true,
+				Feature.FeatureType.DOWNSTAIRS));
+
+	}
+
+	/**
+	 * Create a staircase leading downwards at a specified location.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 */
+	protected void createDownStairs(int x, int y) {
+
+	}
+
+	/**
 	 * Creates a 'floor' for the level with the specified tile's attributes.
 	 * 
 	 * @param tile
@@ -154,8 +180,8 @@ public abstract class Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					actors.add(new Tile(tile.getIcon(), tile.getColor(), tile
-							.getObscuredColor(), x, y, true));
+					actors.add(new Tile(tile.getIcon(), tile.getColor(), x, y,
+							true));
 				}
 			}
 		}

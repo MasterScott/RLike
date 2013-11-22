@@ -28,7 +28,8 @@ public class Tile extends Actor {
 		super(icon, color, x, y);
 
 		this.traversable = false;
-		this.obscuredColor = Color.GRAY;
+		this.obscuredColor = new Color((int) (color.getRed() / 2),
+				(int) (color.getGreen() / 2), (int) (color.getBlue() / 2));
 	}
 
 	/**
@@ -49,31 +50,8 @@ public class Tile extends Actor {
 		super(icon, color, x, y);
 
 		this.traversable = traversable;
-		this.obscuredColor = Color.GRAY;
-	}
-
-	/**
-	 * Creates a tile with the specified traversability and obscured color.
-	 * 
-	 * @param icon
-	 *            Icon used to represent this tile.
-	 * @param color
-	 *            Color of icon used to represent this tile.
-	 * @param obscuredColor
-	 *            Color when tile is not visible.
-	 * @param x
-	 *            x-coordinate.
-	 * @param y
-	 *            y-coordinate.
-	 * @param traversable
-	 *            Whether or not this tile can be walked over.
-	 */
-	public Tile(char icon, Color color, Color obscuredColor, int x, int y,
-			boolean traversable) {
-		super(icon, color, x, y);
-
-		this.traversable = traversable;
-		this.obscuredColor = obscuredColor;
+		this.obscuredColor = new Color((int) (color.getRed() / 2),
+				(int) (color.getGreen() / 2), (int) (color.getBlue() / 2));
 	}
 
 	/**

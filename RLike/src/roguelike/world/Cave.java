@@ -78,7 +78,7 @@ public class Cave extends Floor {
 		}
 
 		encloseLevel();
-		fillLevelWithTiles(new Tile('.', Color.GRAY,Color.DARK_GRAY, 1, 1, true));
+		fillLevelWithTiles(new Tile('.', Color.GRAY, 1, 1, true));
 	}
 
 	/**
