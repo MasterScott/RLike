@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Creature;
 import roguelike.actors.Feature;
+import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.Player;
 import roguelike.actors.Tile;
 
 public abstract class Floor {
@@ -30,6 +33,12 @@ public abstract class Floor {
 	 * All open coordinates on this floor.
 	 */
 	protected ArrayList<Point> openings;
+
+	/**
+	 * All tiles accessible to the player. Only populated upon calling
+	 * getAccessableArea().
+	 */
+	private ArrayList<Tile> accessibleTiles;
 
 	/**
 	 * Checks to see if there is an actor at the specified location that is not
@@ -76,6 +85,44 @@ public abstract class Floor {
 	}
 
 	/**
+	 * Returns creature at the specified coordinate. If there is no creature
+	 * present, returns null.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @return Creature at the specified coordinate.
+	 */
+	public Creature getCreatureAt(int x, int y) {
+		for (Actor actor : actors) {
+			if (actor.getX() == x && actor.getY() == y && actor.getClass() == Creature.class) {
+				return (Creature) actor;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns tile at the specified coordinate. If there is no tile present,
+	 * returns null.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @return Tile at the specified coordinate.
+	 */
+	public Tile getTileAt(int x, int y) {
+		for (Actor actor : actors) {
+			if (actor.getX() == x && actor.getY() == y && actor.getClass() == Tile.class) {
+				return (Tile) actor;
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Returns a grid used to draw actors to the screen.
 	 * 
 	 * @return Grid containing all actors.
@@ -109,8 +156,7 @@ public abstract class Floor {
 		for (int x = 0; x < actorGrid.length; x++) {
 			for (int y = 0; y < actorGrid[0].length; y++) {
 				if (actorGrid[x][y] == null
-						|| (actorGrid[x][y].getClass() == Tile.class && actorGrid[x][y]
-								.isTraversable()))
+						|| (actorGrid[x][y].getClass() == Tile.class && actorGrid[x][y].isTraversable()))
 					openings.add(new Point(x, y));
 			}
 		}
@@ -147,27 +193,95 @@ public abstract class Floor {
 	}
 
 	/**
-	 * Create a staircase leading downwards at a random open location within the
-	 * level.
+	 * Create a staircase of the specified type at a random location.
+	 * 
+	 * @param featureType
+	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
+	 *            enumeration.
 	 */
-	protected void createDownStairs() {
+	protected void createStairs(FeatureType featureType) {
 		// TODO Make sure this occurs at a spot the player can reach.
 		Point p = getRandomOpenTile();
-		actors.add(new Feature('>', Color.WHITE, p.x, p.y, true,
-				Feature.FeatureType.DOWNSTAIRS));
+
+		if (featureType == FeatureType.DOWNSTAIRS) {
+			actors.add(new Feature('>', Color.WHITE, p.x, p.y, true, FeatureType.DOWNSTAIRS));
+		} else if (featureType == FeatureType.UPSTAIRS) {
+			actors.add(new Feature('<', Color.WHITE, p.x, p.y, true, FeatureType.UPSTAIRS));
+		}
 
 	}
 
 	/**
-	 * Create a staircase leading downwards at a specified location.
+	 * Create a staircase of the specified type at a specified location.
 	 * 
 	 * @param x
 	 *            x-coordinate.
 	 * @param y
 	 *            y-coordinate.
+	 * @param featureType
+	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
+	 *            enumeration.
 	 */
-	protected void createDownStairs(int x, int y) {
+	protected void createStairs(int x, int y, FeatureType featureType) {
+		if (featureType == FeatureType.DOWNSTAIRS) {
+			actors.add(new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS));
+		} else if (featureType == FeatureType.UPSTAIRS) {
+			actors.add(new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS));
+		}
+	}
 
+	/**
+	 * Create stairs that are reachable by the specified player.
+	 * 
+	 * @param player
+	 *            Player the stairs should be reachable by.
+	 * @param featureType
+	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
+	 *            enumeration.
+	 */
+	public void createAccessibleStairs(Player player, FeatureType featureType) {
+		/*
+		 * Have to clear list in order for the recursive getAccessibleArea() to
+		 * work.
+		 */
+		accessibleTiles = new ArrayList<Tile>();
+
+		int x = player.getX();
+		int y = player.getY();
+
+		getAccessibleArea(x, y);
+
+		Random r = new Random();
+		Tile t = accessibleTiles.get(r.nextInt(accessibleTiles.size()));
+		x = t.getX();
+		y = t.getY();
+		accessibleTiles.remove(t);
+
+		if (featureType == FeatureType.DOWNSTAIRS) {
+			actors.add(new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS));
+			System.out.println("Downstairs added at x: " + x + " y: " + y);
+		} else if (featureType == FeatureType.UPSTAIRS) {
+			actors.add(new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS));
+			System.out.println("Upstairs added at x: " + x + " y: " + y);
+		} else {
+			System.out.println("Failure to add.");
+		}
+
+	}
+
+	private void getAccessibleArea(int x, int y) {
+		Tile t = getTileAt(x, y);
+
+		if (t == null || accessibleTiles.contains(t))
+			return;
+
+		if (t.isTraversable()) {
+			accessibleTiles.add(t);
+			getAccessibleArea(x + 1, y);
+			getAccessibleArea(x - 1, y);
+			getAccessibleArea(x, y + 1);
+			getAccessibleArea(x, y - 1);
+		}
 	}
 
 	/**
@@ -180,8 +294,7 @@ public abstract class Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					actors.add(new Tile(tile.getIcon(), tile.getColor(), x, y,
-							true));
+					actors.add(new Tile(tile.getIcon(), tile.getColor(), x, y, true));
 				}
 			}
 		}

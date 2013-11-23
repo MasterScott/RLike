@@ -5,6 +5,7 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
+import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.etc.Session;
 import roguelike.ui.ActionPanel;
@@ -34,6 +35,7 @@ public class Main {
 		Session.player = new Player('@', Color.WHITE, point.x, point.y);
 		Session.player.setFloor(f);
 		f.actors.add(Session.player);
+		f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS);
 
 		p.setFloor(f);
 		

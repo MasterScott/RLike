@@ -28,4 +28,6 @@ public class Window extends JFrame {
 		setBounds(x, y, width, height);
 	}
 
+	// TODO Make it so key listener calls a repaint to all components from here!
+
 }

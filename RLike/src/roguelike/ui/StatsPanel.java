@@ -43,7 +43,9 @@ public class StatsPanel extends JPanel {
 		g.drawString("STR: " + Session.player.strength.getCur(), 660, 76);
 		g.drawString("INT: " + Session.player.intelligence.getCur(), 660, 94);
 		g.drawString("DEX: " + Session.player.dexterity.getCur(), 660, 112);
-
+		
+		g.drawString("x: " + Session.player.getX(), 660, 148);
+		g.drawString("y: " + Session.player.getY(), 660, 166);
 	}
 
 }
