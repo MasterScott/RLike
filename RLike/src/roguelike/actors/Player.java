@@ -10,7 +10,7 @@ import roguelike.ui.los.LOS;
  * @author Dan
  * 
  */
-public class Player extends Actor {
+public class Player extends Creature {
 
 	public Stat hp, mp, strength, intelligence, dexterity;
 	private LOS los;

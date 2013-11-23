@@ -61,19 +61,19 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			xDiff++;
 			yDiff--;
 			break;
-		case KeyEvent.VK_PERIOD: // For > key. Requires shift+'.'
+		case KeyEvent.VK_PERIOD: // For going down stairs. Requires shift+'.'
 			if (e.isShiftDown()) {
 				Tile tile = floor.getTileAt(Session.player.getX(), Session.player.getY());
 				if (tile.getClass() == Feature.class && ((Feature) tile).getFeatureType() == FeatureType.DOWNSTAIRS) {
-					System.out.println("DOWNSTAIRS");
+					// TODO Do downstairs stuff.
 				}
 			}
 			break;
-		case KeyEvent.VK_COMMA: // For < key. Requires shift+','
+		case KeyEvent.VK_COMMA: // For going up stairs. Requires shift+','
 			if (e.isShiftDown()) {
 				Tile tile = floor.getTileAt(Session.player.getX(), Session.player.getY());
 				if (tile.getClass() == Feature.class && ((Feature) tile).getFeatureType() == FeatureType.UPSTAIRS) {
-					System.out.println("UPSTAIRS");
+					// TODO Do upstairs stuff.
 				}
 			}
 			break;

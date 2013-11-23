@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Creature;
 import roguelike.actors.Tile;
 import roguelike.etc.ActionKeyListener;
 import roguelike.etc.Session;
@@ -44,8 +45,7 @@ public class ActionPanel extends ActionKeyListener {
 		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
 
 		if (floor == null)
-			throw new NullPointerException(
-					"A floor was not defined for this ActionPanel.");
+			throw new NullPointerException("A floor was not defined for this ActionPanel.");
 
 		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
 
@@ -56,15 +56,19 @@ public class ActionPanel extends ActionKeyListener {
 		 */
 		for (Actor actor : floor.actors) {
 			if (inSight.contains(actor)) {
+				/*
+				 * Make sure tiles take lowest precedence - always display other
+				 * actors if possible.
+				 */
+				Creature c = floor.getCreatureAt(actor.getX(), actor.getY());
+				if (c != null)
+					actor = c;
 				g.setColor(actor.getColor());
-				g.drawString(String.valueOf(actor.getIcon()), actor.getX()
-						* xScale + 1, actor.getY() * yScale + 11);
+				g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
 				actor.setPreviouslySeen(true);
-			} else if (actor.getPreviouslySeen()
-					&& actor.getClass() == Tile.class) {
+			} else if (actor.getPreviouslySeen() && actor instanceof Tile) {
 				g.setColor(((Tile) actor).getObscuredColor());
-				g.drawString(String.valueOf(actor.getIcon()), actor.getX()
-						* xScale + 1, actor.getY() * yScale + 11);
+				g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
 			}
 		}
 

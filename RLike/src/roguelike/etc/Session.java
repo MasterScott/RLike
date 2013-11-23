@@ -1,6 +1,9 @@
 package roguelike.etc;
 
+import java.util.ArrayList;
+
 import roguelike.actors.Player;
+import roguelike.world.Floor;
 
 /**
  * Class containing variables that need to be accessed from many different
@@ -16,4 +19,8 @@ public class Session {
 	 */
 	public static Player player;
 
+	/**
+	 * List of all floors in the session.
+	 */
+	public static ArrayList<Floor> floors;
 }
