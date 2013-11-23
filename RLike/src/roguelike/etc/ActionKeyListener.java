@@ -64,7 +64,9 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 
 		playerMovement(xDiff, yDiff);
 
-		repaint();
+		// Repaints this panel and all other panels currently attached to the
+		// window.
+		getParent().repaint();
 	}
 
 	/**
@@ -98,13 +100,11 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
 
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
 
 	}
 

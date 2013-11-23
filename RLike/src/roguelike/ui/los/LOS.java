@@ -3,6 +3,7 @@ package roguelike.ui.los;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Tile;
 import roguelike.world.Floor;
 
 /**
@@ -67,19 +68,19 @@ public class LOS {
 	 */
 	private void recursiveShadowCast(int x, int y, Delta d, int dist) {
 		Floor floor = actor.getFloor();
-		Actor thisActor = floor.getActorAt(x, y);
-
+		Tile tile = floor.getTileAt(x, y);
+		
 		/*
 		 * Check if this point is within circular max range via the distance
 		 * formula.
 		 */
 		if (getDistance(actor.getX(), actor.getY(), x, y) <= range) {
-			if (thisActor != null && !thisActor.isTraversable()) {
-				if (!inSight.contains(thisActor))
-					inSight.add(thisActor);
+			if (tile != null && !tile.isTraversable()) {
+				if (!inSight.contains(tile))
+					inSight.add(tile);
 			} else {
-				if (thisActor != null && !inSight.contains(thisActor))
-					inSight.add(thisActor);
+				if (tile != null && !inSight.contains(tile))
+					inSight.add(tile);
 
 				recursiveShadowCast(x + d.dx1, y + d.dy1, d, dist + 1);
 				recursiveShadowCast(x + d.dx2, y + d.dy2, d, dist + 1);

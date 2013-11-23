@@ -5,6 +5,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 import roguelike.actors.Feature;
@@ -115,7 +117,7 @@ public abstract class Floor {
 	 */
 	public Tile getTileAt(int x, int y) {
 		for (Actor actor : actors) {
-			if (actor.getX() == x && actor.getY() == y && actor.getClass() == Tile.class) {
+			if (actor.getX() == x && actor.getY() == y && (actor instanceof Tile)) {
 				return (Tile) actor;
 			}
 		}
@@ -255,7 +257,7 @@ public abstract class Floor {
 		Tile t = accessibleTiles.get(r.nextInt(accessibleTiles.size()));
 		x = t.getX();
 		y = t.getY();
-		accessibleTiles.remove(t);
+		actors.remove(t);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
 			actors.add(new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS));
