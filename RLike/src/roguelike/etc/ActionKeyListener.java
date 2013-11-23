@@ -6,6 +6,9 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Feature;
+import roguelike.actors.Tile;
+import roguelike.actors.Feature.FeatureType;
 import roguelike.world.Floor;
 
 /**
@@ -57,6 +60,22 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		case KeyEvent.VK_NUMPAD9: // up-right
 			xDiff++;
 			yDiff--;
+			break;
+		case KeyEvent.VK_PERIOD: // For > key. Requires shift+'.'
+			if (e.isShiftDown()) {
+				Tile tile = floor.getTileAt(Session.player.getX(), Session.player.getY());
+				if (tile.getClass() == Feature.class && ((Feature) tile).getFeatureType() == FeatureType.DOWNSTAIRS) {
+					System.out.println("DOWNSTAIRS");
+				}
+			}
+			break;
+		case KeyEvent.VK_COMMA: // For < key. Requires shift+','
+			if (e.isShiftDown()) {
+				Tile tile = floor.getTileAt(Session.player.getX(), Session.player.getY());
+				if (tile.getClass() == Feature.class && ((Feature) tile).getFeatureType() == FeatureType.UPSTAIRS) {
+					System.out.println("UPSTAIRS");
+				}
+			}
 			break;
 		default:
 			break;

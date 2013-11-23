@@ -5,8 +5,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.hamcrest.core.IsInstanceOf;
-
 import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 import roguelike.actors.Feature;
@@ -98,7 +96,7 @@ public abstract class Floor {
 	 */
 	public Creature getCreatureAt(int x, int y) {
 		for (Actor actor : actors) {
-			if (actor.getX() == x && actor.getY() == y && actor.getClass() == Creature.class) {
+			if (actor.getX() == x && actor.getY() == y && actor instanceof Creature) {
 				return (Creature) actor;
 			}
 		}
@@ -271,6 +269,15 @@ public abstract class Floor {
 
 	}
 
+	/**
+	 * Adds all tiles accessible from the specified location to the
+	 * accessibleTiles ArrayList via a recursive algorithm.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 */
 	private void getAccessibleArea(int x, int y) {
 		Tile t = getTileAt(x, y);
 

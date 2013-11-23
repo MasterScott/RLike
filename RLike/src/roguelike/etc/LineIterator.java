@@ -2,11 +2,7 @@ package roguelike.etc;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-import org.junit.Test;
 
 /**
  * Bresenham's algorithm to find all pixels on a Line2D.
