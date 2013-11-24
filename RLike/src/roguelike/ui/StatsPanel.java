@@ -3,10 +3,13 @@ package roguelike.ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.JPanel;
 
 import roguelike.etc.Session;
+import roguelike.ui.graphics.Graphic;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Panel that displays status of player and various information.
@@ -38,14 +41,15 @@ public class StatsPanel extends JPanel {
 		g.setColor(Color.WHITE);
 
 		g.drawRect(642, 2, 139, 436);
-		g.drawString("HP: " + Session.player.hp.toString(), 660, 40);
-		g.drawString("MP: " + Session.player.mp.toString(), 660, 58);
-		g.drawString("STR: " + Session.player.strength.getCur(), 660, 76);
-		g.drawString("INT: " + Session.player.intelligence.getCur(), 660, 94);
-		g.drawString("DEX: " + Session.player.dexterity.getCur(), 660, 112);
+//		g.drawString("HP: " + Session.player.hp.toString(), 660, 40);
+//		g.drawString("MP: " + Session.player.mp.toString(), 660, 58);
+//		g.drawString("STR: " + Session.player.strength.getCur(), 660, 76);
+//		g.drawString("INT: " + Session.player.intelligence.getCur(), 660, 94);
+//		g.drawString("DEX: " + Session.player.dexterity.getCur(), 660, 112);
 		
-		g.drawString("x: " + Session.player.getX(), 660, 148);
-		g.drawString("y: " + Session.player.getY(), 660, 166);
+		g.drawString("x: " + Session.player.getX(), 660, 40);
+		g.drawString("y: " + Session.player.getY(), 660, 58);
+		
 	}
 
 }

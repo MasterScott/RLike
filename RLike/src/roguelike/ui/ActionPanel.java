@@ -30,6 +30,7 @@ public class ActionPanel extends ActionKeyListener {
 		setFocusable(true);
 		addKeyListener(this);
 
+		// TODO Make these into variables.
 		setBounds(0, 0, 640, 480);
 
 		xScale = 10;
@@ -91,6 +92,12 @@ public class ActionPanel extends ActionKeyListener {
 	 */
 	public Floor getFloor() {
 		return floor;
+	}
+
+	@Override
+	public void changeFloor(int index) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

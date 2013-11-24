@@ -11,6 +11,7 @@ import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
+import roguelike.etc.Session;
 
 public abstract class Floor {
 
@@ -40,6 +41,11 @@ public abstract class Floor {
 	 */
 	private ArrayList<Tile> accessibleTiles;
 
+	/**
+	 * All floors that can be accessed from this floor.
+	 */
+	public ArrayList<Floor> connectedFloors;
+	
 	/**
 	 * Checks to see if there is an actor at the specified location that is not
 	 * traversable.

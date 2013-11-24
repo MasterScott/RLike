@@ -126,5 +126,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 
 	}
+	
+	public abstract void changeFloor(int index);
 
 }
