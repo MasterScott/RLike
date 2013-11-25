@@ -63,12 +63,14 @@ public class Graphic {
 		WANDS("tilesets\\dg_wands32.gif"), 
 		WEAPONS("tilesets\\dg_weapons32.gif");
 		// @formatter:on
-		private String fileName;
+		public String fileName;
 
 		private GraphicFile(String fileName) {
 			this.fileName = fileName;
 		}
 	}
+
+	public static Image TILESET;
 
 	/**
 	 * Returns a graphic at the row and column from the tileset specified by the
@@ -82,8 +84,8 @@ public class Graphic {
 	 *            Row of the graphic wanted, starting at 0.
 	 * @return Graphic at the row and column specified.
 	 */
-	public static Image getImage(GraphicFile file, int column, int row) {
-		ImageIcon img = new ImageIcon(file.fileName);
+	public static Image getImage(String file, int column, int row) {
+		ImageIcon img = new ImageIcon(file);
 
 		/*
 		 * Make image transparent.
@@ -106,10 +108,19 @@ public class Graphic {
 		/*
 		 * Crop image.
 		 */
+
 		filter = new CropImageFilter(column * 32, row * 32, 32, 32);
 		filteredImgProd = new FilteredImageSource(transparentImg.getSource(), filter);
 		Image finalImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
 
 		return finalImg;
+	}
+
+	public static Image getImage(String file) {
+		System.out.println(file);
+		ImageIcon img = new ImageIcon(file);
+		
+		Image image = img.getImage();
+		return image;
 	}
 }

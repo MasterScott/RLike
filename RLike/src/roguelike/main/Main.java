@@ -45,7 +45,7 @@ public class Main {
 
 		p.setFloor(f);
 		
-		ImageIcon img = new ImageIcon(Graphic.getImage(GraphicFile.ARMOR, 1, 1));
+		ImageIcon img = new ImageIcon(Graphic.getImage(GraphicFile.ARMOR.fileName, 1, 1));
 		JLabel l = new JLabel(img);
 		l.setBounds(660, 110, 32, 32);
 		l.setVisible(true);
