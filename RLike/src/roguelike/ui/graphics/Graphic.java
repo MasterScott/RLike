@@ -30,7 +30,7 @@ public class Graphic {
 		EDGING2("tilesets\\dg_edging232.gif"), 
 		EDGING3("tilesets\\dg_edging332.gif"), 
 		EFFECTS("tilesets\\dg_effects32.gif"), 
-		EXTRA("tilesets\\dg_extra32.gif"), 
+		EXTRA("tilesets\\dg_extra132.gif"), 
 		FEATURES("tilesets\\dg_features32.gif"), 
 		FOOD("tilesets\\dg_food32.gif"), 
 		GROUNDS("tilesets\\dg_grounds32.gif"), 
@@ -117,7 +117,6 @@ public class Graphic {
 	}
 
 	public static Image getImage(String file) {
-		System.out.println(file);
 		ImageIcon img = new ImageIcon(file);
 		
 		Image image = img.getImage();

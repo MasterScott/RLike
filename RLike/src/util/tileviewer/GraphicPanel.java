@@ -3,77 +3,62 @@ package util.tileviewer;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import roguelike.ui.graphics.Graphic;
+/**
+ * Displays tilesets and access information for the selected tiles.
+ * 
+ * @author Dan
+ * 
+ */
+public class GraphicPanel extends JPanel {
 
-public class GraphicPanel extends JPanel implements MouseListener {
+	private static final long serialVersionUID = -4318207486332631706L;
+	Image tileset;
+	String tileset_path;
+	Image tile;
+	int row, col;
 
-	public static Image TILESET;
-	public static String TILESET_PATH;
-	private Image tile;
-
+	/**
+	 * Create a new default GraphicPanel.
+	 */
 	public GraphicPanel() {
 		setBounds(0, 0, 500, 800);
-		setBackground(Color.BLACK);
-		addMouseListener(this);
+		setBackground(Color.LIGHT_GRAY);
+		row = 0;
+		col = 0;
+	}
+
+	/**
+	 * Set row and column to be displayed.
+	 * 
+	 * @param row
+	 *            Row to be displayed.
+	 * @param column
+	 *            Column to be displayed.
+	 */
+	public void setCoords(int row, int column) {
+		this.row = row;
+		this.col = column;
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		if (TILESET != null) {
-			g.drawImage(TILESET, 0, 0, null);
+		if (tileset != null) {
+			g.drawImage(tileset, 0, 0, null);
 		}
 
 		g.drawString("Current Tile: ", 40, 700);
+		g.drawString("Row: " + row + "   Column: " + col, 160, 700);
+		g.drawString("Tileset: " + tileset_path, 280, 700);
 		if (tile != null) {
-			g.drawImage(tile, 100, 700, null);
-			System.out.println("drawing tile...");
+			g.drawImage(tile, 120, 680, null);
 		}
 
-	}
-
-
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-
-		if (TILESET != null && x < TILESET.getWidth(null) && y < TILESET.getHeight(null));
-			tile = Graphic.getImage(TILESET_PATH, x / 32, y / 32);
-
-		this.getParent().repaint();
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		repaint();
 	}
 
 }
