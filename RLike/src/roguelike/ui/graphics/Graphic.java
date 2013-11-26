@@ -80,13 +80,13 @@ public class Graphic {
 	 * 
 	 * @param file
 	 *            GraphicFile to search through.
-	 * @param column
-	 *            Column of the graphic wanted, starting at 0.
 	 * @param row
 	 *            Row of the graphic wanted, starting at 0.
+	 * @param col
+	 *            Column of the graphic wanted, starting at 0.
 	 * @return Graphic at the row and column specified.
 	 */
-	public static Image getImage(String file, int column, int row) {
+	public static Image getImage(String file, int row, int col) {
 		ImageIcon img = new ImageIcon(file);
 
 		/*
@@ -111,7 +111,7 @@ public class Graphic {
 		 * Crop image.
 		 */
 
-		filter = new CropImageFilter(column * 32, row * 32, 32, 32);
+		filter = new CropImageFilter(row * 32, col * 32, 32, 32);
 		filteredImgProd = new FilteredImageSource(transparentImg.getSource(), filter);
 		Image finalImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
 

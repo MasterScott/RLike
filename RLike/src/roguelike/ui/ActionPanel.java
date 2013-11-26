@@ -51,8 +51,6 @@ public class ActionPanel extends ActionKeyListener {
 			throw new NullPointerException("A floor was not defined for this ActionPanel.");
 
 		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
-
-		MediaTracker tracker = new MediaTracker(this);
 		
 		/*
 		 * If actor is in sight, display in normal color and set previously seen
@@ -69,32 +67,20 @@ public class ActionPanel extends ActionKeyListener {
 				if (c != null)
 					actor = c;
 				
-				Image img = actor.getImage();
-				tracker.addImage(img, 0);
-				try {
-					tracker.waitForID(0);
-				} catch (Exception e) {}
-				
 				if (actor.getImage() == null) {
 					g.setColor(actor.getColor());
 					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
 				} else {
-					g.drawImage(img, actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
+					g.drawImage(actor.getImage(), actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
 				}
 				actor.setPreviouslySeen(true);
 			} else if (actor.getPreviouslySeen() && actor instanceof Tile) {
-				Image img = actor.getImage();
-				tracker.addImage(img, 0);
-				try {
-					tracker.waitForID(0);
-				} catch (Exception e) { System.out.println("Did not load."); }
-				
 				if (actor.getImage() == null) {
 					g.setColor(((Tile) actor).getObscuredColor());
 					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
 					if (actor.getIcon() == '#') System.out.println ("ERROR");
 				} else {					
-					g.drawImage(img, actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
+					g.drawImage(actor.getImage(), actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
 				}
 				
 			}

@@ -1,6 +1,7 @@
 package roguelike.world;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,7 +12,8 @@ import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
-import roguelike.etc.Session;
+import roguelike.ui.graphics.Graphic;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 public abstract class Floor {
 
@@ -175,25 +177,39 @@ public abstract class Floor {
 	/**
 	 * Encloses the current level with walls around the edges to prevent actors
 	 * trying to escape.
+	 *
+	 * @param tileset Tileset this tile's icon is located on.
+	 * @param row Row of tileset icon is located on.
+	 * @param col Column of tileset icon is located on.
 	 */
-	protected void encloseLevel() {
+	protected void encloseLevel(GraphicFile tileset, int row, int col) { 
+		Image img = Graphic.getImage(tileset.fileName, col, row);
+		
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
 			if (getActorAt(x, 0) == null) {
-				actors.add(new Tile('#', Color.WHITE, x, 0));
+				Tile t = new Tile('#', Color.WHITE, x, 0);
+				t.setImage(img);
+				actors.add(t);
 			}
 			if (getActorAt(x, YMAX) == null) {
-				actors.add(new Tile('#', Color.WHITE, x, YMAX - 1));
+				Tile t = new Tile('#', Color.WHITE, x, YMAX - 1);
+				t.setImage(img);
+				actors.add(t);
 			}
 		}
 
 		// Create walls along left and right.
 		for (int y = 0; y < YMAX; y++) {
 			if (getActorAt(0, y) == null) {
-				actors.add(new Tile('#', Color.WHITE, 0, y));
+				Tile t = new Tile('#', Color.WHITE, 0, y);
+				t.setImage(img);
+				actors.add(t);
 			}
 			if (getActorAt(XMAX, y) == null) {
-				actors.add(new Tile('#', Color.WHITE, XMAX - 1, y));
+				Tile t = new Tile('#', Color.WHITE, XMAX - 1, y);
+				t.setImage(img);
+				actors.add(t);
 			}
 		}
 	}
@@ -299,17 +315,16 @@ public abstract class Floor {
 		}
 	}
 
-	/**
-	 * Creates a 'floor' for the level with the specified tile's attributes.
-	 * 
-	 * @param tile
-	 *            Tile to take attributes from.
-	 */
-	protected void fillLevelWithTiles(Tile tile) {
+
+	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col) {
+		Image img = Graphic.getImage(tileset.fileName, col, row);
+		
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					actors.add(new Tile(tile.getIcon(), tile.getColor(), x, y, true));
+					Tile t = new Tile('.', Color.WHITE, x, y, true);
+					t.setImage(img);
+					actors.add(t);
 				}
 			}
 		}

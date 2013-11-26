@@ -169,6 +169,16 @@ public abstract class Actor {
 	}
 
 	/**
+	 * Sets image used to represent this actor to the image specified.
+	 * 
+	 * @param image
+	 *            Image to represent this actor.
+	 */
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	/**
 	 * Returns whether or not this actor has been seen by the player.
 	 * 
 	 * @return Whether or not this actor has been seen by the player.
