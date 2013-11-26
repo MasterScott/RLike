@@ -28,8 +28,8 @@ public class Tile extends Actor {
 		super(icon, color, x, y);
 
 		this.traversable = false;
-		this.obscuredColor = new Color((int) (color.getRed() / 2),
-				(int) (color.getGreen() / 2), (int) (color.getBlue() / 2));
+		this.obscuredColor = new Color((int) (color.getRed() / 2.5),
+				(int) (color.getGreen() / 2.5), (int) (color.getBlue() / 2.5));
 	}
 
 	/**

@@ -3,13 +3,10 @@ package roguelike.ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 
 import javax.swing.JPanel;
 
 import roguelike.etc.Session;
-import roguelike.ui.graphics.Graphic;
-import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Panel that displays status of player and various information.
