@@ -3,11 +3,13 @@ package roguelike.ui.graphics;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.awt.image.CropImageFilter;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
+import java.awt.image.RescaleOp;
 
 import javax.swing.ImageIcon;
 
@@ -118,8 +120,27 @@ public class Graphic {
 
 	public static Image getImage(String file) {
 		ImageIcon img = new ImageIcon(file);
-		
+
 		Image image = img.getImage();
+		return image;
+	}
+
+	/**
+	 * Returns a copy of the image passed to the method set to the specified
+	 * brightness.
+	 * 
+	 * @param img
+	 *            Image to be modified.
+	 * @param brightness
+	 *            Float value representing image brightness.
+	 * @return Original image set to the specified brightness.
+	 */
+	public static Image getAdjustedBrightnessImage(Image img, float brightness) {
+		BufferedImage image = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
+		image.getGraphics().drawImage(img, 0, 0, null);
+
+		RescaleOp op = new RescaleOp(brightness, 0, null);
+		image = op.filter(image, image);
 		return image;
 	}
 }
