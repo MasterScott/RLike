@@ -28,7 +28,7 @@ public class Main {
 
 		Session.player = new Player('@', Color.WHITE, 2, 2);
 
-		Window w = new Window(100, 100, 800, 480);
+		Window w = new Window(100, 10, 1536, 1024);
 
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ActionPanel p = new ActionPanel();
@@ -44,12 +44,6 @@ public class Main {
 		f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS);
 
 		p.setFloor(f);
-		
-		ImageIcon img = new ImageIcon(Graphic.getImage(GraphicFile.ARMOR.fileName, 1, 1));
-		JLabel l = new JLabel(img);
-		l.setBounds(660, 110, 32, 32);
-		l.setVisible(true);
-		w.add(l);
 
 		p.repaint();
 		s.repaint();

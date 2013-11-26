@@ -31,10 +31,10 @@ public class ActionPanel extends ActionKeyListener {
 		addKeyListener(this);
 
 		// TODO Make these into variables.
-		setBounds(0, 0, 640, 480);
+		setBounds(0, 0, 1408, 1024);
 
-		xScale = 10;
-		yScale = 16;
+		xScale = 32;
+		yScale = 32;
 		xBound = getBounds().width;
 		yBound = getBounds().height;
 	}

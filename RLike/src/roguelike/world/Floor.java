@@ -18,7 +18,7 @@ public abstract class Floor {
 	/**
 	 * Width of floor.
 	 */
-	public final int XMAX = 64;
+	public final int XMAX = 42;
 
 	/**
 	 * Height of floor.
