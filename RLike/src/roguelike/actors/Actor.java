@@ -1,7 +1,10 @@
 package roguelike.actors;
 
 import java.awt.Color;
+import java.awt.Image;
 
+import roguelike.ui.graphics.Graphic;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Floor;
 
 /**
@@ -18,6 +21,7 @@ public abstract class Actor {
 	boolean traversable;
 	boolean previouslySeen;
 	Floor floor;
+	Image image;
 
 	public Actor(char icon, Color color, int x, int y) {
 		this.icon = icon;
@@ -142,6 +146,29 @@ public abstract class Actor {
 	}
 
 	/**
+	 * Returns image used to represent this actor.
+	 * 
+	 * @return Image used to represent this actor.
+	 */
+	public Image getImage() {
+		return image;
+	}
+
+	/**
+	 * Sets image to the icon at the row and column in the specified tileset.
+	 * 
+	 * @param gf
+	 *            Tileset to use.
+	 * @param row
+	 *            Row of icon to use.
+	 * @param col
+	 *            Column of icon to use.
+	 */
+	public void setImage(GraphicFile gf, int row, int col) {
+		this.image = Graphic.getImage(gf.fileName, col, row);
+	}
+
+	/**
 	 * Returns whether or not this actor has been seen by the player.
 	 * 
 	 * @return Whether or not this actor has been seen by the player.
@@ -160,8 +187,4 @@ public abstract class Actor {
 		this.previouslySeen = previouslySeen;
 	}
 
-	public String toString() {
-		return "Character: " + icon + " Color: " + color.toString() + " x: "
-				+ x + " y: " + y;
-	}
 }

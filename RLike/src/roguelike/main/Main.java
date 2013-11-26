@@ -40,6 +40,7 @@ public class Main {
 		Point point = f.getRandomOpenTile();
 		Session.player = new Player('@', Color.WHITE, point.x, point.y);
 		Session.player.setFloor(f);
+		Session.player.setImage(GraphicFile.CLASSM, 0, 0);
 		f.actors.add(Session.player);
 		f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS);
 

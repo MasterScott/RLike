@@ -64,12 +64,22 @@ public class ActionPanel extends ActionKeyListener {
 				Creature c = floor.getCreatureAt(actor.getX(), actor.getY());
 				if (c != null)
 					actor = c;
-				g.setColor(actor.getColor());
-				g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
+				
+				if (actor.getImage() == null) {
+					g.setColor(actor.getColor());
+					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
+				} else {
+					g.drawImage(actor.getImage(), actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
+				}
 				actor.setPreviouslySeen(true);
 			} else if (actor.getPreviouslySeen() && actor instanceof Tile) {
-				g.setColor(((Tile) actor).getObscuredColor());
-				g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
+				if (actor.getImage() == null) {
+					g.setColor(((Tile) actor).getObscuredColor());
+					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
+				} else {
+					g.drawImage(actor.getImage(), actor.getX(), actor.getY(), this);
+				}
+				
 			}
 		}
 
@@ -97,7 +107,7 @@ public class ActionPanel extends ActionKeyListener {
 	@Override
 	public void changeFloor(int index) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

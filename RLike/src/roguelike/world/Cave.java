@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Tile;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Cave-based floor.
@@ -48,7 +49,9 @@ public class Cave extends Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (Math.random() > tolerance) {
-					actors.add(new Tile('#', Color.WHITE, x, y, false));
+					Tile t = new Tile('#', Color.WHITE, x, y, false);
+					t.setImage(GraphicFile.FEATURES, 0, 3);
+					actors.add(t);
 				}
 			}
 		}
