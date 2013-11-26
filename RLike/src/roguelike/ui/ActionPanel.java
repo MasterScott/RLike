@@ -2,6 +2,8 @@ package roguelike.ui;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.MediaTracker;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
@@ -50,6 +52,8 @@ public class ActionPanel extends ActionKeyListener {
 
 		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
 
+		MediaTracker tracker = new MediaTracker(this);
+		
 		/*
 		 * If actor is in sight, display in normal color and set previously seen
 		 * to true. If not in sight, display at an obscured color if the actor
@@ -65,23 +69,38 @@ public class ActionPanel extends ActionKeyListener {
 				if (c != null)
 					actor = c;
 				
+				Image img = actor.getImage();
+				tracker.addImage(img, 0);
+				try {
+					tracker.waitForID(0);
+				} catch (Exception e) {}
+				
 				if (actor.getImage() == null) {
 					g.setColor(actor.getColor());
 					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
 				} else {
-					g.drawImage(actor.getImage(), actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
+					g.drawImage(img, actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
 				}
 				actor.setPreviouslySeen(true);
 			} else if (actor.getPreviouslySeen() && actor instanceof Tile) {
+				Image img = actor.getImage();
+				tracker.addImage(img, 0);
+				try {
+					tracker.waitForID(0);
+				} catch (Exception e) { System.out.println("Did not load."); }
+				
 				if (actor.getImage() == null) {
 					g.setColor(((Tile) actor).getObscuredColor());
 					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + 1, actor.getY() * yScale + 11);
-				} else {
-					g.drawImage(actor.getImage(), actor.getX(), actor.getY(), this);
+					if (actor.getIcon() == '#') System.out.println ("ERROR");
+				} else {					
+					g.drawImage(img, actor.getX() * xScale + 1, actor.getY() * yScale + 11, this);
 				}
 				
 			}
 		}
+		
+		
 
 	}
 

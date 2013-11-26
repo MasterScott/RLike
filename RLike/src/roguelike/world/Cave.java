@@ -2,6 +2,7 @@ package roguelike.world;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Random;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Tile;
@@ -45,7 +46,6 @@ public class Cave extends Floor {
 	@Override
 	public void generateFloor() {
 
-		// Generate random grid
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (Math.random() > tolerance) {
@@ -70,7 +70,9 @@ public class Cave extends Floor {
 					Actor a = getActorAt(x, y);
 
 					if (n >= 6 && a == null) { // If birth conditions are met
-						actors.add(new Tile('#', Color.WHITE, x, y, false));
+						Tile t = new Tile('#', Color.WHITE, x, y, false);
+						t.setImage(GraphicFile.FEATURES, 0, 3);
+						actors.add(t);
 						count++;
 					} else if (n < 3 && a != null) { // If survival not met
 						actors.remove(a);
