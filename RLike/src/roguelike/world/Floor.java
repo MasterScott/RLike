@@ -295,7 +295,7 @@ public abstract class Floor {
 
 		int x = player.getX();
 		int y = player.getY();
-
+		
 		getAccessibleArea(x, y);
 
 		Random r = new Random();
@@ -337,10 +337,15 @@ public abstract class Floor {
 
 		if (t.isTraversable()) {
 			accessibleTiles.add(t);
+			// 7 ms with just NSWE, 15 ms with diagonals + NSWE.
 			getAccessibleArea(x + 1, y);
 			getAccessibleArea(x - 1, y);
 			getAccessibleArea(x, y + 1);
 			getAccessibleArea(x, y - 1);
+			getAccessibleArea(x + 1, y + 1);
+			getAccessibleArea(x + 1, y - 1);
+			getAccessibleArea(x - 1, y + 1);
+			getAccessibleArea(x - 1, y - 1);
 		}
 	}
 

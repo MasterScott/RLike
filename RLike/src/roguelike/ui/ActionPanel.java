@@ -59,37 +59,27 @@ public class ActionPanel extends ActionKeyListener {
 		 * is a tile and has been seen before. Otherwise, do nothing.
 		 */
 		for (Actor actor : floor.actors) {
-			if (inSight.contains(actor)) {
-				/*
-				 * Make sure tiles take lowest precedence - always display other
-				 * actors if possible.
-				 */
-				// TODO May have to draw creatures last.
-				Creature c = floor.getCreatureAt(actor.getX(), actor.getY());
-				if (c != null && c != Session.player)
-					actor = c;
+			if (inSight.contains(actor) && !(actor instanceof Creature)) {
 
-				if (actor.getImage() == null) {
-					g.setColor(actor.getColor());
-					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + xPlus, actor.getY() * yScale
-							+ yPlus);
-				} else {
-					g.drawImage(actor.getImage(), actor.getX() * xScale + xPlus, actor.getY() * yScale + yPlus, this);
-				}
+				g.drawImage(actor.getImage(), actor.getX() * xScale + xPlus, actor.getY() * yScale + yPlus, this);
 				actor.setPreviouslySeen(true);
-			} else if (actor.getPreviouslySeen() && actor instanceof Tile) {
-				if (actor.getImage() == null) {
-					g.setColor(((Tile) actor).getObscuredColor());
-					g.drawString(String.valueOf(actor.getIcon()), actor.getX() * xScale + xPlus, actor.getY() * yScale
-							+ yPlus);
-				} else {
-					g.drawImage(Graphic.getAdjustedBrightnessImage(actor.getImage(), 0.5f), actor.getX() * xScale
-							+ xPlus, actor.getY() * yScale + yPlus, this);
-				}
 
+			} else if (actor.getPreviouslySeen() && actor instanceof Tile) {
+
+				g.drawImage(Graphic.getAdjustedBrightnessImage(actor.getImage(), 0.5f), actor.getX() * xScale + xPlus,
+						actor.getY() * yScale + yPlus, this);
 			}
 		}
 
+		/*
+		 * Draw creature types after drawing non-creature types, as creature
+		 * types will generally be drawn on top of non-creatures.
+		 */
+		for (Actor actor : floor.actors) {
+			if (inSight.contains(actor) && actor instanceof Creature) {
+				g.drawImage(actor.getImage(), actor.getX() * xScale + xPlus, actor.getY() * yScale + yPlus, this);
+			}
+		}
 	}
 
 	/**
