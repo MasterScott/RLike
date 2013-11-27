@@ -24,7 +24,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 	protected Floor floor;
 	protected int fontSize;
 	protected int xScale, yScale;
-	protected int xBound, yBound;
+	protected int xPlus, yPlus;
 
 	@Override
 	public void keyPressed(KeyEvent e) {

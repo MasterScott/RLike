@@ -47,7 +47,7 @@ public abstract class Floor {
 	 * All floors that can be accessed from this floor.
 	 */
 	public ArrayList<Floor> connectedFloors;
-	
+
 	/**
 	 * Checks to see if there is an actor at the specified location that is not
 	 * traversable.
@@ -177,14 +177,17 @@ public abstract class Floor {
 	/**
 	 * Encloses the current level with walls around the edges to prevent actors
 	 * trying to escape.
-	 *
-	 * @param tileset Tileset this tile's icon is located on.
-	 * @param row Row of tileset icon is located on.
-	 * @param col Column of tileset icon is located on.
+	 * 
+	 * @param tileset
+	 *            Tileset this tile's icon is located on.
+	 * @param row
+	 *            Row of tileset icon is located on.
+	 * @param col
+	 *            Column of tileset icon is located on.
 	 */
-	protected void encloseLevel(GraphicFile tileset, int row, int col) { 
+	protected void encloseLevel(GraphicFile tileset, int row, int col) {
 		Image img = Graphic.getImage(tileset.fileName, col, row);
-		
+
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
 			if (getActorAt(x, 0) == null) {
@@ -220,15 +223,25 @@ public abstract class Floor {
 	 * @param featureType
 	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
 	 *            enumeration.
+	 * @param tileset
+	 *            Tileset this tile's icon is located on.
+	 * @param row
+	 *            Row of tileset icon is located on.
+	 * @param col
+	 *            Column of tileset icon is located on.
 	 */
-	protected void createStairs(FeatureType featureType) {
-		// TODO Make sure this occurs at a spot the player can reach.
+	protected void createStairs(FeatureType featureType, GraphicFile tileset, int row, int col) {
 		Point p = getRandomOpenTile();
+		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
-			actors.add(new Feature('>', Color.WHITE, p.x, p.y, true, FeatureType.DOWNSTAIRS));
+			Feature f = new Feature('>', Color.WHITE, p.x, p.y, true, FeatureType.DOWNSTAIRS);
+			f.setImage(img);
+			actors.add(f);
 		} else if (featureType == FeatureType.UPSTAIRS) {
-			actors.add(new Feature('<', Color.WHITE, p.x, p.y, true, FeatureType.UPSTAIRS));
+			Feature f = new Feature('<', Color.WHITE, p.x, p.y, true, FeatureType.UPSTAIRS);
+			f.setImage(img);
+			actors.add(f);
 		}
 
 	}
@@ -243,12 +256,24 @@ public abstract class Floor {
 	 * @param featureType
 	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
 	 *            enumeration.
+	 * @param tileset
+	 *            Tileset this tile's icon is located on.
+	 * @param row
+	 *            Row of tileset icon is located on.
+	 * @param col
+	 *            Column of tileset icon is located on.
 	 */
-	protected void createStairs(int x, int y, FeatureType featureType) {
+	protected void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int row, int col) {
+		Image img = Graphic.getImage(tileset.fileName, row, col);
+
 		if (featureType == FeatureType.DOWNSTAIRS) {
-			actors.add(new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS));
+			Feature f = new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS);
+			f.setImage(img);
+			actors.add(f);
 		} else if (featureType == FeatureType.UPSTAIRS) {
-			actors.add(new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS));
+			Feature f = new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS);
+			f.setImage(img);
+			actors.add(f);
 		}
 	}
 
@@ -261,7 +286,7 @@ public abstract class Floor {
 	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
 	 *            enumeration.
 	 */
-	public void createAccessibleStairs(Player player, FeatureType featureType) {
+	public void createAccessibleStairs(Player player, FeatureType featureType, GraphicFile tileset, int row, int col) {
 		/*
 		 * Have to clear list in order for the recursive getAccessibleArea() to
 		 * work.
@@ -278,13 +303,17 @@ public abstract class Floor {
 		x = t.getX();
 		y = t.getY();
 		actors.remove(t);
+		
+		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
-			actors.add(new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS));
-			System.out.println("Downstairs added at x: " + x + " y: " + y);
+			Feature f = new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS);
+			f.setImage(img);
+			actors.add(f);
 		} else if (featureType == FeatureType.UPSTAIRS) {
-			actors.add(new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS));
-			System.out.println("Upstairs added at x: " + x + " y: " + y);
+			Feature f = new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS);
+			f.setImage(img);
+			actors.add(f);
 		} else {
 			System.out.println("Failure to add.");
 		}
@@ -315,10 +344,9 @@ public abstract class Floor {
 		}
 	}
 
-
 	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col) {
 		Image img = Graphic.getImage(tileset.fileName, col, row);
-		
+
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
