@@ -24,7 +24,7 @@ public class GraphicPanel extends JPanel {
 	 * Create a new default GraphicPanel.
 	 */
 	public GraphicPanel() {
-		setBounds(0, 0, 500, 800);
+		//setBounds(0, 0, 500, 800);
 		setBackground(Color.LIGHT_GRAY);
 		row = 0;
 		col = 0;
@@ -51,11 +51,11 @@ public class GraphicPanel extends JPanel {
 			g.drawImage(tileset, 0, 0, null);
 		}
 
-		g.drawString("Current Tile: ", 40, 700);
-		g.drawString("Row: " + row + "   Column: " + col, 160, 700);
-		g.drawString("Tileset: " + tileset_path, 280, 700);
+		g.drawString("Current Tile: ", 40, getParent().getHeight() - 100);
+		g.drawString("Row: " + row + "   Column: " + col, 160, getParent().getHeight() - 100);
+		g.drawString("Tileset: " + tileset_path, 280, getParent().getHeight() - 100);
 		if (tile != null) {
-			g.drawImage(tile, 120, 680, null);
+			g.drawImage(tile, 120, getParent().getHeight() - 120, null);
 		}
 
 		repaint();

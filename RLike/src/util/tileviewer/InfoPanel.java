@@ -19,14 +19,14 @@ public class InfoPanel extends JPanel {
 
 
 	private static final long serialVersionUID = 3536357614153958718L;
-	int x, y;
 
 	/**
 	 * Create a new default InfoPanel.
 	 */
 	public InfoPanel() {
-		setBounds(500, 0, 200, 800);
+		//setBounds(500, 0, 200, 800);
 		setBackground(Color.BLACK);
+		
 	}
 
 	@Override
@@ -39,9 +39,11 @@ public class InfoPanel extends JPanel {
 		int drawY = 32;
 
 		for (GraphicFile gf : GraphicFile.values()) {
-			g.drawString(gf.name(), 520, drawY);
+			g.drawString(gf.name(), getParent().getWidth() - 100, drawY);
 			drawY += 18;
 		}
+		
+		
 	}
 
 }
