@@ -19,7 +19,7 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Cave;
 import roguelike.world.Floor;
 
-public class Main {
+public class LoadCave {
 
 	/**
 	 * @param args

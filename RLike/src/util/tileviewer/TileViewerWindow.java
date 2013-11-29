@@ -84,8 +84,6 @@ public class TileViewerWindow extends JFrame implements MouseListener {
 
 		this.repaint();
 
-		System.out.println(ip.getBounds().toString());
-
 	}
 
 	@Override
