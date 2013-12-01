@@ -5,6 +5,8 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
+import roguelike.etc.Session;
+
 /**
  * An (emulated) console window.
  * 
@@ -29,6 +31,7 @@ public class Window extends JFrame implements KeyListener {
 	 */
 	public Window(int x, int y, int width, int height) {
 		setBounds(x, y, width, height);
+		Session.window = this;
 	}
 
 	@Override

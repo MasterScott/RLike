@@ -16,6 +16,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
+import roguelike.actors.Player;
+import roguelike.etc.Session;
+import roguelike.main.LoadCave;
 import roguelike.ui.MenuLabel.LabelType;
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
@@ -172,6 +175,14 @@ public class CharacterSelectPanel extends JPanel {
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				Point p = MenuLabel.getSelectedCoordinates();
+				if (p != null) {
+					// TODO Placeholder to see if this works.
+					Player player = new Player('@', Color.WHITE, 3, 3);
+					player.setImage(GraphicFile.CLASSM, (int) p.getX(), (int) p.getY());
+					Session.player = player;
+					
+				}
 			}
 		});
 		add(btnOk, "cell 5 15,alignx right");

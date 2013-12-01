@@ -3,6 +3,7 @@ package roguelike.etc;
 import java.util.ArrayList;
 
 import roguelike.actors.Player;
+import roguelike.ui.Window;
 import roguelike.world.Floor;
 
 /**
@@ -23,4 +24,9 @@ public class Session {
 	 * List of all floors in the session.
 	 */
 	public static ArrayList<Floor> floors;
+	
+	/**
+	 * Window the game is running in.
+	 */
+	public static Window window;
 }
