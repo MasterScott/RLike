@@ -111,7 +111,7 @@ public class Graphic {
 		 * Crop image.
 		 */
 
-		filter = new CropImageFilter(row * 32, col * 32, 32, 32);
+		filter = new CropImageFilter(col * 32, row * 32, 32, 32);
 		filteredImgProd = new FilteredImageSource(transparentImg.getSource(), filter);
 		Image finalImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
 
