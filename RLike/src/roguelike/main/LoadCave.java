@@ -42,7 +42,7 @@ public class LoadCave {
 		Session.player.setFloor(f);
 		Session.player.setImage(GraphicFile.CLASSM, 2, 5);
 		f.actors.add(Session.player);
-		f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 7, 4);
+		f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
 
 		p.setFloor(f);
 

@@ -186,7 +186,7 @@ public abstract class Floor {
 	 *            Column of tileset icon is located on.
 	 */
 	protected void encloseLevel(GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset.fileName, col, row);
+		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
@@ -350,7 +350,7 @@ public abstract class Floor {
 	}
 
 	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset.fileName, col, row);
+		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
