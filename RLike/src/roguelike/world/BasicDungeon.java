@@ -7,6 +7,7 @@ import java.util.Random;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Tile;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Basic dungeon layout with a specified number of rooms and passageways
@@ -28,38 +29,81 @@ public class BasicDungeon extends Floor {
 		numRooms = 0;
 		roomSizeMax = 8;
 		roomSizeMin = 5;
-		numRoomsMax = 8;
+		numRoomsMax = 9;
 		numRoomsMin = 6;
 		actors = new ArrayList<Actor>();
 		rooms = new ArrayList<Room>();
-
-		generateFloor();
 	}
 
 	@Override
 	public void generateFloor() {
 		Random random = new Random();
 
-		int nRooms = random.nextInt(numRoomsMax - numRoomsMin + 1)
-				+ numRoomsMin;
+		int nRooms = random.nextInt(numRoomsMax - numRoomsMin + 1) + numRoomsMin;
 
-		// Generate all rooms.
-		while (numRooms < nRooms) {
-			generateRoom(
-					random.nextInt(XMAX),
-					random.nextInt(YMAX),
-					random.nextInt(roomSizeMax - roomSizeMin + 1) + roomSizeMin,
-					random.nextInt(roomSizeMax - roomSizeMin + 1) + roomSizeMin);
+		Room dungeon = new Room(null, -1, -1, 0, 0);
+		binarySpacePartition(dungeon, 0, XMAX - 1, 0, YMAX - 1);
+
+		for (Room r : rooms) {
+			generateRoom(r.x, r.y, r.width, r.height);
 		}
+	}
 
-		// Add doors to all rooms.
-		for (Room room : rooms) {
-			Point p = room.getRandomWall();
-			Actor a = getActorAt(p.x, p.y);
-			a.setIcon('/');
-			a.setTraversable(true);
+	private void binarySpacePartition(Room parent, int x1, int x2, int y1, int y2) {
+		Random r = new Random();
+		int alignment = r.nextInt(2);
+		Room room = new Room(parent, 0, 0, 0, 0);
+		
+		int divLineX = 0;
+		int divLineY = 0;
+		int xRange = (x2 - roomSizeMin) - (x1 + roomSizeMin) + 1;
+		int yRange = (y2 - roomSizeMin) - (y1 + roomSizeMin) + 1;
+
+		if (xRange > 0)
+			divLineX = r.nextInt(xRange) + x1 + roomSizeMin;
+		if (yRange > 0)
+			divLineY = r.nextInt(yRange) + y1 + roomSizeMin;
+
+		// Min + (int)(Math.random() * ((Max - Min) + 1))
+		if (alignment == 0) { // Horizontal
+			
+			System.out.println("x1: " + x1 + " x2: " + x2 + " y1: " + y1 + " y2: " + y2 + " divLineX: " + divLineX
+					+ " divLineY: " + divLineY);
+
+			// TODO check if there is enough space to make a room
+			if (divLineY - y1 >= roomSizeMin && y2 - divLineY >= roomSizeMin) { // Horizontal
+				binarySpacePartition(room, x1, x2, y1, divLineY);
+				binarySpacePartition(room, x1, x2, divLineY + 1, y2);
+			} else if (divLineX - x1 >= roomSizeMin && x2 - divLineX >= roomSizeMin) {
+				binarySpacePartition(room, x1, divLineX, y1, y2);
+				binarySpacePartition(room, divLineX + 1, x2, y1, y2);
+			} else {
+				room.x = x1;
+				room.y = y1;
+				room.width = x2 - x1;
+				room.height = y2 - y1;
+				rooms.add(room);
+			}
+		} else { // Vertical
+			
+			System.out.println("x1: " + x1 + " x2: " + x2 + " y1: " + y1 + " y2: " + y2 + " divLineX: " + divLineX
+					+ " divLineY: " + divLineY);
+
+
+			if (divLineX - x1 >= roomSizeMin && x2 - divLineX >= roomSizeMin) {
+				binarySpacePartition(room, x1, divLineX, y1, y2);
+				binarySpacePartition(room, divLineX + 1, x2, y1, y2);
+			} else if (divLineY - y1 >= roomSizeMin && y2 - divLineY >= roomSizeMin) {
+				binarySpacePartition(room, x1, x2, y1, divLineY);
+				binarySpacePartition(room, x1, x2, divLineY + 1, y2);
+			} else {
+				room.x = x1;
+				room.y = y1;
+				room.width = x2 - x1;
+				room.height = y2 - y1;
+				rooms.add(room);
+			}
 		}
-
 	}
 
 	/**
@@ -76,62 +120,17 @@ public class BasicDungeon extends Floor {
 	 *            Height of room.
 	 */
 	private void generateRoom(int x, int y, int width, int height) {
-		boolean collision = false;
+		if (x + width - 1 >= XMAX || y + height - 1 >= YMAX || x < 0 || y < 0)
+			return;
 
-		/*
-		 * Check if any tile within the specified rectangle causes a collision.
-		 */
-		for (int i = x; i < x + width; ++i) {
-			for (int j = y; j < y + height; ++j) {
-				if (checkCollision(i, j) || i >= XMAX || j >= YMAX) {
-					collision = true;
-					break;
-				}
+		for (int i = x; i < x + width - 1; i++) {
+			for (int j = y; j < y + height - 1; j++) {
+				Tile t = new Tile('.', Color.GRAY, i, j, true);
+				t.setImage(GraphicFile.DUNGEON, 6, 3);
+				actors.add(t);
 			}
-			if (collision)
-				break;
 		}
 
-		/*
-		 * If there is no collision, create a new room within this rectangle.
-		 */
-		if (!collision) {
-			// Add floors and walls
-			for (int i = x; i < x + width; ++i) {
-				for (int j = y; j < y + height; ++j) {
-					if (i == x || i == x + width - 1 || j == y
-							|| j == y + height - 1) {
-						actors.add(new Tile('#', Color.WHITE, i, j, false));
-					} else {
-						actors.add(new Tile('.', Color.GRAY, i, j, true));
-					}
-				}
-			}
-
-			rooms.add(new Room(x, y, width, height));
-			numRooms++;
-		}
-
-	}
-
-	private void generatePassageway(Room r1, Room r2) {
-		r1.resetEligibility(); // Clear any previously set eligibilities
-
-		if ((r1.x + r1.width) < (r2.x + r2.width)) { // r1 east wall eligible
-			r1.east = true;
-		}
-
-		if (r1.x > r2.x) { // r1 west wall eligible
-			r1.west = true;
-		}
-
-		if ((r1.y + r1.height) > (r2.y + r2.height)) { // r1 south wall eligible
-			r1.south = true;
-		}
-
-		if (r1.y < r2.y) { // r1 north wall eligible
-			r1.north = true;
-		}
 	}
 
 	/**
@@ -144,8 +143,7 @@ public class BasicDungeon extends Floor {
 	 * @throws IllegalArgumentException
 	 *             If this would create a non-horizontal or vertical line.
 	 */
-	private void carveStraightPassageway(Point p1, Point p2)
-			throws IllegalArgumentException {
+	private void carveStraightPassageway(Point p1, Point p2) throws IllegalArgumentException {
 		if ((p1.x == p2.x || p1.y == p2.y)) {
 			if (p1.x == p2.x) { // If this is a vertical line
 				int y1, y2;
@@ -194,8 +192,7 @@ public class BasicDungeon extends Floor {
 				}
 			}
 		} else {
-			throw new IllegalArgumentException(
-					"Passageway must be a straight line.");
+			throw new IllegalArgumentException("Passageway must be a straight line.");
 		}
 	}
 
@@ -208,61 +205,16 @@ public class BasicDungeon extends Floor {
 	private class Room {
 
 		int x, y, width, height;
+		Room parent, left, right;
 
-		boolean north, east, south, west;
-
-		private Room(int x, int y, int width, int height) {
+		private Room(Room parent, int x, int y, int width, int height) {
 			this.x = x;
 			this.y = y;
 			this.width = width;
 			this.height = height;
 
-			resetEligibility();
 		}
 
-		/**
-		 * Returns a random point on a wall which can be used to create a
-		 * passageway to another room.
-		 * 
-		 * @return Random point on a wall.
-		 */
-		Point getRandomWall() {
-			Random random = new Random();
-			int x, y;
-
-			int r = random.nextInt(4);
-			switch (r) {
-			case 0:
-				x = this.x;
-				y = this.y + random.nextInt(height - 2) + 1;
-				break;
-			case 1:
-				x = this.x + random.nextInt(width - 2) + 1;
-				y = this.y;
-				break;
-			case 2:
-				x = this.x + width - 1;
-				y = this.y + random.nextInt(height - 2) + 1;
-				break;
-			case 3:
-				x = this.x + random.nextInt(width - 2) + 1;
-				y = this.y + height - 1;
-				break;
-			default:
-				x = 0;
-				y = 0;
-				break;
-			}
-
-			return new Point(x, y);
-		}
-
-		void resetEligibility() {
-			north = false;
-			east = false;
-			south = false;
-			west = false;
-		}
 	}
 
 }

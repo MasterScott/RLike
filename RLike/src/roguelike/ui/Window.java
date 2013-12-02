@@ -50,8 +50,7 @@ public class Window extends JFrame implements KeyListener {
 
 			@Override
 			public void run() {
-				getContentPane().removeAll();
-				setBounds(100, 10, 1536, 1024);
+				// TODO Need to rework all of this.
 				ActionPanel p = new ActionPanel();
 				StatsPanel s = new StatsPanel();
 				Floor f = new Cave();
@@ -66,12 +65,17 @@ public class Window extends JFrame implements KeyListener {
 
 				p.repaint();
 				s.repaint();
+				
+				getContentPane().removeAll();
+				setBounds(100, 10, 1536, 1024);
+				
 				getContentPane().add(p);
 				getContentPane().add(s);
 				p.setVisible(true);
 				p.setBackground(Color.BLACK);
 
 				setVisible(true);
+				p.requestFocus();
 				
 				
 			}
