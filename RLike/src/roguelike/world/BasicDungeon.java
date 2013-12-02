@@ -7,6 +7,7 @@ import java.util.Random;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Tile;
+import roguelike.etc.RLUtilities;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
@@ -49,24 +50,27 @@ public class BasicDungeon extends Floor {
 		}
 	}
 
+	/*
+	 * Different rules on the splitting position can result in homogeneous
+	 * sub-dungeons (position between 0.45 and 0.55) or heterogeneous ones
+	 * (position between 0.1 and 0.9). We can also choose to use a deeper
+	 * recursion level on some parts of the dungeon so that we get smaller rooms
+	 * there.
+	 */
 	private void binarySpacePartition(Room parent, int x1, int x2, int y1, int y2) {
 		Random r = new Random();
 		int alignment = r.nextInt(2);
 		Room room = new Room(parent, 0, 0, 0, 0);
-		
+
 		int divLineX = 0;
 		int divLineY = 0;
-		int xRange = (x2 - roomSizeMin) - (x1 + roomSizeMin) + 1;
-		int yRange = (y2 - roomSizeMin) - (y1 + roomSizeMin) + 1;
-
-		if (xRange > 0)
-			divLineX = r.nextInt(xRange) + x1 + roomSizeMin;
-		if (yRange > 0)
-			divLineY = r.nextInt(yRange) + y1 + roomSizeMin;
+		
+		divLineX = RLUtilities.generateRandom(x1, x2, 0.45, 0.55);
+		divLineY = RLUtilities.generateRandom(y1, y2, 0.45, 0.55);
 
 		// Min + (int)(Math.random() * ((Max - Min) + 1))
 		if (alignment == 0) { // Horizontal
-			
+
 			System.out.println("x1: " + x1 + " x2: " + x2 + " y1: " + y1 + " y2: " + y2 + " divLineX: " + divLineX
 					+ " divLineY: " + divLineY);
 
@@ -78,6 +82,7 @@ public class BasicDungeon extends Floor {
 				binarySpacePartition(room, x1, divLineX, y1, y2);
 				binarySpacePartition(room, divLineX + 1, x2, y1, y2);
 			} else {
+				System.out.println("fail");
 				room.x = x1;
 				room.y = y1;
 				room.width = x2 - x1;
@@ -85,10 +90,9 @@ public class BasicDungeon extends Floor {
 				rooms.add(room);
 			}
 		} else { // Vertical
-			
+
 			System.out.println("x1: " + x1 + " x2: " + x2 + " y1: " + y1 + " y2: " + y2 + " divLineX: " + divLineX
 					+ " divLineY: " + divLineY);
-
 
 			if (divLineX - x1 >= roomSizeMin && x2 - divLineX >= roomSizeMin) {
 				binarySpacePartition(room, x1, divLineX, y1, y2);
@@ -97,6 +101,7 @@ public class BasicDungeon extends Floor {
 				binarySpacePartition(room, x1, x2, y1, divLineY);
 				binarySpacePartition(room, x1, x2, divLineY + 1, y2);
 			} else {
+				System.out.println("fail");
 				room.x = x1;
 				room.y = y1;
 				room.width = x2 - x1;
