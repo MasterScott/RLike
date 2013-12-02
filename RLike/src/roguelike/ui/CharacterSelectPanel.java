@@ -6,8 +6,10 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -40,7 +42,6 @@ public class CharacterSelectPanel extends JPanel {
 	 */
 	public CharacterSelectPanel() {
 		setForeground(Color.WHITE);
-		// setBounds(0, 0, getParent().getWidth(), getParent().getHeight());
 		setBackground(Color.BLACK);
 		setLayout(new MigLayout("", "[15.56%][1.01%][32.56%][1.01%][12.16%][31.98%]",
 				"[8.00%][8.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][11.28%]"));
@@ -185,9 +186,9 @@ public class CharacterSelectPanel extends JPanel {
 
 				if (lblImage.getIcon() != null) {
 					Player player = new Player('@', Color.WHITE, 3, 3);
-					player.setImage(lblImage.createImage(lblImage.getIcon().getIconWidth(), lblImage.getIcon()
-							.getIconHeight()));
 					Session.player = player;
+					Session.player.setImage(GraphicFile.CLASSM, row, col);
+					Session.window.notifyCharacterSelected();
 				}
 			}
 		});
@@ -211,6 +212,8 @@ public class CharacterSelectPanel extends JPanel {
 	 *            Column of graphic.
 	 */
 	public void setImage(GraphicFile tileset, int row, int col) {
+		this.row = row;
+		this.col = col;
 		Image img = Graphic.getImage(GraphicFile.CLASSM.fileName, row, col);
 		lblImage.setIcon(new ImageIcon(img));
 	}
