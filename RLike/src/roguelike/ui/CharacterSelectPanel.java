@@ -18,17 +18,23 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 import roguelike.actors.Player;
 import roguelike.etc.Session;
-import roguelike.main.LoadCave;
 import roguelike.ui.MenuLabel.LabelType;
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
+/**
+ * Implementation of JPanel for selecting character.
+ * 
+ * @author Dan
+ * 
+ */
 public class CharacterSelectPanel extends JPanel {
 
 	private static final long serialVersionUID = -1903352894149762144L;
 	private JTextField textField;
-	private static JLabel lblImage;
-	
+	int row, col;
+	JLabel lblImage;
+
 	/**
 	 * Create the panel.
 	 */
@@ -36,7 +42,8 @@ public class CharacterSelectPanel extends JPanel {
 		setForeground(Color.WHITE);
 		// setBounds(0, 0, getParent().getWidth(), getParent().getHeight());
 		setBackground(Color.BLACK);
-		setLayout(new MigLayout("", "[15.56%][1.01%][32.56%][1.01%][12.16%][31.98%]", "[][7.44%][][][][][][][][][][][][8.97%][8.72%][11.28%]"));
+		setLayout(new MigLayout("", "[15.56%][1.01%][32.56%][1.01%][12.16%][31.98%]",
+				"[8.00%][8.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][6.00%][11.28%]"));
 
 		JLabel lblName = new JLabel("Name");
 		lblName.setFont(new Font("Tahoma", Font.BOLD, 14));
@@ -166,26 +173,25 @@ public class CharacterSelectPanel extends JPanel {
 		lblRace10.setLabelType(LabelType.RACE);
 		lblRace10.setForeground(Color.WHITE);
 		add(lblRace10, "cell 0 12,alignx center");
-		
+
 		lblImage = new JLabel();
-		add(lblImage, "cell 5 13 1 2");
-		add(btnCancel, "flowx,cell 5 15,alignx right");
+		add(lblImage, "cell 4 13,alignx center");
+		add(btnCancel, "flowx,cell 5 13,alignx right");
 
 		JButton btnOk = new JButton("OK");
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				Point p = MenuLabel.getSelectedCoordinates();
-				if (p != null) {
-					// TODO Placeholder to see if this works.
+
+				if (lblImage.getIcon() != null) {
 					Player player = new Player('@', Color.WHITE, 3, 3);
-					player.setImage(GraphicFile.CLASSM, (int) p.getX(), (int) p.getY());
+					player.setImage(lblImage.createImage(lblImage.getIcon().getIconWidth(), lblImage.getIcon()
+							.getIconHeight()));
 					Session.player = player;
-					
 				}
 			}
 		});
-		add(btnOk, "cell 5 15,alignx right");
+		add(btnOk, "cell 5 13,alignx right");
 
 		JSeparator separator = new JSeparator();
 		add(separator, "cell 0 1,growx");
@@ -194,20 +200,38 @@ public class CharacterSelectPanel extends JPanel {
 		add(separator_1, "cell 4 1,growx");
 	}
 
-	static void setImage() {
-		Point p = MenuLabel.getSelectedCoordinates();
-		if (p != null) {
-			Image img = Graphic.getImage(GraphicFile.CLASSM.fileName, p.x, p.y);
-			lblImage.setIcon(new ImageIcon(img));
-		}
-		
+	/**
+	 * Sets character preview graphic to the specified icon.
+	 * 
+	 * @param tileset
+	 *            Tileset to pull graphic from.
+	 * @param row
+	 *            Row of graphic.
+	 * @param col
+	 *            Column of graphic.
+	 */
+	public void setImage(GraphicFile tileset, int row, int col) {
+		Image img = Graphic.getImage(GraphicFile.CLASSM.fileName, row, col);
+		lblImage.setIcon(new ImageIcon(img));
 	}
 }
 
+/**
+ * Implementation of JLabel specific to CharacterSelectPanel.
+ * 
+ * @author Dan
+ * 
+ */
 class MenuLabel extends JLabel {
 
 	private static final long serialVersionUID = 4825515890917106490L;
 
+	/**
+	 * Type of label this is.
+	 * 
+	 * @author Dan
+	 * 
+	 */
 	static enum LabelType {
 		RACE, CLASS
 	}
@@ -216,7 +240,14 @@ class MenuLabel extends JLabel {
 	static MenuLabel selectedRace, selectedClass;
 	LabelType type;
 	Font font;
+	CharacterSelectPanel parent;
 
+	/**
+	 * Creates a MenuLabel with the specified text.
+	 * 
+	 * @param text
+	 *            Text to display.
+	 */
 	public MenuLabel(String text) {
 		setText(text);
 		font = getFont();
@@ -231,6 +262,15 @@ class MenuLabel extends JLabel {
 			public void mouseClicked(MouseEvent e) {
 				refreshListings(type);
 
+				/*
+				 * Have to check if parent is null at this point rather than
+				 * MenuLabel initialization. At MenuLabel initialization, the
+				 * label has not been added to any container yet.
+				 */
+				if (parent == null) {
+					parent = (CharacterSelectPanel) getParent();
+				}
+
 				if (type == LabelType.RACE) {
 					selectedRace = label;
 				} else {
@@ -239,20 +279,41 @@ class MenuLabel extends JLabel {
 
 				label.setForeground(new Color(255, 220, 200));
 				label.setFont(new Font("Tahoma", Font.BOLD, 12));
-				CharacterSelectPanel.setImage();
+				Point p = getSelectedCoordinates();
+				if (p != null) {
+					parent.setImage(GraphicFile.CLASSM, p.x, p.y);
+				}
+
 			}
 		});
 	}
 
+	/**
+	 * Sets label type to the specified type.
+	 * 
+	 * @param type
+	 *            Type of label.
+	 */
 	public void setLabelType(LabelType type) {
 		this.type = type;
 	}
 
+	/**
+	 * Returns the type of this label.
+	 * 
+	 * @return Type of label.
+	 */
 	public LabelType getLabelType() {
 		return type;
 	}
 
-	public static Point getSelectedCoordinates() {
+	/**
+	 * If a race and a class have both been selected, returns a point
+	 * representing the row/column needed to load an image.
+	 * 
+	 * @return Point representing the row/column needed to load an image.
+	 */
+	public Point getSelectedCoordinates() {
 		if (selectedRace == null || selectedClass == null) {
 			return null;
 		}
@@ -271,11 +332,17 @@ class MenuLabel extends JLabel {
 					x++;
 			}
 		}
-		
+
 		return new Point(row, col);
 	}
 
-	public static void refreshListings(LabelType type) {
+	/**
+	 * Clear all selections of the specified type.
+	 * 
+	 * @param type
+	 *            Type to clear selections for.
+	 */
+	public void refreshListings(LabelType type) {
 		for (MenuLabel label : labels) {
 			if (label.getLabelType() == type) {
 				label.setForeground(Color.WHITE);

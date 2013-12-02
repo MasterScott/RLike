@@ -74,7 +74,7 @@ public class TileViewerWindow extends JFrame implements MouseListener {
 
 		if (gp.tileset != null && x < gp.tileset.getWidth(null) && y < gp.tileset.getHeight(null)) {
 
-			gp.tile = Graphic.getImage(gp.tileset_path, (x - 8) / 32, (y - 31) / 32);
+			gp.tile = Graphic.getImage(gp.tileset_path, (y - 31) / 32, (x - 8) / 32);
 			gp.setCoords((y - 31) / 32, (x - 8) / 32);
 		} else if (x >= getWidth() - 120){
 
