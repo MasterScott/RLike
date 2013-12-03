@@ -36,4 +36,5 @@ public class Player extends Creature {
 	public LOS getLOS() {
 		return los;
 	}
+
 }
