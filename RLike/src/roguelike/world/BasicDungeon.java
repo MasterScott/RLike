@@ -68,21 +68,15 @@ public class BasicDungeon extends Floor {
 		divLineX = RLUtilities.generateRandom(x1, x2, 0.45, 0.55);
 		divLineY = RLUtilities.generateRandom(y1, y2, 0.45, 0.55);
 
-		// Min + (int)(Math.random() * ((Max - Min) + 1))
 		if (alignment == 0) { // Horizontal
 
-			System.out.println("x1: " + x1 + " x2: " + x2 + " y1: " + y1 + " y2: " + y2 + " divLineX: " + divLineX
-					+ " divLineY: " + divLineY);
-
-			// TODO check if there is enough space to make a room
 			if (divLineY - y1 >= roomSizeMin && y2 - divLineY >= roomSizeMin) { // Horizontal
 				binarySpacePartition(room, x1, x2, y1, divLineY);
-				binarySpacePartition(room, x1, x2, divLineY + 1, y2);
-			} else if (divLineX - x1 >= roomSizeMin && x2 - divLineX >= roomSizeMin) {
+				binarySpacePartition(room, x1, x2, divLineY , y2);
+			} else if (divLineX - x1 >= roomSizeMin && x2 - divLineX >= roomSizeMin) { // Vertical
 				binarySpacePartition(room, x1, divLineX, y1, y2);
-				binarySpacePartition(room, divLineX + 1, x2, y1, y2);
+				binarySpacePartition(room, divLineX, x2, y1, y2);
 			} else {
-				System.out.println("fail");
 				room.x = x1;
 				room.y = y1;
 				room.width = x2 - x1;
@@ -91,17 +85,13 @@ public class BasicDungeon extends Floor {
 			}
 		} else { // Vertical
 
-			System.out.println("x1: " + x1 + " x2: " + x2 + " y1: " + y1 + " y2: " + y2 + " divLineX: " + divLineX
-					+ " divLineY: " + divLineY);
-
 			if (divLineX - x1 >= roomSizeMin && x2 - divLineX >= roomSizeMin) {
 				binarySpacePartition(room, x1, divLineX, y1, y2);
-				binarySpacePartition(room, divLineX + 1, x2, y1, y2);
+				binarySpacePartition(room, divLineX, x2, y1, y2);
 			} else if (divLineY - y1 >= roomSizeMin && y2 - divLineY >= roomSizeMin) {
 				binarySpacePartition(room, x1, x2, y1, divLineY);
-				binarySpacePartition(room, x1, x2, divLineY + 1, y2);
+				binarySpacePartition(room, x1, x2, divLineY, y2);
 			} else {
-				System.out.println("fail");
 				room.x = x1;
 				room.y = y1;
 				room.width = x2 - x1;
@@ -128,14 +118,26 @@ public class BasicDungeon extends Floor {
 		if (x + width - 1 >= XMAX || y + height - 1 >= YMAX || x < 0 || y < 0)
 			return;
 
-		for (int i = x; i < x + width - 1; i++) {
-			for (int j = y; j < y + height - 1; j++) {
+		// Floor
+		for (int i = x; i < x + width; i++) {
+			for (int j = y; j < y + height; j++) {
 				Tile t = new Tile('.', Color.GRAY, i, j, true);
 				t.setImage(GraphicFile.DUNGEON, 6, 3);
 				actors.add(t);
 			}
 		}
-
+		
+		// Top and Bottom walls
+		for (int i = x; i < x + width; i++) {
+			getTileAt(i, y).setImage(GraphicFile.DUNGEON, 3, 0);
+			getTileAt(i, y + height - 1).setImage(GraphicFile.DUNGEON, 3, 0);
+		}
+		
+		// Left and right walls
+		for (int j = y; j < y + height; j++) {
+			getTileAt(x, j).setImage(GraphicFile.DUNGEON, 3, 0);
+			getTileAt(x + width - 1, j).setImage(GraphicFile.DUNGEON, 3, 0);
+		}
 	}
 
 	/**

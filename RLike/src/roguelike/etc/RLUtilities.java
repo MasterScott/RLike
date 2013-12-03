@@ -19,7 +19,6 @@ public class RLUtilities {
 	 * @return Random integer within the given thresholds.
 	 */
 	public static int generateRandom(int min, int max, double bottomThreshold, double topThreshold) {
-		Random r = new Random();
 		int result = (int) (((Math.random()
 				* ((min + (max - min) * topThreshold) - (min + (max - min) * bottomThreshold)) + 1) + (min + (max - min)
 				* bottomThreshold)));
