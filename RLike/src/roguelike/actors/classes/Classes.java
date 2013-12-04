@@ -1,6 +1,15 @@
 package roguelike.actors.classes;
 
+import roguelike.actors.actions.Skill;
+
+/**
+ * Enumeration containing all currently implemented classes.
+ * 
+ * @author Dan
+ * 
+ */
 public enum Classes implements RLClass {
+	// @formatter:off
 	MAGE(-1, 1, 2, -1),
 	WIZARD(-2, -1, 3, -2),
 	MONK(0, 1, 1, 0),
@@ -9,9 +18,10 @@ public enum Classes implements RLClass {
 	FIGHTER(2, 1, -2, 2),
 	THIEF(0, 3, 0, 0),
 	GLADIATOR(2, 2, -4, 3);
+	// @formatter:on
 
 	private int bonusStr, bonusDex, bonusInt, bonusHP;
-	
+
 	public int getBonusStr() {
 		return bonusStr;
 	}
@@ -32,7 +42,7 @@ public enum Classes implements RLClass {
 		// TODO Implement in the future.
 		return null;
 	}
-	
+
 	public String getName() {
 		return this.name();
 	}
