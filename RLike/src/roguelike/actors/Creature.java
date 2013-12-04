@@ -11,6 +11,8 @@ import java.awt.Color;
  */
 public class Creature extends Actor {
 
+	public Stat hp, mp, strength, intelligence, dexterity;
+	
 	public Creature(char icon, Color color, int x, int y) {
 		super(icon, color, x, y);
 		traversable = false;

@@ -109,7 +109,13 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			Session.player.setX(x + xDiff);
 			Session.player.setY(y + yDiff);
 		} else if (floor.getCreatureAt(x + xDiff, y + yDiff) != null) {
-			
+			// TODO Add creature interaction - may want to implement an 'action'
+			// class and have all actors have a set of actions that can be
+			// performed.
+			Creature c = floor.getCreatureAt(x + xDiff, y + yDiff);
+			c.hp.setCur(c.hp.getCur() - 1);
+			if (c.hp.getCur() <= 0)
+				floor.actors.remove(c);
 		} else {
 			Actor actor = floor.getActorAt(x + xDiff, y + yDiff);
 			if (actor != null && actor.isTraversable()) {
@@ -129,7 +135,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 
 	}
-	
+
 	public abstract void changeFloor(int index);
 
 }
