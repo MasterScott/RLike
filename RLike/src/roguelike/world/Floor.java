@@ -60,7 +60,7 @@ public abstract class Floor {
 	 */
 	public boolean checkCollision(int x, int y) {
 		for (Actor actor : actors) {
-			if (actor.getX() == x && actor.getY() == y) {
+			if (actor.getX() == x && actor.getY() == y && !actor.isTraversable()) {
 				return true;
 			}
 		}

@@ -7,5 +7,6 @@ public interface RLClass {
 	public int getBonusInt();
 	public int getBonusHP();
 	public Skill[] getSkills();
+	public String getName();
 	
 }

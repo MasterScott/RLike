@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import roguelike.actors.Creature;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.etc.Session;
@@ -44,6 +45,13 @@ public class LoadCave {
 		f.actors.add(Session.player);
 		f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
 
+		for (int i = 0; i < 4; i++) {
+			Point ps = f.getRandomOpenTile();
+			Creature c = new Creature('g', Color.DARK_GRAY, ps.x, ps.y);
+			c.setImage(GraphicFile.MONSTER1, 3, 1);
+			f.actors.add(c);
+		}
+		
 		p.setFloor(f);
 
 		p.repaint();

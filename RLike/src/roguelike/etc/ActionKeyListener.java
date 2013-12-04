@@ -6,9 +6,10 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Creature;
 import roguelike.actors.Feature;
-import roguelike.actors.Tile;
 import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.Tile;
 import roguelike.world.Floor;
 
 /**
@@ -107,6 +108,8 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		if (!(floor.checkCollision(x + xDiff, y + yDiff))) {
 			Session.player.setX(x + xDiff);
 			Session.player.setY(y + yDiff);
+		} else if (floor.getCreatureAt(x + xDiff, y + yDiff) != null) {
+			
 		} else {
 			Actor actor = floor.getActorAt(x + xDiff, y + yDiff);
 			if (actor != null && actor.isTraversable()) {

@@ -32,6 +32,10 @@ public enum Classes implements RLClass {
 		// TODO Implement in the future.
 		return null;
 	}
+	
+	public String getName() {
+		return this.name();
+	}
 
 	private Classes(int bonusStr, int bonusDex, int bonusInt, int bonusHP) {
 		this.bonusStr = bonusStr;
