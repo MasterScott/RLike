@@ -10,8 +10,6 @@ import java.awt.Color;
  */
 public class Player extends Creature {
 
-	public Stat hp, mp, strength, intelligence, dexterity;
-
 	public Player(char icon, Color color, int x, int y) {
 		super(icon, color, x, y);
 

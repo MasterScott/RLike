@@ -1,13 +1,13 @@
 package roguelike.ui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Creature;
+import roguelike.actors.Player;
 import roguelike.actors.Tile;
 import roguelike.etc.ActionKeyListener;
 import roguelike.etc.Session;
@@ -78,8 +78,20 @@ public class ActionPanel extends ActionKeyListener {
 		for (Actor actor : floor.actors) {
 			if (inSight.contains(actor) && actor instanceof Creature) {
 				g.drawImage(actor.getImage(), actor.getX() * xScale + xPlus, actor.getY() * yScale + yPlus, this);
+				Creature c = (Creature) actor;
+
+				// Draw health bars.
+				if (c.hp.max > c.hp.current) {
+					int v = (int) (((double) c.hp.current / (double) c.hp.max) * 30);
+					
+					g.setColor(new Color(255, 0, 0));
+					g.fillRect(c.getX() * xScale + xPlus + 1, c.getY() * yScale + yPlus + 30, 30, 2);
+					g.setColor(new Color(0, 255, 0));
+					g.fillRect(c.getX() * xScale + xPlus + 1, c.getY() * yScale + yPlus + 30, v, 2);
+				}
 			}
 		}
+
 	}
 
 	/**
