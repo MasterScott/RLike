@@ -5,6 +5,7 @@ import java.awt.Image;
 
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
+import roguelike.ui.los.LOS;
 import roguelike.world.Floor;
 
 /**
@@ -195,6 +196,14 @@ public abstract class Actor {
 	 */
 	public void setPreviouslySeen(boolean previouslySeen) {
 		this.previouslySeen = previouslySeen;
+	}
+	
+	/**
+	 * Returns line of sight object for the actor.
+	 * @return Actor's line of sight object.
+	 */
+	public LOS getLOS() {
+		return new LOS(this);
 	}
 
 }

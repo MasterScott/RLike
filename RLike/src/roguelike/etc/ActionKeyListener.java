@@ -113,8 +113,8 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			// class and have all actors have a set of actions that can be
 			// performed.
 			Creature c = floor.getCreatureAt(x + xDiff, y + yDiff);
-			c.hp.setCur(c.hp.getCur() - 1);
-			if (c.hp.getCur() <= 0)
+			Session.player.meleeAttack(c);
+			if (c.hp.current <= 0)
 				floor.actors.remove(c);
 		} else {
 			Actor actor = floor.getActorAt(x + xDiff, y + yDiff);
