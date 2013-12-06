@@ -1,6 +1,7 @@
 package roguelike.main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.JFrame;
@@ -26,7 +27,7 @@ public class LoadCave {
 
 		Session.player = new Player('@', Color.WHITE, 2, 2);
 
-		Window w = new Window(100, 10, 1536, 1024);
+		Window w = new Window();
 
 		w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ActionPanel p = new ActionPanel();
@@ -54,6 +55,11 @@ public class LoadCave {
 
 		p.repaint();
 		s.repaint();
+		//p.setSize(1376, 1024);
+		//p.setMinimumSize(new Dimension(1376, 1024));
+		p.setPreferredSize(p.getSize());
+		p.setMaximumSize(p.getSize());
+		
 		w.add(p);
 		w.add(s);
 		p.setVisible(true);

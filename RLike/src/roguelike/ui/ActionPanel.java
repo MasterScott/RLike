@@ -35,6 +35,7 @@ public class ActionPanel extends ActionKeyListener {
 
 		// TODO Make these into variables.
 		setBounds(0, 0, 1376, 1024);
+		setSize(1376, 1024);
 
 		xScale = 32;
 		yScale = 32;

@@ -15,6 +15,11 @@ import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Cave;
 import roguelike.world.Floor;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JSplitPane;
+import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 
 /**
  * An (emulated) console window.
@@ -26,6 +31,17 @@ public class Window extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = -5680894051148117655L;
 
+	/**
+	 * Creates a new console window with default parameters.
+	 */
+	public Window() {
+		setBounds(100, 10, 1536, 1024);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Session.window = this;
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
+	
+	}
+	
 	/**
 	 * Creates a new console window.
 	 * 

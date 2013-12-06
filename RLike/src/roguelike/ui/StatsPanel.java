@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
+import javax.swing.JLabel;
 
 /**
  * Panel that displays status of player and various information.
@@ -31,6 +32,13 @@ public class StatsPanel extends JPanel {
 		setBackground(Color.BLACK);
 		setFocusable(false);
 		setBounds(1376, 0, 160, 1024);
+		setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("TEXT");
+		lblNewLabel_1.setForeground(Color.WHITE);
+		lblNewLabel_1.setBounds(0, 11, 71, 14);
+		add(lblNewLabel_1);
+		
 	}
 
 	@Override
@@ -46,5 +54,4 @@ public class StatsPanel extends JPanel {
 		g.drawString("y: " + Session.player.getY(), 1430, 58);
 		
 	}
-
 }
