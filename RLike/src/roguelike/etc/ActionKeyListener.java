@@ -32,35 +32,44 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 
 		int xDiff = 0;
 		int yDiff = 0;
+		boolean movement = false;
 
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_NUMPAD1: // down-left
 			xDiff--;
 			yDiff++;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD2: // down
 			yDiff++;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD3: // down-right
 			xDiff++;
 			yDiff++;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD4: // left
 			xDiff--;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD6: // right
 			xDiff++;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD7: // up-left
 			xDiff--;
 			yDiff--;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD8: // up
 			yDiff--;
+			movement = true;
 			break;
 		case KeyEvent.VK_NUMPAD9: // up-right
 			xDiff++;
 			yDiff--;
+			movement = true;
 			break;
 		case KeyEvent.VK_PERIOD: // For going down stairs. Requires shift+'.'
 			if (e.isShiftDown()) {
@@ -82,7 +91,8 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			break;
 		}
 
-		playerMovement(xDiff, yDiff);
+		if (movement)
+			playerMovement(xDiff, yDiff);
 
 		// Repaints this panel and all other panels currently attached to the
 		// window.

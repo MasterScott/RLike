@@ -55,8 +55,6 @@ public class LoadCave {
 
 		p.repaint();
 		s.repaint();
-		//p.setSize(1376, 1024);
-		//p.setMinimumSize(new Dimension(1376, 1024));
 		p.setPreferredSize(p.getSize());
 		p.setMaximumSize(p.getSize());
 		

@@ -22,6 +22,7 @@ public class StatsPanel extends JPanel {
 
 	private static final long serialVersionUID = 6646494324971390261L;
 	private int fontSize;
+	private JLabel lblX, lblY;
 
 	/**
 	 * Create a new instance of a StatsPanel.
@@ -34,10 +35,20 @@ public class StatsPanel extends JPanel {
 		setBounds(1376, 0, 160, 1024);
 		setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("TEXT");
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setBounds(0, 11, 71, 14);
-		add(lblNewLabel_1);
+		JLabel lblCharacterName = new JLabel("Character Name");
+		lblCharacterName.setForeground(Color.WHITE);
+		lblCharacterName.setBounds(10, 11, 140, 14);
+		add(lblCharacterName);
+		
+		lblX = new JLabel("X: ");
+		lblX.setForeground(Color.WHITE);
+		lblX.setBounds(10, 105, 46, 14);
+		add(lblX);
+		
+		lblY = new JLabel("Y: ");
+		lblY.setForeground(Color.WHITE);
+		lblY.setBounds(10, 130, 46, 14);
+		add(lblY);
 		
 	}
 
@@ -45,13 +56,7 @@ public class StatsPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
-		g.setColor(Color.WHITE);
-
-		g.drawRect(1378, 2, 139, 436);
-		
-		g.drawString("x: " + Session.player.getX(), 1430, 40);
-		g.drawString("y: " + Session.player.getY(), 1430, 58);
-		
+		lblX.setText("X: " + Session.player.getX());
+		lblY.setText("Y: " + Session.player.getY());
 	}
 }
