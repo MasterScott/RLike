@@ -92,7 +92,7 @@ public class LOS {
 					inSight.add(tile);
 
 				Creature c = floor.getCreatureAt(x, y);
-				if (c != null) {
+				if (c != null && !inSight.contains(c)) {
 					inSight.add(c);
 				}
 

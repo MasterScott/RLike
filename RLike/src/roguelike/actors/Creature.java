@@ -1,5 +1,6 @@
 package roguelike.actors;
 
+import roguelike.actors.AI.AI;
 import roguelike.actors.classes.Classes;
 import roguelike.actors.classes.RLClass;
 import roguelike.ui.graphics.Graphic.GraphicFile;
@@ -15,7 +16,8 @@ public class Creature extends Actor {
 
 	public Stat hp, mp, strength, intelligence, dexterity;
 	private boolean hostile;
-	private RLClass c;
+	RLClass c;
+	AI ai;
 
 	/**
 	 * Creates a new creature at the given coordinates.
@@ -45,7 +47,7 @@ public class Creature extends Actor {
 	 *            Column of icon to use.
 	 */
 	public Creature(int x, int y, GraphicFile graphicFile, int row, int col) {
-		super(x,y);
+		super(x, y);
 		setImage(graphicFile, row, col);
 		traversable = false;
 	}
@@ -86,6 +88,37 @@ public class Creature extends Actor {
 	 */
 	public boolean isHostile() {
 		return hostile;
+	}
+
+	/**
+	 * Sets creatures AI to the specified AI.
+	 * 
+	 * @param ai
+	 *            AI to set for creature.
+	 */
+	public void setAI(AI ai) {
+		this.ai = ai;
+	}
+
+	/**
+	 * Returns AI of creature.
+	 * 
+	 * @return AI of creature.
+	 */
+	public AI getAI() {
+		return ai;
+	}
+
+	/**
+	 * Does highest prioritized action as defined by this creatures AI.
+	 * 
+	 * @throws NullPointerException
+	 *             If this creature does not have an AI defined.
+	 */
+	public void doPrioritizedAction() throws NullPointerException {
+		if (ai == null)
+			throw new NullPointerException("Creature needs to have an AI defined.");
+		ai.doPrioritizedAction();
 	}
 
 	public boolean meleeAttack(Creature recipient) {

@@ -46,6 +46,7 @@ public class ActionPanel extends ActionKeyListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
+		System.out.println("REPAINTING");
 		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
 
 		if (floor == null)
@@ -77,8 +78,14 @@ public class ActionPanel extends ActionKeyListener {
 		 */
 		for (Actor actor : floor.actors) {
 			if (inSight.contains(actor) && actor instanceof Creature) {
-				g.drawImage(actor.getImage(), actor.getX() * xScale + xPlus, actor.getY() * yScale + yPlus, this);
 				Creature c = (Creature) actor;
+				
+				// Make non-player creatures do prioritized actions.
+				if (c != Session.player) {
+					c.doPrioritizedAction();
+				}
+				
+				g.drawImage(c.getImage(), c.getX() * xScale + xPlus, c.getY() * yScale + yPlus, this);
 
 				// Draw health bars.
 				if (c.hp.max > c.hp.current) {
