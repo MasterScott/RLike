@@ -1,6 +1,6 @@
 package roguelike.actors.classes;
 
-import roguelike.actors.actions.Skill;
+import roguelike.actors.abilities.Skill;
 
 /**
  * Enumeration containing all currently implemented classes.

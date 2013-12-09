@@ -15,10 +15,8 @@ import roguelike.world.Floor;
  */
 public class LOS {
 
-	private Delta[] deltas = { new Delta(0, -1, -1, -1),
-			new Delta(-1, 0, -1, 1), new Delta(-1, 0, -1, -1),
-			new Delta(0, 1, -1, 1), new Delta(0, 1, 1, 1),
-			new Delta(1, 0, 1, 1), new Delta(1, 0, 1, -1),
+	private Delta[] deltas = { new Delta(0, -1, -1, -1), new Delta(-1, 0, -1, 1), new Delta(-1, 0, -1, -1),
+			new Delta(0, 1, -1, 1), new Delta(0, 1, 1, 1), new Delta(1, 0, 1, 1), new Delta(1, 0, 1, -1),
 			new Delta(0, -1, 1, -1) };
 	private int range;
 	private Actor actor;
@@ -55,6 +53,16 @@ public class LOS {
 	}
 
 	/**
+	 * Sets maximum range of LOS to the specified value.
+	 * 
+	 * @param range
+	 *            Maximum range of LOS.
+	 */
+	public void setRange(int range) {
+		this.range = range;
+	}
+
+	/**
 	 * Recursive shadow-casting method. Adds all actors in a direction up until
 	 * an object obscures view.
 	 * 
@@ -70,7 +78,7 @@ public class LOS {
 	private void recursiveShadowCast(int x, int y, Delta d, int dist) {
 		Floor floor = actor.getFloor();
 		Tile tile = floor.getTileAt(x, y);
-		
+
 		/*
 		 * Check if this point is within circular max range via the distance
 		 * formula.
@@ -82,7 +90,7 @@ public class LOS {
 			} else {
 				if (tile != null && !inSight.contains(tile))
 					inSight.add(tile);
-				
+
 				Creature c = floor.getCreatureAt(x, y);
 				if (c != null) {
 					inSight.add(c);

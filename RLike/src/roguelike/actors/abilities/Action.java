@@ -1,4 +1,4 @@
-package roguelike.actors.actions;
+package roguelike.actors.abilities;
 
 import roguelike.actors.Actor;
 

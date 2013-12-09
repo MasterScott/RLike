@@ -1,6 +1,6 @@
 package roguelike.actors.classes;
 
-import roguelike.actors.actions.Skill;
+import roguelike.actors.abilities.Skill;
 
 /**
  * Basic interface for any class that can be assigned to a creature.
