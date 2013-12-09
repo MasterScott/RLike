@@ -9,15 +9,19 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import roguelike.actors.Creature;
 import roguelike.actors.Player;
+import roguelike.actors.Stat;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Cave;
 import roguelike.world.Floor;
+
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
+
 import java.awt.GridBagLayout;
 import java.awt.BorderLayout;
 
@@ -58,6 +62,7 @@ public class Window extends JFrame implements KeyListener {
 		setBounds(x, y, width, height);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Session.window = this;
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 	}
 	
 	public void notifyCharacterSelected() {
@@ -74,13 +79,25 @@ public class Window extends JFrame implements KeyListener {
 
 				Point point = f.getRandomOpenTile();
 				Session.player.setFloor(f);
+				Session.player.setX(point.x);
+				Session.player.setY(point.y);
 				f.actors.add(Session.player);
 				f.createAccessibleStairs(Session.player, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
 
+				for (int i = 0; i < 4; i++) {
+					Point ps = f.getRandomOpenTile();
+					Creature c = new Creature('g', Color.DARK_GRAY, ps.x, ps.y);
+					c.setImage(GraphicFile.MONSTER1, 3, 1);
+					c.hp = new Stat(10);
+					f.actors.add(c);
+				}
+				
 				p.setFloor(f);
 
 				p.repaint();
 				s.repaint();
+				p.setPreferredSize(p.getSize());
+				p.setMaximumSize(p.getSize());
 				
 				getContentPane().removeAll();
 				setBounds(100, 10, 1536, 1024);
@@ -92,7 +109,6 @@ public class Window extends JFrame implements KeyListener {
 
 				setVisible(true);
 				p.requestFocus();
-				
 				
 			}
 		};
