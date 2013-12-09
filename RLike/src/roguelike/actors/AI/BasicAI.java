@@ -37,7 +37,7 @@ public class BasicAI extends AI {
 				int i = -1;
 				if (Math.random() > 0.5) i = 1;
 				if (!c.getFloor().checkCollision(c.getX(), c.getY() + i))
-					c.setY(c.getY() + 1);;
+					c.setY(c.getY() + i);
 			}
 		}
 		

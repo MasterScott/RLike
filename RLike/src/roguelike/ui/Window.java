@@ -112,21 +112,23 @@ public class Window extends JFrame implements KeyListener {
 		
 	}
 
+	// XXX FIX THIS
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		repaint();
+		//repaint();
 		
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		repaint();
+		//repaint();
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		repaint();
+		//repaint();
 		
 	}
 

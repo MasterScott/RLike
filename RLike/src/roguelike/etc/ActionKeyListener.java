@@ -2,6 +2,7 @@ package roguelike.etc;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -91,8 +92,17 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			break;
 		}
 
-		if (movement)
+		if (movement) {
 			playerMovement(xDiff, yDiff);
+			Floor f = Session.player.getFloor();
+			ArrayList<Actor> actors = f.actors;
+			for (Actor actor: actors) {
+				if (actor.getClass() == Creature.class) {
+					((Creature) actor).doPrioritizedAction();
+				}
+			}
+		}
+			
 
 		// Repaints this panel and all other panels currently attached to the
 		// window.
