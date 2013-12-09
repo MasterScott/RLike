@@ -1,6 +1,5 @@
 package roguelike.actors;
 
-import java.awt.Color;
 
 /**
  * Contains all relevant data for the player's avatar in-game.
@@ -10,8 +9,8 @@ import java.awt.Color;
  */
 public class Player extends Creature {
 
-	public Player(char icon, Color color, int x, int y) {
-		super(icon, color, x, y);
+	public Player(int x, int y) {
+		super(x, y);
 
 		traversable = false;
 		

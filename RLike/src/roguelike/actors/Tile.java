@@ -1,6 +1,8 @@
 package roguelike.actors;
 
-import java.awt.Color;
+import java.awt.Image;
+
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Actor representing a background tile - a floor, wall, door, etc.
@@ -10,35 +12,22 @@ import java.awt.Color;
  */
 public class Tile extends Actor {
 
-	private Color obscuredColor;
-
 	/**
 	 * Creates a tile that is not traversable by default.
 	 * 
-	 * @param icon
-	 *            Icon used to represent this tile.
-	 * @param color
-	 *            Color of icon used to represent this tile.
 	 * @param x
 	 *            x-coordinate.
 	 * @param y
 	 *            y-coordinate.
 	 */
-	public Tile(char icon, Color color, int x, int y) {
-		super(icon, color, x, y);
-
+	public Tile(int x, int y) {
+		super(x, y);
 		this.traversable = false;
-		this.obscuredColor = new Color((int) (color.getRed() / 2),
-				(int) (color.getGreen() / 2), (int) (color.getBlue() / 2));
 	}
 
 	/**
 	 * Creates a tile with the specified traversability.
 	 * 
-	 * @param icon
-	 *            Icon used to represent this tile.
-	 * @param color
-	 *            Color of icon used to represent this tile.
 	 * @param x
 	 *            x-coordinate.
 	 * @param y
@@ -46,30 +35,49 @@ public class Tile extends Actor {
 	 * @param traversable
 	 *            Whether or not this tile can be walked over.
 	 */
-	public Tile(char icon, Color color, int x, int y, boolean traversable) {
-		super(icon, color, x, y);
+	public Tile(int x, int y, boolean traversable) {
+		super(x, y);
 
 		this.traversable = traversable;
-		this.obscuredColor = new Color((int) (color.getRed() / 2),
-				(int) (color.getGreen() / 2), (int) (color.getBlue() / 2));
 	}
 
 	/**
-	 * Returns color when tile is not visible.
+	 * Creates a new Tile at the given coordinates with the specified image.
 	 * 
-	 * @return Color when tile is not visible.
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @param traversable
+	 *            Whether or not this tile can be walked over.
+	 * @param graphicFile
+	 *            Tileset to use.
+	 * @param row
+	 *            Row of icon to use.
+	 * @param col
+	 *            Column of icon to use.
 	 */
-	public Color getObscuredColor() {
-		return obscuredColor;
+	public Tile(int x, int y, boolean traversable, GraphicFile graphicFile, int row, int col) {
+		super(x, y);
+		setImage(graphicFile, row, col);
+		this.traversable = traversable;
 	}
 
 	/**
-	 * Sets color when tile is not visible.
+	 * Creates a new Tile at the given coordinates with the specified image.
 	 * 
-	 * @param color
-	 *            Color to set.
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @param traversable
+	 *            Whether or not this tile can be walked over.
+	 * @param Image
+	 *            Image to represent this tile.
 	 */
-	public void setObscuredColor(Color color) {
-		obscuredColor = color;
+	public Tile(int x, int y, boolean traversable, Image image) {
+		super(x, y);
+		setImage(image);
+		this.traversable = traversable;
 	}
 }

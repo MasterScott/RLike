@@ -1,16 +1,12 @@
 package roguelike.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import roguelike.etc.Session;
-import roguelike.ui.graphics.Graphic;
-import roguelike.ui.graphics.Graphic.GraphicFile;
-import javax.swing.JLabel;
 
 /**
  * Panel that displays status of player and various information.
@@ -21,14 +17,12 @@ import javax.swing.JLabel;
 public class StatsPanel extends JPanel {
 
 	private static final long serialVersionUID = 6646494324971390261L;
-	private int fontSize;
 	private JLabel lblX, lblY;
 
 	/**
 	 * Create a new instance of a StatsPanel.
 	 */
 	public StatsPanel() {
-		fontSize = 14;
 
 		setBackground(Color.BLACK);
 		setFocusable(false);

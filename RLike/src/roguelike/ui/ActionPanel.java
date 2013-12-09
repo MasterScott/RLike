@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Creature;
-import roguelike.actors.Player;
 import roguelike.actors.Tile;
 import roguelike.etc.ActionKeyListener;
 import roguelike.etc.Session;

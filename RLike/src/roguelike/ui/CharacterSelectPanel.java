@@ -6,10 +6,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -185,7 +183,7 @@ public class CharacterSelectPanel extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 
 				if (lblImage.getIcon() != null) {
-					Player player = new Player('@', Color.WHITE, 3, 3);
+					Player player = new Player(3, 3);
 					Session.player = player;
 					Session.player.setImage(GraphicFile.CLASSM, row, col);
 					Session.window.notifyCharacterSelected();

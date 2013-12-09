@@ -1,6 +1,5 @@
 package roguelike.world;
 
-import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -191,13 +190,11 @@ public abstract class Floor {
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
 			if (getActorAt(x, 0) == null) {
-				Tile t = new Tile('#', Color.WHITE, x, 0);
-				t.setImage(img);
+				Tile t = new Tile(x, 0, false, img);
 				actors.add(t);
 			}
 			if (getActorAt(x, YMAX) == null) {
-				Tile t = new Tile('#', Color.WHITE, x, YMAX - 1);
-				t.setImage(img);
+				Tile t = new Tile(x, YMAX - 1, false, img);
 				actors.add(t);
 			}
 		}
@@ -205,13 +202,11 @@ public abstract class Floor {
 		// Create walls along left and right.
 		for (int y = 0; y < YMAX; y++) {
 			if (getActorAt(0, y) == null) {
-				Tile t = new Tile('#', Color.WHITE, 0, y);
-				t.setImage(img);
+				Tile t = new Tile(0, y, false, img);
 				actors.add(t);
 			}
 			if (getActorAt(XMAX, y) == null) {
-				Tile t = new Tile('#', Color.WHITE, XMAX - 1, y);
-				t.setImage(img);
+				Tile t = new Tile(XMAX - 1, y, false, img);
 				actors.add(t);
 			}
 		}
@@ -235,11 +230,11 @@ public abstract class Floor {
 		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
-			Feature f = new Feature('>', Color.WHITE, p.x, p.y, true, FeatureType.DOWNSTAIRS);
+			Feature f = new Feature(p.x, p.y, true, FeatureType.DOWNSTAIRS);
 			f.setImage(img);
 			actors.add(f);
 		} else if (featureType == FeatureType.UPSTAIRS) {
-			Feature f = new Feature('<', Color.WHITE, p.x, p.y, true, FeatureType.UPSTAIRS);
+			Feature f = new Feature(p.x, p.y, true, FeatureType.UPSTAIRS);
 			f.setImage(img);
 			actors.add(f);
 		}
@@ -267,11 +262,11 @@ public abstract class Floor {
 		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
-			Feature f = new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS);
+			Feature f = new Feature(x, y, true, FeatureType.DOWNSTAIRS);
 			f.setImage(img);
 			actors.add(f);
 		} else if (featureType == FeatureType.UPSTAIRS) {
-			Feature f = new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS);
+			Feature f = new Feature(x, y, true, FeatureType.UPSTAIRS);
 			f.setImage(img);
 			actors.add(f);
 		}
@@ -307,11 +302,11 @@ public abstract class Floor {
 		Image img = Graphic.getImage(tileset.fileName, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
-			Feature f = new Feature('>', Color.WHITE, x, y, true, FeatureType.DOWNSTAIRS);
+			Feature f = new Feature(x, y, true, FeatureType.DOWNSTAIRS);
 			f.setImage(img);
 			actors.add(f);
 		} else if (featureType == FeatureType.UPSTAIRS) {
-			Feature f = new Feature('<', Color.WHITE, x, y, true, FeatureType.UPSTAIRS);
+			Feature f = new Feature(x, y, true, FeatureType.UPSTAIRS);
 			f.setImage(img);
 			actors.add(f);
 		} else {
@@ -355,8 +350,7 @@ public abstract class Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					Tile t = new Tile('.', Color.WHITE, x, y, true);
-					t.setImage(img);
+					Tile t = new Tile(x, y, true, img);
 					actors.add(t);
 				}
 			}

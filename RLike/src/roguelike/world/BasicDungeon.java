@@ -1,6 +1,5 @@
 package roguelike.world;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -121,7 +120,7 @@ public class BasicDungeon extends Floor {
 		// Floor
 		for (int i = x; i < x + width; i++) {
 			for (int j = y; j < y + height; j++) {
-				Tile t = new Tile('.', Color.GRAY, i, j, true);
+				Tile t = new Tile(i, j, true);
 				t.setImage(GraphicFile.DUNGEON, 6, 3);
 				actors.add(t);
 			}
@@ -167,10 +166,8 @@ public class BasicDungeon extends Floor {
 				for (int i = y1; i <= y2; ++i) {
 					Actor actor = getActorAt(p1.x, i);
 					if (actor == null) {
-						actors.add(new Tile('.', Color.GRAY, p1.x, i, true));
+						actors.add(new Tile(p1.x, i, true));
 					} else {
-						actor.setIcon('.');
-						actor.setColor(Color.GRAY);
 						actor.setTraversable(true);
 					}
 				}
@@ -190,10 +187,8 @@ public class BasicDungeon extends Floor {
 				for (int i = x1; i <= x2; ++i) {
 					Actor actor = getActorAt(i, p1.y);
 					if (actor == null) {
-						actors.add(new Tile('.', Color.GRAY, i, p1.y, true));
+						actors.add(new Tile(i, p1.y, true));
 					} else {
-						actor.setIcon('.');
-						actor.setColor(Color.GRAY);
 						actor.setTraversable(true);
 					}
 				}

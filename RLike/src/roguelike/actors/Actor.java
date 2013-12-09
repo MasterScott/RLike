@@ -1,7 +1,7 @@
 package roguelike.actors;
 
-import java.awt.Color;
 import java.awt.Image;
+import java.awt.Point;
 
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
@@ -16,58 +16,16 @@ import roguelike.world.Floor;
  */
 public abstract class Actor {
 
-	char icon;
-	Color color;
 	int x, y;
 	boolean traversable;
 	boolean previouslySeen;
 	Floor floor;
 	Image image;
 
-	public Actor(char icon, Color color, int x, int y) {
-		this.icon = icon;
-		this.color = color;
+	public Actor(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.previouslySeen = false;
-	}
-
-	/**
-	 * Returns icon used to represent this actor.
-	 * 
-	 * @return Icon used to represent this actor.
-	 */
-	public char getIcon() {
-		return icon;
-	}
-
-	/**
-	 * Sets icon used to represent this actor.
-	 * 
-	 * @param icon
-	 *            Icon to represent this actor.
-	 */
-	public void setIcon(char icon) {
-		this.icon = icon;
-	}
-
-	/**
-	 * Returns color of this actor's icon.
-	 * 
-	 * @return Color of this actor's icon.
-	 */
-	public Color getColor() {
-		return color;
-	}
-
-	/**
-	 * Sets color of this actor's icon.
-	 * 
-	 * @param color
-	 *            Color of this actor's icon.
-	 */
-	public void setColor(Color color) {
-		this.color = color;
 	}
 
 	/**
@@ -105,6 +63,28 @@ public abstract class Actor {
 	 *            y-coordinate of this actor.
 	 */
 	public void setY(int y) {
+		this.y = y;
+	}
+
+	/**
+	 * Returns a point representing x and y-coordinates of this actor.
+	 * 
+	 * @return Point representing x and y-coordinates of this actor.
+	 */
+	public Point getCoords() {
+		return new Point(this.x, this.y);
+	}
+
+	/**
+	 * Sets x and y-coordinates of this actor.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 */
+	public void setCoords(int x, int y) {
+		this.x = x;
 		this.y = y;
 	}
 
@@ -197,9 +177,10 @@ public abstract class Actor {
 	public void setPreviouslySeen(boolean previouslySeen) {
 		this.previouslySeen = previouslySeen;
 	}
-	
+
 	/**
 	 * Returns line of sight object for the actor.
+	 * 
 	 * @return Actor's line of sight object.
 	 */
 	public LOS getLOS() {

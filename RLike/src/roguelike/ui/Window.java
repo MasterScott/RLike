@@ -1,29 +1,21 @@
 package roguelike.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import roguelike.actors.Creature;
-import roguelike.actors.Player;
-import roguelike.actors.Stat;
 import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.Stat;
 import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Cave;
 import roguelike.world.Floor;
-
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JSplitPane;
-
-import java.awt.GridBagLayout;
-import java.awt.BorderLayout;
 
 /**
  * An (emulated) console window.
@@ -86,7 +78,7 @@ public class Window extends JFrame implements KeyListener {
 
 				for (int i = 0; i < 4; i++) {
 					Point ps = f.getRandomOpenTile();
-					Creature c = new Creature('g', Color.DARK_GRAY, ps.x, ps.y);
+					Creature c = new Creature(ps.x, ps.y);
 					c.setImage(GraphicFile.MONSTER1, 3, 1);
 					c.hp = new Stat(10);
 					f.actors.add(c);

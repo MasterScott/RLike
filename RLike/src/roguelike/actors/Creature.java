@@ -1,9 +1,8 @@
 package roguelike.actors;
 
-import java.awt.Color;
-
 import roguelike.actors.classes.Classes;
 import roguelike.actors.classes.RLClass;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Contains all relevant data for a creature - any object that can perform
@@ -18,8 +17,36 @@ public class Creature extends Actor {
 	private boolean hostile;
 	private RLClass c;
 
-	public Creature(char icon, Color color, int x, int y) {
-		super(icon, color, x, y);
+	/**
+	 * Creates a new creature at the given coordinates.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 */
+	public Creature(int x, int y) {
+		super(x, y);
+		traversable = false;
+	}
+
+	/**
+	 * Creates a new creature at the given coordinates with the specified image.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @param graphicFile
+	 *            Tileset to use.
+	 * @param row
+	 *            Row of icon to use.
+	 * @param col
+	 *            Column of icon to use.
+	 */
+	public Creature(int x, int y, GraphicFile graphicFile, int row, int col) {
+		super(x,y);
+		setImage(graphicFile, row, col);
 		traversable = false;
 	}
 

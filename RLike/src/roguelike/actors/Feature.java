@@ -1,6 +1,5 @@
 package roguelike.actors;
 
-import java.awt.Color;
 
 public class Feature extends Tile {
 
@@ -9,10 +8,6 @@ public class Feature extends Tile {
 	/**
 	 * Creates a feature with the specified traversability.
 	 * 
-	 * @param icon
-	 *            Icon used to represent this tile.
-	 * @param color
-	 *            Color of icon used to represent this tile.
 	 * @param x
 	 *            x-coordinate.
 	 * @param y
@@ -23,9 +18,9 @@ public class Feature extends Tile {
 	 *            What kind of feature this is - limited to the static enum
 	 *            FeatureType within this class.
 	 */
-	public Feature(char icon, Color color, int x, int y, boolean traversable,
+	public Feature(int x, int y, boolean traversable,
 			FeatureType featureType) {
-		super(icon, color, x, y, traversable);
+		super(x, y, traversable);
 
 		this.featureType = featureType;
 	}

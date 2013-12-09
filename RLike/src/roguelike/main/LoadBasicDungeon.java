@@ -5,7 +5,6 @@ import java.awt.Point;
 
 import javax.swing.JFrame;
 
-import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.etc.Session;
 import roguelike.ui.ActionPanel;
@@ -19,7 +18,7 @@ public class LoadBasicDungeon {
 
 	public static void main(String[] args) {
 
-		Session.player = new Player('@', Color.WHITE, 2, 2);
+		Session.player = new Player(2, 2);
 
 		Window w = new Window(100, 10, 1536, 1024);
 
@@ -31,7 +30,7 @@ public class LoadBasicDungeon {
 		f.generateFloor();
 
 		Point point = f.getRandomOpenTile();
-		Session.player = new Player('@', Color.WHITE, point.x, point.y);
+		Session.player = new Player(point.x, point.y);
 		Session.player.setFloor(f);
 		Session.player.setImage(GraphicFile.CLASSM, 2, 5);
 		f.actors.add(Session.player);
