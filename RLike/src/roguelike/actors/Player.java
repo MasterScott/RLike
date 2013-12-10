@@ -10,6 +10,7 @@ package roguelike.actors;
 public class Player extends Creature {
 
 	public long turnCount;
+	public boolean movement;
 	
 	public Player(int x, int y) {
 		super(x, y);

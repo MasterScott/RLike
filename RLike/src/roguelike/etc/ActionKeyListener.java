@@ -2,7 +2,6 @@ package roguelike.etc;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -94,13 +93,6 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 
 		if (movement) {
 			playerMovement(xDiff, yDiff);
-			Floor f = Session.player.getFloor();
-			ArrayList<Actor> actors = f.actors;
-			for (Actor actor: actors) {
-				if (actor.getClass() == Creature.class) {
-					((Creature) actor).doPrioritizedAction();
-				}
-			}
 		}
 			
 
@@ -128,6 +120,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		if (!(floor.checkCollision(x + xDiff, y + yDiff))) {
 			Session.player.setX(x + xDiff);
 			Session.player.setY(y + yDiff);
+			Session.player.movement = true;
 		} else if (floor.getCreatureAt(x + xDiff, y + yDiff) != null) {
 			// TODO Add creature interaction - may want to implement an 'action'
 			// class and have all actors have a set of actions that can be
@@ -136,11 +129,13 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			Session.player.meleeAttack(c);
 			if (c.hp.current <= 0)
 				floor.actors.remove(c);
+			Session.player.movement = true;
 		} else {
 			Actor actor = floor.getActorAt(x + xDiff, y + yDiff);
 			if (actor != null && actor.isTraversable()) {
 				Session.player.setX(x + xDiff);
 				Session.player.setY(y + yDiff);
+				Session.player.movement = true;
 			}
 		}
 

@@ -1,7 +1,5 @@
 package roguelike.etc;
 
-import java.util.Random;
-
 public class RLUtilities {
 
 	/**

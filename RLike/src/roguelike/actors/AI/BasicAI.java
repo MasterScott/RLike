@@ -31,12 +31,13 @@ public class BasicAI extends AI {
 
 		if (t.getTurnSeen() == Session.player.turnCount) { // In LOS
 			Point closest = getClosestTile(c.getX(), c.getY());
-			System.out.println("Creature x: " + c.getX() + " y: " + c.getY() + "  Closest Tile x: " + closest.x + " y: " + closest.y);
-
+			
 			int x = c.getX();
 			int y = c.getY();
-			if (!c.getFloor().checkCollision(x + closest.x, y + closest.y)) {
-				System.out.println("Creature moving...");
+			if (x + closest.x == Session.player.getX() && y + closest.y == Session.player.getY()) {
+				// TODO Damage calculations.
+				Session.player.hp.current -= (int) (Math.random() * 2);
+			} else if (!c.getFloor().checkCollision(x + closest.x, y + closest.y)) {
 				c.setCoords(x + closest.x, y + closest.y);
 			}
 				

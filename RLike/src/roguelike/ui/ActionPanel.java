@@ -1,7 +1,6 @@
 package roguelike.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -28,7 +27,6 @@ public class ActionPanel extends ActionKeyListener {
 	 * Creates a new instance of an ActionPanel.
 	 */
 	public ActionPanel() {
-		fontSize = 14;
 		setFocusable(true);
 		addKeyListener(this);
 
@@ -46,13 +44,13 @@ public class ActionPanel extends ActionKeyListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		g.setFont(new Font("Courier", Font.PLAIN, fontSize));
-
 		if (floor == null)
 			throw new NullPointerException("A floor was not defined for this ActionPanel.");
 
 		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
 
+		doCreatureActions();
+		
 		/*
 		 * If actor is in sight, display in normal color and set previously seen
 		 * to true. If not in sight, display at an obscured color if the actor
@@ -93,6 +91,21 @@ public class ActionPanel extends ActionKeyListener {
 			}
 		}
 
+	}
+	
+	/**
+	 * Performs actions for all creatures currently eligible to perform an action.
+	 */
+	public void doCreatureActions() {
+		if (Session.player.movement) {
+			for (Actor actor: floor.actors) {
+				if (actor.getClass() == Creature.class) {
+					((Creature) actor).doPrioritizedAction();
+				}
+			}
+		}
+		
+		Session.player.movement = false;
 	}
 
 	/**
