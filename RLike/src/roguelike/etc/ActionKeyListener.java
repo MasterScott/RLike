@@ -144,7 +144,6 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			}
 		}
 
-		Session.player.turnCount++;
 	}
 
 	@Override

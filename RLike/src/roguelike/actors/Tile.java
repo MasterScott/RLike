@@ -27,6 +27,7 @@ public class Tile extends Actor {
 	public Tile(int x, int y) {
 		super(x, y);
 		this.traversable = false;
+		this.turnSeen = -1;
 	}
 
 	/**
@@ -43,6 +44,7 @@ public class Tile extends Actor {
 		super(x, y);
 
 		this.traversable = traversable;
+		this.turnSeen = -1;
 	}
 
 	/**
@@ -65,6 +67,7 @@ public class Tile extends Actor {
 		super(x, y);
 		setImage(graphicFile, row, col);
 		this.traversable = traversable;
+		this.turnSeen = -1;
 	}
 
 	/**
@@ -83,6 +86,7 @@ public class Tile extends Actor {
 		super(x, y);
 		setImage(image);
 		this.traversable = traversable;
+		this.turnSeen = -1;
 	}
 
 	/**
