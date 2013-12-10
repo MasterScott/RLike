@@ -44,7 +44,7 @@ public class LOS {
 		inSight = new ArrayList<Actor>();
 
 		for (Delta d : deltas) {
-			recursiveShadowCast(actor.getX(), actor.getY(), d, 0);
+			recursiveShadowCast(actor.getX(), actor.getY(), d);
 		}
 
 		inSight.add(actor);
@@ -75,7 +75,7 @@ public class LOS {
 	 * @param dist
 	 *            Distance from actor.
 	 */
-	private void recursiveShadowCast(int x, int y, Delta d, int dist) {
+	private void recursiveShadowCast(int x, int y, Delta d) {
 		Floor floor = actor.getFloor();
 		Tile tile = floor.getTileAt(x, y);
 
@@ -83,7 +83,8 @@ public class LOS {
 		 * Check if this point is within circular max range via the distance
 		 * formula.
 		 */
-		if (dist < range * 10) {
+		double dist = getDistance(x, y, actor.getX(), actor.getY());
+		if (dist <= range) {
 			if (tile != null && !tile.isTraversable()) {
 				if (!inSight.contains(tile)) {
 					tile.setDistance(dist);
@@ -102,13 +103,16 @@ public class LOS {
 					inSight.add(c);
 				}
 
-				recursiveShadowCast(x + d.dx1, y + d.dy1, d, dist + 10);
-				recursiveShadowCast(x + d.dx2, y + d.dy2, d, dist + 14);
+				recursiveShadowCast(x + d.dx1, y + d.dy1, d);
+				recursiveShadowCast(x + d.dx2, y + d.dy2, d);
 			}
 		}
 
 	}
 
+	private double getDistance(int x1, int y1, int x2, int y2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
 	private class Delta {
 		int dx1, dx2, dy1, dy2;
 

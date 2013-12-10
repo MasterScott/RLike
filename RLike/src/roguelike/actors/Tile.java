@@ -14,7 +14,8 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
 public class Tile extends Actor {
 
 	private long turnSeen;
-	private int distance;
+	private double distance;
+	private final double BIG_DIST = 10000;
 
 	/**
 	 * Creates a tile that is not traversable by default.
@@ -28,6 +29,7 @@ public class Tile extends Actor {
 		super(x, y);
 		this.traversable = false;
 		this.turnSeen = -1;
+		this.distance = BIG_DIST;
 	}
 
 	/**
@@ -45,6 +47,7 @@ public class Tile extends Actor {
 
 		this.traversable = traversable;
 		this.turnSeen = -1;
+		this.distance = BIG_DIST;
 	}
 
 	/**
@@ -68,6 +71,7 @@ public class Tile extends Actor {
 		setImage(graphicFile, row, col);
 		this.traversable = traversable;
 		this.turnSeen = -1;
+		this.distance = BIG_DIST;
 	}
 
 	/**
@@ -87,6 +91,7 @@ public class Tile extends Actor {
 		setImage(image);
 		this.traversable = traversable;
 		this.turnSeen = -1;
+		this.distance = BIG_DIST;
 	}
 
 	/**
@@ -111,7 +116,7 @@ public class Tile extends Actor {
 	 * @param d
 	 *            Distance from the player.
 	 */
-	public void setDistance(int d) {
+	public void setDistance(double d) {
 		distance = d;
 	}
 
@@ -120,7 +125,7 @@ public class Tile extends Actor {
 	 * 
 	 * @return Distance from the player.
 	 */
-	public int getDistance() {
+	public double getDistance() {
 		return distance;
 	}
 }

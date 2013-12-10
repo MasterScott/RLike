@@ -31,12 +31,13 @@ public class BasicAI extends AI {
 
 		if (t.getTurnSeen() == Session.player.turnCount) { // In LOS
 			Point closest = getClosestTile(c.getX(), c.getY());
+			System.out.println("Creature x: " + c.getX() + " y: " + c.getY() + "  Closest Tile x: " + closest.x + " y: " + closest.y);
 
 			int x = c.getX();
 			int y = c.getY();
 			if (!c.getFloor().checkCollision(x + closest.x, y + closest.y)) {
+				System.out.println("Creature moving...");
 				c.setCoords(x + closest.x, y + closest.y);
-				System.out.println("Creature coords: x: " + c.getX() + " y: " + c.getY());
 			}
 				
 		}
@@ -44,8 +45,8 @@ public class BasicAI extends AI {
 	}
 
 	private Point getClosestTile(int x, int y) {
-		int[] dx = { 1, 0, -1, -1, -1, 0, 1, 1 };
-		int[] dy = { 1, 1, 1, 0, -1, -1, -1, 0 };
+		int[] dx = { 1, 0, -1, -1, -1,  0,  1, 1 };
+		int[] dy = { 1, 1,  1,  0, -1, -1, -1, 0 };
 
 		Tile initial = c.getFloor().getTileAt(c.getX(), c.getY());
 		Point result = new Point(0, 0);
