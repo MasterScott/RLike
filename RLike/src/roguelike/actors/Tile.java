@@ -98,7 +98,7 @@ public class Tile extends Actor {
 	 * Sets turn this tile was last seen.
 	 */
 	public void setTurnSeen() {
-		turnSeen = Session.player.turnCount;
+		turnSeen = Session.turnCount;
 	}
 
 	/**

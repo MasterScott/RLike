@@ -29,14 +29,14 @@ public class BasicAI extends AI {
 	public void doPrioritizedAction() {
 		Tile t = c.getFloor().getTileAt(c.getX(), c.getY());
 
-		if (t.getTurnSeen() == Session.player.turnCount) { // In LOS
+		if (t.getTurnSeen() == Session.turnCount) { // In LOS
 			Point closest = getClosestTile(c.getX(), c.getY());
 			
 			int x = c.getX();
 			int y = c.getY();
 			if (x + closest.x == Session.player.getX() && y + closest.y == Session.player.getY()) {
 				// TODO Damage calculations.
-				Session.player.hp.current -= (int) (Math.random() * 2);
+				c.meleeAttack(Session.player);
 			} else if (!c.getFloor().checkCollision(x + closest.x, y + closest.y)) {
 				c.setCoords(x + closest.x, y + closest.y);
 			}

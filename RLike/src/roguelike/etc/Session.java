@@ -29,4 +29,9 @@ public class Session {
 	 * Window the game is running in.
 	 */
 	public static Window window;
+	
+	/**
+	 * How many turns have passed in the current session.
+	 */
+	public static long turnCount = 0;
 }

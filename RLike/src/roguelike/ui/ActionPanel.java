@@ -101,6 +101,7 @@ public class ActionPanel extends ActionKeyListener {
 			for (Actor actor: floor.actors) {
 				if (actor.getClass() == Creature.class) {
 					((Creature) actor).doPrioritizedAction();
+					((Creature) actor).regen();
 				}
 			}
 		}

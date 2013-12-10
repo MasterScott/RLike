@@ -3,6 +3,7 @@ package roguelike.actors;
 import roguelike.actors.AI.AI;
 import roguelike.actors.classes.Classes;
 import roguelike.actors.classes.RLClass;
+import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
@@ -14,8 +15,13 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
  */
 public class Creature extends Actor {
 
+	private final int DEFAULT_REGEN_RATE = 5;
+	private final int DEFAULT_REGEN_AMOUNT = 1;
+
 	public Stat hp, mp, strength, intelligence, dexterity;
 	private boolean hostile;
+	int regenRate = DEFAULT_REGEN_RATE;
+	int regenAmount = DEFAULT_REGEN_AMOUNT;
 	RLClass c;
 	AI ai;
 
@@ -121,6 +127,13 @@ public class Creature extends Actor {
 		ai.doPrioritizedAction();
 	}
 
+	/**
+	 * Performs a melee attack against the specified creature.
+	 * 
+	 * @param recipient
+	 *            Creature to perform melee attack against.
+	 * @return True if attack was successful; false otherwise.
+	 */
 	public boolean meleeAttack(Creature recipient) {
 		// TODO Attack calculations.
 		/*
@@ -130,5 +143,35 @@ public class Creature extends Actor {
 
 		recipient.hp.current -= (int) (Math.random() * 2 + 1);
 		return true;
+	}
+
+	/**
+	 * Sets creature's natural regen to happen one out of every x turns, where x
+	 * is specified by rate.
+	 * 
+	 * @param rate
+	 *            Regeneration rate.
+	 */
+	public void setRegenRate(int rate) {
+		this.regenRate = rate;
+	}
+
+	/**
+	 * Returns the denominator of the creature's 1/x chance to regenerate on a
+	 * given turn.
+	 * 
+	 * @return Regeneration rate.
+	 */
+	public int getRegenRate() {
+		return regenRate;
+	}
+
+	/**
+	 * Causes the creature to regenerate health, if this turn is divisible by the creature's
+	 * regeneration rate.
+	 */
+	public void regen() {
+		if (Session.turnCount % regenRate == 0)
+			hp.current = Math.min(hp.current + regenAmount, hp.max);
 	}
 }

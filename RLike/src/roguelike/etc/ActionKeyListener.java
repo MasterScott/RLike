@@ -91,10 +91,14 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			break;
 		}
 
-		if (movement) {
+		if (movement) { // If movement key was pressed
 			playerMovement(xDiff, yDiff);
+			if (Session.player.movement) { // If movement was successful
+				Session.turnCount++;
+				Session.player.regen(); // TODO May want to make a 'passTurn' method, so other things can happen during this calculation.
+			}
+
 		}
-			
 
 		// Repaints this panel and all other panels currently attached to the
 		// window.

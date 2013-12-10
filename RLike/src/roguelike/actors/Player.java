@@ -9,13 +9,13 @@ package roguelike.actors;
  */
 public class Player extends Creature {
 
-	public long turnCount;
 	public boolean movement;
+	public long exp;
 	
 	public Player(int x, int y) {
 		super(x, y);
 
-		turnCount = 0;
+		exp = 0;
 		traversable = false;
 		
 		// TODO Placeholder values
