@@ -83,7 +83,7 @@ public class LOS {
 		 * Check if this point is within circular max range via the distance
 		 * formula.
 		 */
-		if (getDistance(actor.getX(), actor.getY(), x, y) <= range) {
+		if (dist < range * 10) {
 			if (tile != null && !tile.isTraversable()) {
 				if (!inSight.contains(tile)) {
 					tile.setDistance(dist);
@@ -102,29 +102,11 @@ public class LOS {
 					inSight.add(c);
 				}
 
-				recursiveShadowCast(x + d.dx1, y + d.dy1, d, dist + 1);
-				recursiveShadowCast(x + d.dx2, y + d.dy2, d, dist + 1);
+				recursiveShadowCast(x + d.dx1, y + d.dy1, d, dist + 10);
+				recursiveShadowCast(x + d.dx2, y + d.dy2, d, dist + 14);
 			}
 		}
 
-	}
-
-	/**
-	 * Return distance between two points rounded down to the closest integer.
-	 * 
-	 * @param x1
-	 *            x-coordinate of point 1.
-	 * @param y1
-	 *            y-coordinate of point 1.
-	 * @param x2
-	 *            x-coordinate of point 2.
-	 * @param y2
-	 *            y-coordinate of point 2.
-	 * @return Distance between points 1 and 2.
-	 */
-	private int getDistance(int x1, int y1, int x2, int y2) {
-
-		return (int) (Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
 	}
 
 	private class Delta {
