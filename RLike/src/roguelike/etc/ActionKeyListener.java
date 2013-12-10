@@ -53,6 +53,9 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			xDiff--;
 			movement = true;
 			break;
+		case KeyEvent.VK_NUMPAD5: // stay still
+			movement = true;
+			break;
 		case KeyEvent.VK_NUMPAD6: // right
 			xDiff++;
 			movement = true;
@@ -117,6 +120,10 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		int x = Session.player.getX();
 		int y = Session.player.getY();
 
+		if (xDiff == 0 && yDiff == 0) { // Player stayed still
+			Session.player.movement = true;
+			return;
+		}
 		/*
 		 * Can't walk through an actor unless they are explicitly set to be
 		 * traversable.
