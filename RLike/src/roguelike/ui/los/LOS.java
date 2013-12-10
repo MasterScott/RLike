@@ -85,11 +85,17 @@ public class LOS {
 		 */
 		if (getDistance(actor.getX(), actor.getY(), x, y) <= range) {
 			if (tile != null && !tile.isTraversable()) {
-				if (!inSight.contains(tile))
+				if (!inSight.contains(tile)) {
+					tile.setDistance(dist);
+					tile.setTurnSeen();
 					inSight.add(tile);
+				}
 			} else {
-				if (tile != null && !inSight.contains(tile))
+				if (tile != null && !inSight.contains(tile)) {
+					tile.setDistance(dist);
+					tile.setTurnSeen();
 					inSight.add(tile);
+				}
 
 				Creature c = floor.getCreatureAt(x, y);
 				if (c != null && !inSight.contains(c)) {

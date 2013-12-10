@@ -2,6 +2,7 @@ package roguelike.actors;
 
 import java.awt.Image;
 
+import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
@@ -11,6 +12,9 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
  * 
  */
 public class Tile extends Actor {
+
+	private long turnSeen;
+	private int distance;
 
 	/**
 	 * Creates a tile that is not traversable by default.
@@ -79,5 +83,40 @@ public class Tile extends Actor {
 		super(x, y);
 		setImage(image);
 		this.traversable = traversable;
+	}
+
+	/**
+	 * Sets turn this tile was last seen.
+	 */
+	public void setTurnSeen() {
+		turnSeen = Session.player.turnCount;
+	}
+
+	/**
+	 * Returns turn this tile was last seen by the player.
+	 * 
+	 * @return
+	 */
+	public long getTurnSeen() {
+		return turnSeen;
+	}
+
+	/**
+	 * Sets distance from the player when tile was last seen.
+	 * 
+	 * @param d
+	 *            Distance from the player.
+	 */
+	public void setDistance(int d) {
+		distance = d;
+	}
+
+	/**
+	 * Returns distance from the player when tile was last seen.
+	 * 
+	 * @return Distance from the player.
+	 */
+	public int getDistance() {
+		return distance;
 	}
 }

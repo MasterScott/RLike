@@ -1,5 +1,6 @@
 package roguelike.actors.AI;
 
+import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 
 /**
@@ -39,5 +40,9 @@ public abstract class AI {
 	boolean chanceOfOneIn(int num) {
 		int i = (int) Math.random() * num;
 		return i == 0;
+	}
+
+	public void moveToward(Actor a) {
+		
 	}
 }
