@@ -97,11 +97,12 @@ public class ActionPanel extends ActionKeyListener {
 	 * Performs actions for all creatures currently eligible to perform an action.
 	 */
 	public void doCreatureActions() {
+		// FIXME This likely needs to be placed somewhere else. Sometimes StatsPanel refreshes first.
 		if (Session.player.movement) {
 			for (Actor actor: floor.actors) {
 				if (actor.getClass() == Creature.class) {
 					((Creature) actor).doPrioritizedAction();
-					((Creature) actor).regen();
+					((Creature) actor).processTurn();
 				}
 			}
 		}

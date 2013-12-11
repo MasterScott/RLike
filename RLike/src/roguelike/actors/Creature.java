@@ -20,6 +20,7 @@ public class Creature extends Actor {
 
 	public Stat hp, mp, strength, intelligence, dexterity;
 	private boolean hostile;
+	String name;
 	int regenRate = DEFAULT_REGEN_RATE;
 	int regenAmount = DEFAULT_REGEN_AMOUNT;
 	RLClass c;
@@ -32,8 +33,10 @@ public class Creature extends Actor {
 	 *            x-coordinate.
 	 * @param y
 	 *            y-coordinate.
+	 * @param name
+	 *            Name of creature.
 	 */
-	public Creature(int x, int y) {
+	public Creature(int x, int y, String name) {
 		super(x, y);
 		traversable = false;
 	}
@@ -45,6 +48,8 @@ public class Creature extends Actor {
 	 *            x-coordinate.
 	 * @param y
 	 *            y-coordinate.
+	 * @param name
+	 *            Name of creature.
 	 * @param graphicFile
 	 *            Tileset to use.
 	 * @param row
@@ -52,7 +57,7 @@ public class Creature extends Actor {
 	 * @param col
 	 *            Column of icon to use.
 	 */
-	public Creature(int x, int y, GraphicFile graphicFile, int row, int col) {
+	public Creature(int x, int y, String name, GraphicFile graphicFile, int row, int col) {
 		super(x, y);
 		setImage(graphicFile, row, col);
 		traversable = false;
@@ -167,11 +172,38 @@ public class Creature extends Actor {
 	}
 
 	/**
-	 * Causes the creature to regenerate health, if this turn is divisible by the creature's
-	 * regeneration rate.
+	 * Causes the creature to regenerate health, if this turn is divisible by
+	 * the creature's regeneration rate.
 	 */
 	public void regen() {
 		if (Session.turnCount % regenRate == 0)
 			hp.current = Math.min(hp.current + regenAmount, hp.max);
+	}
+
+	/**
+	 * Method that performs all calculations needed when this creature takes a
+	 * turn.
+	 */
+	public void processTurn() {
+		regen();
+	}
+
+	/**
+	 * Sets this creature's name.
+	 * 
+	 * @param name
+	 *            Creature's name.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * Returns this creature's name.
+	 * 
+	 * @return Creature's name.
+	 */
+	public String getName() {
+		return name;
 	}
 }

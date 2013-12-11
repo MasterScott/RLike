@@ -13,7 +13,7 @@ public class Player extends Creature {
 	public long exp;
 	
 	public Player(int x, int y) {
-		super(x, y);
+		super(x, y, null);
 
 		exp = 0;
 		traversable = false;

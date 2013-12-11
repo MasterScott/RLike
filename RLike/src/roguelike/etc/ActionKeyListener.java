@@ -98,7 +98,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			playerMovement(xDiff, yDiff);
 			if (Session.player.movement) { // If movement was successful
 				Session.turnCount++;
-				Session.player.regen(); // TODO May want to make a 'passTurn' method, so other things can happen during this calculation.
+				Session.player.processTurn(); 
 			}
 
 		}
@@ -133,9 +133,6 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			Session.player.setY(y + yDiff);
 			Session.player.movement = true;
 		} else if (floor.getCreatureAt(x + xDiff, y + yDiff) != null) {
-			// TODO Add creature interaction - may want to implement an 'action'
-			// class and have all actors have a set of actions that can be
-			// performed.
 			Creature c = floor.getCreatureAt(x + xDiff, y + yDiff);
 			Session.player.meleeAttack(c);
 			if (c.hp.current <= 0)

@@ -183,8 +183,14 @@ public class CharacterSelectPanel extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 
 				if (lblImage.getIcon() != null) {
-					Player player = new Player(3, 3);
-					Session.player = player;
+					Session.player = new Player(3, 3);
+					
+					try{
+						Session.player.setName(textField.getText());
+					} catch (NullPointerException e) {
+						// TODO Do something with the null value.
+					}
+					
 					Session.player.setImage(GraphicFile.CLASSM, row, col);
 					Session.window.notifyCharacterSelected();
 				}

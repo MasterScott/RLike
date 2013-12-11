@@ -79,7 +79,7 @@ public class Window extends JFrame implements KeyListener {
 
 				for (int i = 0; i < 4; i++) {
 					Point ps = f.getRandomOpenTile();
-					Creature c = new Creature(ps.x, ps.y);
+					Creature c = new Creature(ps.x, ps.y, null);
 					c.setImage(GraphicFile.MONSTER1, 3, 1);
 					c.setAI(new BasicAI(c));
 					c.setFloor(f);
@@ -111,8 +111,6 @@ public class Window extends JFrame implements KeyListener {
 		SwingUtilities.invokeLater(switchContents);
 		
 	}
-
-	// XXX FIX THIS
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -131,7 +129,5 @@ public class Window extends JFrame implements KeyListener {
 		//repaint();
 		
 	}
-
-	// TODO Make it so key listener calls a repaint to all components from here!
 
 }
