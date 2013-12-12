@@ -48,8 +48,6 @@ public class ActionPanel extends ActionKeyListener {
 			throw new NullPointerException("A floor was not defined for this ActionPanel.");
 
 		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
-
-		doCreatureActions();
 		
 		/*
 		 * If actor is in sight, display in normal color and set previously seen
@@ -93,22 +91,7 @@ public class ActionPanel extends ActionKeyListener {
 
 	}
 	
-	/**
-	 * Performs actions for all creatures currently eligible to perform an action.
-	 */
-	public void doCreatureActions() {
-		// FIXME This likely needs to be placed somewhere else. Sometimes StatsPanel refreshes first.
-		if (Session.player.movement) {
-			for (Actor actor: floor.actors) {
-				if (actor.getClass() == Creature.class) {
-					((Creature) actor).doPrioritizedAction();
-					((Creature) actor).processTurn();
-				}
-			}
-		}
-		
-		Session.player.movement = false;
-	}
+	
 
 	/**
 	 * Sets floor to be displayed.

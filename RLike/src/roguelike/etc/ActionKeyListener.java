@@ -97,6 +97,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		if (movement) { // If movement key was pressed
 			playerMovement(xDiff, yDiff);
 			if (Session.player.movement) { // If movement was successful
+				doCreatureActions();
 				Session.turnCount++;
 				Session.player.processTurn(); 
 			}
@@ -106,6 +107,23 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		// Repaints this panel and all other panels currently attached to the
 		// window.
 		getParent().repaint();
+	}
+	
+	/**
+	 * Performs actions for all creatures currently eligible to perform an action.
+	 */
+	public void doCreatureActions() {
+		// FIXME This likely needs to be placed somewhere else. Sometimes StatsPanel refreshes first.
+		if (Session.player.movement) {
+			for (Actor actor: floor.actors) {
+				if (actor.getClass() == Creature.class) {
+					((Creature) actor).doPrioritizedAction();
+					((Creature) actor).processTurn();
+				}
+			}
+		}
+		
+		Session.player.movement = false;
 	}
 
 	/**
