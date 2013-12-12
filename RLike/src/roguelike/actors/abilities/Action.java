@@ -16,7 +16,15 @@ public interface Action {
 	 * @param recipient
 	 *            Actor to perform action on.
 	 */
-	public void doAction(Actor recipient);
+	public void doAction();
+
+	/**
+	 * Sets actor to perform this action on.
+	 * 
+	 * @param recipient
+	 *            Actor to perform action on.
+	 */
+	public void setRecipient(Actor recipient);
 
 	/**
 	 * Returns a string containing the name of this action.
@@ -24,4 +32,11 @@ public interface Action {
 	 * @return Name of this action.
 	 */
 	public String getName();
+
+	/**
+	 * Returns a string containing the action text.
+	 * 
+	 * @return Action text for this action.
+	 */
+	public String getActionText();
 }

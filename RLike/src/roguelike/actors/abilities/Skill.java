@@ -15,8 +15,20 @@ public class Skill implements Action{
 	}
 
 	@Override
-	public void doAction(Actor recipient) {
+	public void doAction() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void setRecipient(Actor recipient) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getActionText() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

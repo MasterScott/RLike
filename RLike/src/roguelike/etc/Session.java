@@ -34,4 +34,9 @@ public class Session {
 	 * How many turns have passed in the current session.
 	 */
 	public static long turnCount = 0;
+	
+	/**
+	 * Queue that holds all actions.
+	 */
+	public static ActionQueue actionQueue = new ActionQueue();
 }
