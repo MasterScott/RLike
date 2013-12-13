@@ -18,11 +18,9 @@ public class BasicAI extends AI {
 	/**
 	 * Creates a new basic artificial intelligence for the given creature.
 	 * 
-	 * @param c
-	 *            Creature to give AI to.
 	 */
-	public BasicAI(Creature c) {
-		super(c);
+	public BasicAI() {
+		super();
 	}
 
 	@Override
@@ -38,7 +36,7 @@ public class BasicAI extends AI {
 				// TODO Damage calculations.
 				c.meleeAttack(Session.player);
 			} else if (!c.getFloor().checkCollision(x + closest.x, y + closest.y)) {
-				c.setCoords(x + closest.x, y + closest.y);
+				moveToward(closest.x, closest.y);
 			}
 				
 		}

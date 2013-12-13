@@ -1,6 +1,6 @@
 package roguelike.actors.classes;
 
-import roguelike.actors.abilities.Skill;
+import roguelike.actors.abilities.Action;
 
 /**
  * Basic interface for any class that can be assigned to a creature.
@@ -47,7 +47,7 @@ public interface RLClass {
 	 * 
 	 * @return Skills available to this class.
 	 */
-	public Skill[] getSkills();
+	public Action[] getSkills();
 
 	/**
 	 * Returns display name of this class.

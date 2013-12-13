@@ -1,5 +1,7 @@
 package roguelike.actors.abilities;
 
+import java.lang.reflect.Method;
+
 import roguelike.actors.Actor;
 
 /**
@@ -13,18 +15,12 @@ public interface Action {
 	/**
 	 * Performs an action to the given recipient.
 	 * 
+	 * @param performer
+	 *            Actor performing the action.
 	 * @param recipient
 	 *            Actor to perform action on.
 	 */
-	public void doAction();
-
-	/**
-	 * Sets actor to perform this action on.
-	 * 
-	 * @param recipient
-	 *            Actor to perform action on.
-	 */
-	public void setRecipient(Actor recipient);
+	public void doAction(Actor performer, Actor recipient);
 
 	/**
 	 * Returns a string containing the name of this action.

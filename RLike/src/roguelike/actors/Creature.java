@@ -1,6 +1,7 @@
 package roguelike.actors;
 
 import roguelike.actors.AI.AI;
+import roguelike.actors.abilities.ActionList;
 import roguelike.actors.classes.Classes;
 import roguelike.actors.classes.RLClass;
 import roguelike.etc.Session;
@@ -108,6 +109,7 @@ public class Creature extends Actor {
 	 *            AI to set for creature.
 	 */
 	public void setAI(AI ai) {
+		ai.setHost(this);
 		this.ai = ai;
 	}
 
@@ -146,7 +148,7 @@ public class Creature extends Actor {
 		 * damage it did, etc.
 		 */
 
-		recipient.hp.current -= (int) (Math.random() * 2 + 1);
+		ActionList.MELEE_ATTACK.doAction(this, recipient);
 		return true;
 	}
 
@@ -206,4 +208,6 @@ public class Creature extends Actor {
 	public String getName() {
 		return name;
 	}
+	
+	
 }

@@ -62,7 +62,6 @@ public class StatsPanel extends JPanel {
 		lblY.setText("Y: " + Session.player.getY());
 		lblHP.setText("HP: " + Session.player.hp.toString());
 		
-		System.out.println("Repainting");
 		final int HP_BAR_WIDTH = 100;
 		int v = (int) (((double) Session.player.hp.current / (double) Session.player.hp.max) * HP_BAR_WIDTH);
 

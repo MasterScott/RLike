@@ -11,16 +11,13 @@ import roguelike.actors.Creature;
  */
 public abstract class AI {
 
-	Creature c;
+	protected Creature c;
 
 	/**
 	 * Creates a new artificial intelligence for the given creature.
-	 * 
-	 * @param c
-	 *            Creature to give AI to.
 	 */
-	public AI(Creature c) {
-		this.c = c;
+	public AI() {
+
 	}
 
 	/**
@@ -42,7 +39,29 @@ public abstract class AI {
 		return i == 0;
 	}
 
-	public void moveToward(Actor a) {
-		
+	/**
+	 * Moves in the specified direction.
+	 * 
+	 * @param dx
+	 *            x-offset.
+	 * @param dy
+	 *            y-offset.
+	 */
+	public void moveToward(int dx, int dy) {
+		int x = c.getX();
+		int y = c.getY();
+
+		c.setCoords(x + dx, y + dy);
 	}
+
+	/**
+	 * Sets host for this AI.
+	 * 
+	 * @param c
+	 *            Creature to utilize AI.
+	 */
+	public void setHost(Creature c) {
+		this.c = c;
+	}
+
 }

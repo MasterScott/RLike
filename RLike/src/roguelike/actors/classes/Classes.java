@@ -1,6 +1,6 @@
 package roguelike.actors.classes;
 
-import roguelike.actors.abilities.Skill;
+import roguelike.actors.abilities.Action;
 
 /**
  * Enumeration containing all currently implemented classes.
@@ -38,7 +38,7 @@ public enum Classes implements RLClass {
 		return bonusHP;
 	}
 
-	public Skill[] getSkills() {
+	public Action[] getSkills() {
 		// TODO Implement in the future.
 		return null;
 	}

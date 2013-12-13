@@ -81,7 +81,7 @@ public class Window extends JFrame implements KeyListener {
 					Point ps = f.getRandomOpenTile();
 					Creature c = new Creature(ps.x, ps.y, null);
 					c.setImage(GraphicFile.MONSTER1, 3, 1);
-					c.setAI(new BasicAI(c));
+					c.setAI(new BasicAI());
 					c.setFloor(f);
 					c.hp = new Stat(10);
 					f.actors.add(c);
