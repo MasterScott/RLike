@@ -19,7 +19,7 @@ public class StatsPanel extends JPanel {
 	private static final long serialVersionUID = 6646494324971390261L;
 	private JLabel lblCharacterName;
 	private JLabel lblX, lblY;
-	private JLabel lblHP;
+	private JLabel lblHP, lblExp;
 
 	/**
 	 * Create a new instance of a StatsPanel.
@@ -50,6 +50,11 @@ public class StatsPanel extends JPanel {
 		lblHP.setForeground(Color.WHITE);
 		lblHP.setBounds(10, 36, 140, 14);
 		add(lblHP);
+		
+		lblExp = new JLabel("EXP: ");
+		lblExp.setForeground(Color.WHITE);
+		lblExp.setBounds(10, 155, 46, 14);
+		add(lblExp);
 
 	}
 
@@ -61,6 +66,7 @@ public class StatsPanel extends JPanel {
 		lblX.setText("X: " + Session.player.getX());
 		lblY.setText("Y: " + Session.player.getY());
 		lblHP.setText("HP: " + Session.player.hp.toString());
+		lblExp.setText("EXP: " + Session.player.exp);
 		
 		final int HP_BAR_WIDTH = 100;
 		int v = (int) (((double) Session.player.hp.current / (double) Session.player.hp.max) * HP_BAR_WIDTH);

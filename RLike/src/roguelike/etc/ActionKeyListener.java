@@ -137,6 +137,8 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 	private void playerMovement(int xDiff, int yDiff) {
 		int x = Session.player.getX();
 		int y = Session.player.getY();
+		
+		// TODO Clean this code up.
 
 		if (xDiff == 0 && yDiff == 0) { // Player stayed still
 			Session.player.movement = true;
@@ -153,8 +155,11 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		} else if (floor.getCreatureAt(x + xDiff, y + yDiff) != null) {
 			Creature c = floor.getCreatureAt(x + xDiff, y + yDiff);
 			Session.player.meleeAttack(c);
-			if (c.hp.current <= 0)
+			if (c.hp.current <= 0) {
 				floor.actors.remove(c);
+				Session.player.exp += c.getExpGiven();
+			}
+				
 			Session.player.movement = true;
 		} else {
 			Actor actor = floor.getActorAt(x + xDiff, y + yDiff);
