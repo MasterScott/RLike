@@ -58,10 +58,10 @@ public class BasicAI extends AI {
 
 		for (int i = 0; i < dx.length; i++) {
 			Tile tile = c.getFloor().getTileAt(x + dx[i], y + dy[i]);
-			if (tile.getDistance() < initial.getDistance()) {
+			if (tile.getDistance() < initial.getDistance() && tile.isTraversable()) {
 				initial = tile;
 				result = new Point(dx[i], dy[i]);
-			}
+			} 
 		}
 
 		return result;
