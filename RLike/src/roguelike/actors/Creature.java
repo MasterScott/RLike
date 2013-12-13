@@ -4,6 +4,7 @@ import roguelike.actors.AI.AI;
 import roguelike.actors.abilities.ActionList;
 import roguelike.actors.classes.Classes;
 import roguelike.actors.classes.RLClass;
+import roguelike.actors.util.CreatureTemplate;
 import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
@@ -20,12 +21,15 @@ public class Creature extends Actor {
 	private final int DEFAULT_REGEN_AMOUNT = 1;
 
 	public Stat hp, mp, strength, intelligence, dexterity;
-	private boolean hostile;
+
 	String name;
 	int regenRate = DEFAULT_REGEN_RATE;
 	int regenAmount = DEFAULT_REGEN_AMOUNT;
 	RLClass c;
 	AI ai;
+
+	private boolean hostile;
+	private long expGiven;
 
 	/**
 	 * Creates a new creature at the given coordinates.
@@ -40,6 +44,7 @@ public class Creature extends Actor {
 	public Creature(int x, int y, String name) {
 		super(x, y);
 		traversable = false;
+		hostile = true;
 	}
 
 	/**
@@ -59,67 +64,31 @@ public class Creature extends Actor {
 	 *            Column of icon to use.
 	 */
 	public Creature(int x, int y, String name, GraphicFile graphicFile, int row, int col) {
-		super(x, y);
+		this(x, y, name);
 		setImage(graphicFile, row, col);
-		traversable = false;
 	}
 
 	/**
-	 * Sets the class of this creature.
+	 * Constructs a pre-specified creature. To be used with the CreatureTemplate
+	 * enum in the Actor utilities package.
 	 * 
-	 * @param c
-	 *            Class of this creature.
+	 * @param type
+	 *            CreatureTemplate type.
+	 * @return A new creature of the specified CreatureTemplate type.
 	 */
-	public void setCreatureClass(Classes c) {
-		this.c = c;
-	}
+	public static Creature constructCreature(CreatureTemplate type) {
+		Creature c = new Creature(0, 0, type.name);
+		c.hp = new Stat(type.hp);
+		c.mp = new Stat(type.mp);
+		c.strength = new Stat(type.str);
+		c.intelligence = new Stat(type.intl);
+		c.dexterity = new Stat(type.dex);
+		c.setHostile(c.hostile);
+		c.setExpGiven(type.xp);
+		c.setCreatureClass(type.c);
+		c.setAI(type.ai);
 
-	/**
-	 * Returns the class of this creature.
-	 * 
-	 * @return Class of this creature.
-	 */
-	public RLClass getCreatureClass() {
 		return c;
-	}
-
-	/**
-	 * Sets whether or not this creature is hostile to the player.
-	 * 
-	 * @param hostile
-	 *            Whether or not this creature is hostile to the player.
-	 */
-	public void setHostile(boolean hostile) {
-		this.hostile = hostile;
-	}
-
-	/**
-	 * Returns whether or not this creature is hostile to the player.
-	 * 
-	 * @return Whether or not this creature is hostile to the player.
-	 */
-	public boolean isHostile() {
-		return hostile;
-	}
-
-	/**
-	 * Sets creatures AI to the specified AI.
-	 * 
-	 * @param ai
-	 *            AI to set for creature.
-	 */
-	public void setAI(AI ai) {
-		ai.setHost(this);
-		this.ai = ai;
-	}
-
-	/**
-	 * Returns AI of creature.
-	 * 
-	 * @return AI of creature.
-	 */
-	public AI getAI() {
-		return ai;
 	}
 
 	/**
@@ -135,26 +104,39 @@ public class Creature extends Actor {
 	}
 
 	/**
-	 * Performs a melee attack against the specified creature.
+	 * Returns AI of creature.
 	 * 
-	 * @param recipient
-	 *            Creature to perform melee attack against.
-	 * @return True if attack was successful; false otherwise.
+	 * @return AI of creature.
 	 */
-	public boolean meleeAttack(Creature recipient) {
-		ActionList.MELEE_ATTACK.doAction(this, recipient);
-		return true;
+	public AI getAI() {
+		return ai;
 	}
 
 	/**
-	 * Sets creature's natural regen to happen one out of every x turns, where x
-	 * is specified by rate.
+	 * Returns the class of this creature.
 	 * 
-	 * @param rate
-	 *            Regeneration rate.
+	 * @return Class of this creature.
 	 */
-	public void setRegenRate(int rate) {
-		this.regenRate = rate;
+	public RLClass getCreatureClass() {
+		return c;
+	}
+
+	/**
+	 * Returns amount of experience this creature gives upon death.
+	 * 
+	 * @return Amount of experience given.
+	 */
+	public long getExpGiven() {
+		return expGiven;
+	}
+
+	/**
+	 * Returns this creature's name.
+	 * 
+	 * @return Creature's name.
+	 */
+	public String getName() {
+		return name;
 	}
 
 	/**
@@ -168,6 +150,35 @@ public class Creature extends Actor {
 	}
 
 	/**
+	 * Returns whether or not this creature is hostile to the player.
+	 * 
+	 * @return Whether or not this creature is hostile to the player.
+	 */
+	public boolean isHostile() {
+		return hostile;
+	}
+
+	/**
+	 * Performs a melee attack against the specified creature.
+	 * 
+	 * @param recipient
+	 *            Creature to perform melee attack against.
+	 * @return True if attack was successful; false otherwise.
+	 */
+	public boolean meleeAttack(Creature recipient) {
+		ActionList.MELEE_ATTACK.doAction(this, recipient);
+		return true;
+	}
+
+	/**
+	 * Method that performs all calculations needed when this creature takes a
+	 * turn.
+	 */
+	public void processTurn() {
+		regen();
+	}
+
+	/**
 	 * Causes the creature to regenerate health, if this turn is divisible by
 	 * the creature's regeneration rate.
 	 */
@@ -177,11 +188,44 @@ public class Creature extends Actor {
 	}
 
 	/**
-	 * Method that performs all calculations needed when this creature takes a
-	 * turn.
+	 * Sets creatures AI to the specified AI.
+	 * 
+	 * @param ai
+	 *            AI to set for creature.
 	 */
-	public void processTurn() {
-		regen();
+	public void setAI(AI ai) {
+		ai.setHost(this);
+		this.ai = ai;
+	}
+
+	/**
+	 * Sets the class of this creature.
+	 * 
+	 * @param c
+	 *            Class of this creature.
+	 */
+	public void setCreatureClass(Classes c) {
+		this.c = c;
+	}
+
+	/**
+	 * Sets amount of experience this creature gives upon death.
+	 * 
+	 * @param expGiven
+	 *            Amount of experience given.
+	 */
+	public void setExpGiven(long expGiven) {
+		this.expGiven = expGiven;
+	}
+
+	/**
+	 * Sets whether or not this creature is hostile to the player.
+	 * 
+	 * @param hostile
+	 *            Whether or not this creature is hostile to the player.
+	 */
+	public void setHostile(boolean hostile) {
+		this.hostile = hostile;
 	}
 
 	/**
@@ -195,13 +239,13 @@ public class Creature extends Actor {
 	}
 
 	/**
-	 * Returns this creature's name.
+	 * Sets creature's natural regen to happen one out of every x turns, where x
+	 * is specified by rate.
 	 * 
-	 * @return Creature's name.
+	 * @param rate
+	 *            Regeneration rate.
 	 */
-	public String getName() {
-		return name;
+	public void setRegenRate(int rate) {
+		this.regenRate = rate;
 	}
-	
-	
 }

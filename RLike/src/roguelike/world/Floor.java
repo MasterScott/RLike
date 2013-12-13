@@ -185,7 +185,7 @@ public abstract class Floor {
 	 *            Column of tileset icon is located on.
 	 */
 	protected void encloseLevel(GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset.fileName, row, col);
+		Image img = Graphic.getImage(tileset, row, col);
 
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
@@ -227,7 +227,7 @@ public abstract class Floor {
 	 */
 	protected void createStairs(FeatureType featureType, GraphicFile tileset, int row, int col) {
 		Point p = getRandomOpenTile();
-		Image img = Graphic.getImage(tileset.fileName, row, col);
+		Image img = Graphic.getImage(tileset, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
 			Feature f = new Feature(p.x, p.y, true, FeatureType.DOWNSTAIRS);
@@ -259,7 +259,7 @@ public abstract class Floor {
 	 *            Column of tileset icon is located on.
 	 */
 	protected void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset.fileName, row, col);
+		Image img = Graphic.getImage(tileset, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
 			Feature f = new Feature(x, y, true, FeatureType.DOWNSTAIRS);
@@ -299,7 +299,7 @@ public abstract class Floor {
 		y = t.getY();
 		actors.remove(t);
 		
-		Image img = Graphic.getImage(tileset.fileName, row, col);
+		Image img = Graphic.getImage(tileset, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
 			Feature f = new Feature(x, y, true, FeatureType.DOWNSTAIRS);
@@ -345,7 +345,7 @@ public abstract class Floor {
 	}
 
 	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset.fileName, row, col);
+		Image img = Graphic.getImage(tileset, row, col);
 
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {

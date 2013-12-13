@@ -218,7 +218,7 @@ public class CharacterSelectPanel extends JPanel {
 	public void setImage(GraphicFile tileset, int row, int col) {
 		this.row = row;
 		this.col = col;
-		Image img = Graphic.getImage(GraphicFile.CLASSM.fileName, row, col);
+		Image img = Graphic.getImage(GraphicFile.CLASSM, row, col);
 		lblImage.setIcon(new ImageIcon(img));
 	}
 }

@@ -146,7 +146,7 @@ public abstract class Actor {
 	 *            Column of icon to use.
 	 */
 	public void setImage(GraphicFile gf, int row, int col) {
-		this.image = Graphic.getImage(gf.fileName, row, col);
+		this.image = Graphic.getImage(gf, row, col);
 	}
 
 	/**

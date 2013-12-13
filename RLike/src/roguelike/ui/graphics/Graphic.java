@@ -86,9 +86,45 @@ public class Graphic {
 	 *            Column of the graphic wanted, starting at 0.
 	 * @return Graphic at the row and column specified.
 	 */
-	public static Image getImage(String file, int row, int col) {
+	public static Image getImage(GraphicFile file, int row, int col) {
+		ImageIcon img = new ImageIcon(file.fileName);
+
+		return processImage(img, row, col);
+	}
+
+	/**
+	 * Returns a graphic at the row and column from the tileset specified by the
+	 * filepath given.
+	 * 
+	 * @param file
+	 *            Filepath of the graphic file to search through.
+	 * @param row
+	 *            Row of the graphic wanted, starting at 0.
+	 * @param col
+	 *            Column of the graphic wanted, starting at 0.
+	 * @return Graphic at the row and column specified.
+	 */
+	public static Image getImage(String fileName, int row, int col) {
+		ImageIcon img = new ImageIcon(fileName);
+
+		return processImage(img, row, col);
+	}
+
+	/**
+	 * Returns an image specified by the file string.
+	 * 
+	 * @param file
+	 *            Path of the image.
+	 * @return Image specified by the file string.
+	 */
+	public static Image getImage(String file) {
 		ImageIcon img = new ImageIcon(file);
 
+		Image image = img.getImage();
+		return image;
+	}
+
+	private static Image processImage(ImageIcon img, int row, int col) {
 		/*
 		 * Make image transparent.
 		 */
@@ -116,13 +152,6 @@ public class Graphic {
 		Image finalImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
 
 		return finalImg;
-	}
-
-	public static Image getImage(String file) {
-		ImageIcon img = new ImageIcon(file);
-
-		Image image = img.getImage();
-		return image;
 	}
 
 	/**
