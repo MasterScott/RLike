@@ -14,7 +14,7 @@ public class ActionQueue extends LinkedBlockingQueue<Action>{
 	
 	public void doAllActions() {
 		while (!isEmpty()) {
-			Action a = poll();
+			
 			
 		}
 	}

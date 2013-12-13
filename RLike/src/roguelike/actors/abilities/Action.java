@@ -1,7 +1,5 @@
 package roguelike.actors.abilities;
 
-import java.lang.reflect.Method;
-
 import roguelike.actors.Actor;
 
 /**

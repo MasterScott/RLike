@@ -142,12 +142,6 @@ public class Creature extends Actor {
 	 * @return True if attack was successful; false otherwise.
 	 */
 	public boolean meleeAttack(Creature recipient) {
-		// TODO Attack calculations.
-		/*
-		 * Need to determine whether or not the attack was successful, how much
-		 * damage it did, etc.
-		 */
-
 		ActionList.MELEE_ATTACK.doAction(this, recipient);
 		return true;
 	}

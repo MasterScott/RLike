@@ -7,15 +7,14 @@ import roguelike.actors.Actor;
 
 public enum ActionList implements Action {
 	MELEE_ATTACK("meleeAttack", "Melee Attack", "attacks")
-	
-	
-	
+
 	;
 
 	private Method m;
 	private String name, action;
 	private Actor performer, recipient;
-	
+	private int damage;
+
 	private ActionList(String methodName, String name, String action) {
 		try {
 			this.m = ActionMethods.class.getMethod(methodName, Actor.class, Actor.class);
@@ -27,7 +26,7 @@ public enum ActionList implements Action {
 		this.name = name;
 		this.action = action;
 	}
-	
+
 	@Override
 	public void doAction(Actor performer, Actor recipient) {
 		this.performer = performer;
@@ -41,6 +40,8 @@ public enum ActionList implements Action {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		}
+
+		damage = ActionMethods.getDamage();
 	}
 
 	@Override
@@ -50,10 +51,10 @@ public enum ActionList implements Action {
 
 	@Override
 	public String getActionText() {
-		if (performer == null || recipient == null) 
+		if (performer == null || recipient == null)
 			return null;
-		
-		return performer + " " + action + " " + recipient; // For XX damage.
+
+		return performer + " " + action + " " + recipient + " for " + damage + " damage.";
 	}
 
 }

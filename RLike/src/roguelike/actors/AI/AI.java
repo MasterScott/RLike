@@ -1,6 +1,5 @@
 package roguelike.actors.AI;
 
-import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 
 /**
