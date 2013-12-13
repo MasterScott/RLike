@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 
 import roguelike.actors.Creature;
 import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.util.CreatureTemplate;
 import roguelike.actors.Stat;
 import roguelike.actors.AI.BasicAI;
 import roguelike.etc.Session;
@@ -79,11 +80,10 @@ public class Window extends JFrame implements KeyListener {
 
 				for (int i = 0; i < 4; i++) {
 					Point ps = f.getRandomOpenTile();
-					Creature c = new Creature(ps.x, ps.y, null);
-					c.setImage(GraphicFile.MONSTER1, 3, 1);
-					c.setAI(new BasicAI());
+					Creature c = Creature.constructCreature(CreatureTemplate.GOBLIN);
+					c.setCoords(ps.x, ps.y);
 					c.setFloor(f);
-					c.hp = new Stat(10);
+					//c.setAI(new BasicAI());
 					f.actors.add(c);
 				}
 				

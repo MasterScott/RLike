@@ -86,7 +86,16 @@ public class Creature extends Actor {
 		c.setHostile(c.hostile);
 		c.setExpGiven(type.xp);
 		c.setCreatureClass(type.c);
-		c.setAI(type.ai);
+
+		// Have to set AI here rather than in the enumerated type, so all
+		// creatures don't share the same AI.
+		try {
+			c.setAI((AI) type.ai.newInstance());
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		c.setImage(type.img);
 
 		return c;
 	}
