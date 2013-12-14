@@ -1,6 +1,7 @@
 package util.leveleditor;
 
 import javax.swing.JFrame;
+import javax.swing.BoxLayout;
 
 public class EditorWindow extends JFrame {
 
@@ -11,5 +12,10 @@ public class EditorWindow extends JFrame {
 
 	public EditorWindow() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
+		EditorMenu m = new EditorMenu();
+		EditorPanel p = new EditorPanel();
+		add(m);
+		add(p);
 	}
 }
