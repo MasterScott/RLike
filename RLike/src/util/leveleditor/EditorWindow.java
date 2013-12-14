@@ -10,6 +10,6 @@ public class EditorWindow extends JFrame {
 	private static final long serialVersionUID = 2789411093618047798L;
 
 	public EditorWindow() {
-		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 }

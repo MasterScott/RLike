@@ -11,6 +11,9 @@ import javax.swing.ListSelectionModel;
 import net.miginfocom.swing.MigLayout;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JSeparator;
+import java.awt.Color;
 
 public class EditorMenu extends JPanel {
 
@@ -23,7 +26,7 @@ public class EditorMenu extends JPanel {
 	 * Create the panel.
 	 */
 	public EditorMenu() {
-		setLayout(new MigLayout("", "[grow][]", "[][][][grow]"));
+		setLayout(new MigLayout("", "[]", "[18.00][28.00][][][]"));
 		
 		ArrayList<String> arr = new ArrayList<String>();
 		for (GraphicFile gf : GraphicFile.values()) {
@@ -33,17 +36,34 @@ public class EditorMenu extends JPanel {
 		JLabel lblLevelEditor = new JLabel("Level Editor");
 		add(lblLevelEditor, "cell 0 0");
 		
+		JButton btnNew = new JButton("New");
+		add(btnNew, "flowx,cell 0 1");
+		
+		JButton btnOpen = new JButton("Open");
+		add(btnOpen, "cell 0 1");
+		
+		JButton btnSave = new JButton("Save");
+		add(btnSave, "cell 0 1");
+		
+		JButton btnSaveAs = new JButton("Save As");
+		add(btnSaveAs, "cell 0 1");
+		
+		JSeparator separator = new JSeparator();
+		separator.setForeground(Color.BLACK);
+		add(separator, "cell 0 2,growx");
+		
 		JList list = new JList(arr.toArray());
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
-		add(list, "cell 0 3,grow");
+		add(list, "cell 0 4,alignx left");
 
 		// WindowBuilder can't parse this.
 		// $hide>>$
 		JScrollPane listScroller = new JScrollPane(list);
-		listScroller.setPreferredSize(new Dimension(250, 80));
-		add(listScroller);
+		listScroller.setPreferredSize(new Dimension(150, 80));
+		listScroller.setMinimumSize(new Dimension(150, 80));
+		add(listScroller, "cell 0 4,alignx left");
 		// $hide<<$
 	}
 
