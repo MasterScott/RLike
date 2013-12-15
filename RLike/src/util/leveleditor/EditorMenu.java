@@ -65,15 +65,17 @@ public class EditorMenu extends JPanel {
 		add(lblWidth, "flowx,cell 0 5");
 		
 		textFieldWidth = new JTextField();
+		textFieldWidth.setPreferredSize(new Dimension(24, 24));
 		add(textFieldWidth, "cell 0 5");
-		textFieldWidth.setColumns(10);
+		textFieldWidth.setColumns(3);
 		
 		JLabel lblHeight = new JLabel("Height:");
 		add(lblHeight, "cell 0 5");
 		
 		textFieldHeight = new JTextField();
+		textFieldHeight.setPreferredSize(new Dimension(24, 24));
 		add(textFieldHeight, "cell 0 5");
-		textFieldHeight.setColumns(10);
+		textFieldHeight.setColumns(3);
 
 		// WindowBuilder can't parse this.
 		// $hide>>$
