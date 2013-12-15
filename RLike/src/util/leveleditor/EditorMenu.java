@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -32,6 +33,7 @@ public class EditorMenu extends JPanel {
 	private JTextField textFieldHeight;
 	private JLabel lblX, lblY, lblTileset;
 	private EditorWindow parent;
+	int x, y;
 
 	/**
 	 * Create the panel.
@@ -100,7 +102,7 @@ public class EditorMenu extends JPanel {
 		Dimension d = new Dimension(250, 250);
 		add(lblTileset, "cell 0 5");
 		
-		JScrollPane tilesetScroller = new JScrollPane(lblTileset);
+		final JScrollPane tilesetScroller = new JScrollPane(lblTileset);
 		tilesetScroller.setPreferredSize(d);
 		tilesetScroller.setMinimumSize(d);
 		add(tilesetScroller, "cell 0 5");
@@ -126,11 +128,13 @@ public class EditorMenu extends JPanel {
 				
 				String selection = (String) list.getSelectedValue();
 				if (selection != null) {
-					Image img = Graphic.getImage(GraphicFile.valueOf(selection), y / 32, x / 32);
+					int dx  = tilesetScroller.getHorizontalScrollBar().getValue();
+					int dy = tilesetScroller.getVerticalScrollBar().getValue();
+					Image img = Graphic.getImage(GraphicFile.valueOf(selection), (y + dy) / 32, (x + dx) / 32);
 					parent.setSelectedImage(img);
 				}
 					
-				
+				System.out.println(tilesetScroller.getVerticalScrollBar().getValue());
 			}
 		});
 		
@@ -152,9 +156,15 @@ public class EditorMenu extends JPanel {
 		// $hide<<$
 	}
 	
-	public void updateCoords(int x, int y) {
+	public void setCoords(int x, int y) {
+		this.x = x;
+		this.y = y;
 		lblX.setText("X: " + x);
 		lblY.setText("Y: " + y);
+	}
+	
+	public Point getCoords() {
+		return new Point(x, y);
 	}
 	
 	public void setParent(EditorWindow parent) {

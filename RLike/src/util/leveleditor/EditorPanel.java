@@ -1,6 +1,10 @@
 package util.leveleditor;
 
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
@@ -14,6 +18,7 @@ public class EditorPanel extends JPanel {
 
 	private static final long serialVersionUID = -5584676219132420183L;
 
+	EditorWindow parent;
 	int width = 0, height = 0;
 	JLabel[][] tiles;
 
@@ -21,7 +26,7 @@ public class EditorPanel extends JPanel {
 		initialize();
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setBackground(Color.BLACK);
-
+		setFocusable(true);
 	}
 
 	/**
@@ -37,6 +42,10 @@ public class EditorPanel extends JPanel {
 		this.height = height;
 	}
 
+	public void setParent(EditorWindow parent) {
+		this.parent = parent;
+	}
+	
 	public void initialize() {
 		StringBuilder wString = new StringBuilder("[32]");
 		StringBuilder hString = new StringBuilder("[32]");
@@ -79,4 +88,6 @@ public class EditorPanel extends JPanel {
 			
 		}
 	}
+
+
 }

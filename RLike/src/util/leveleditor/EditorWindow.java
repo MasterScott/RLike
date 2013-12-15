@@ -1,15 +1,18 @@
 package util.leveleditor;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-public class EditorWindow extends JFrame implements MouseMotionListener {
+public class EditorWindow extends JFrame implements MouseMotionListener, MouseListener {
 
 	/**
 	 * 
@@ -38,15 +41,15 @@ public class EditorWindow extends JFrame implements MouseMotionListener {
 		getContentPane().add(panel_1);
 		p = new EditorPanel();
 		panel_1.add(p);
+		
+		p.setParent(this);
 
 		addMouseMotionListener(this);
+		addMouseListener(this);
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
@@ -63,9 +66,9 @@ public class EditorWindow extends JFrame implements MouseMotionListener {
 			 * position minus the position the grid starts at and accounts for a
 			 * one pixel space between each tile.
 			 */
-			m.updateCoords(31 * (x - xStart) / 1024, 31 * (y - yStart) / 1024);
+			m.setCoords(31 * (x - xStart) / 1024, 31 * (y - yStart) / 1024 - 1);
 		} else {
-			m.updateCoords(0, 0);
+			m.setCoords(0, 0);
 		}
 		
 	}
@@ -93,4 +96,38 @@ public class EditorWindow extends JFrame implements MouseMotionListener {
 		if (yStart == 0)
 			yStart = p.getBounds().y + 5;
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Point point = m.getCoords();
+		if (selectedImage != null) {
+			p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
+		}
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
