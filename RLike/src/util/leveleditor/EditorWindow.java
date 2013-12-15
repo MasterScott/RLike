@@ -47,15 +47,8 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		addMouseMotionListener(this);
 		addMouseListener(this);
 	}
-
-	@Override
-	public void mouseDragged(MouseEvent e) {}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
-
+	
+	private void updateCoords(int x, int y) {
 		updateXStart();
 		updateYStart();
 
@@ -71,6 +64,20 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 			m.setCoords(0, 0);
 		}
 		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		updateCoords(e.getX(), e.getY());
+		Point point = m.getCoords();
+		if (selectedImage != null) {
+			p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
+		}
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		updateCoords(e.getX(), e.getY());
 	}
 	
 	public void setSelectedImage(Image img) {
@@ -98,36 +105,23 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
 		Point point = m.getCoords();
 		if (selectedImage != null) {
 			p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
 		}
-		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 }

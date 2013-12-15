@@ -134,7 +134,6 @@ public class EditorMenu extends JPanel {
 					parent.setSelectedImage(img);
 				}
 					
-				System.out.println(tilesetScroller.getVerticalScrollBar().getValue());
 			}
 		});
 		
