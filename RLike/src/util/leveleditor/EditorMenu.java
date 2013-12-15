@@ -16,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JSeparator;
 import java.awt.Color;
 import javax.swing.JTextField;
+import java.awt.Component;
+import javax.swing.Box;
 
 public class EditorMenu extends JPanel {
 
@@ -25,12 +27,13 @@ public class EditorMenu extends JPanel {
 	private static final long serialVersionUID = -5323835129443241111L;
 	private JTextField textFieldWidth;
 	private JTextField textFieldHeight;
+	private JLabel lblX, lblY, lblTileset;
 
 	/**
 	 * Create the panel.
 	 */
 	public EditorMenu() {
-		setLayout(new MigLayout("", "[]", "[18.00][28.00][][][][]"));
+		setLayout(new MigLayout("", "[]", "[18.00][28.00][][][][][][][]"));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		ArrayList<String> arr = new ArrayList<String>();
@@ -61,31 +64,48 @@ public class EditorMenu extends JPanel {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
-		add(list, "cell 0 3,alignx left");
+		add(list, "cell 0 4,alignx left");
 		
 		JLabel lblWidth = new JLabel("Width: ");
-		add(lblWidth, "flowx,cell 0 5");
+		add(lblWidth, "flowx,cell 0 3");
 		
 		textFieldWidth = new JTextField();
 		textFieldWidth.setPreferredSize(new Dimension(24, 24));
-		add(textFieldWidth, "cell 0 5");
+		add(textFieldWidth, "cell 0 3");
 		textFieldWidth.setColumns(3);
 		
 		JLabel lblHeight = new JLabel("Height:");
-		add(lblHeight, "cell 0 5");
+		add(lblHeight, "cell 0 3");
 		
 		textFieldHeight = new JTextField();
 		textFieldHeight.setPreferredSize(new Dimension(24, 24));
-		add(textFieldHeight, "cell 0 5");
+		add(textFieldHeight, "cell 0 3");
 		textFieldHeight.setColumns(3);
+		
+		lblTileset = new JLabel();
+		add(lblTileset, "cell 0 5");
+		
+		lblX = new JLabel("X: ");
+		add(lblX, "flowx,cell 0 8");
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		add(horizontalStrut, "cell 0 8");
+		
+		lblY = new JLabel("Y: ");
+		add(lblY, "cell 0 8");
 
 		// WindowBuilder can't parse this.
 		// $hide>>$
 		JScrollPane listScroller = new JScrollPane(list);
 		listScroller.setPreferredSize(new Dimension(150, 80));
 		listScroller.setMinimumSize(new Dimension(150, 80));
-		add(listScroller, "cell 0 3,alignx left");
+		add(listScroller, "cell 0 4,alignx left");
 		// $hide<<$
+	}
+	
+	public void updateCoords(int x, int y) {
+		lblX.setText("X: " + x);
+		lblY.setText("Y: " + y);
 	}
 
 }
