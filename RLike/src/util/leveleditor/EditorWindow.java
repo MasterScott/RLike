@@ -1,16 +1,20 @@
 package util.leveleditor;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 public class EditorWindow extends JFrame implements MouseMotionListener, MouseListener {
 
@@ -23,6 +27,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	EditorPanel p;
 	int xStart = 0, yStart = 0;
 	Image selectedImage;
+	GraphicFile gf;
 
 	public EditorWindow() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -68,11 +73,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		updateCoords(e.getX(), e.getY());
-		Point point = m.getCoords();
-		if (selectedImage != null) {
-			p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
-		}
+		updateTile(e.getX(), e.getY());
 	}
 
 	@Override
@@ -83,7 +84,8 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	/**
 	 * Sets selected image from the menu to the specified image.
 	 * 
-	 * @param img Selected image.
+	 * @param img
+	 *            Selected image.
 	 */
 	public void setSelectedImage(Image img) {
 		this.selectedImage = img;
@@ -91,6 +93,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 
 	/**
 	 * Returns selected image.
+	 * 
 	 * @return Selected image.
 	 */
 	public Image getSelectedImage() {
@@ -127,14 +130,49 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		Point point = m.getCoords();
-		if (selectedImage != null) {
-			p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
-		}
+		updateTile(e.getX(), e.getY());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
 
+	public void setSelectedTileset(GraphicFile gf) {
+		this.gf = gf;
+	}
+	
+	/**
+	 * Called upon mouse click to update the current tile.
+	 */
+	private void updateTile(int x, int y) {
+		updateCoords(x, y);
+		Point point = m.getCoords();
+		if (selectedImage != null) {
+			if (gf != null && gf.overlay) {
+				BufferedImage existing = p.getImageAt(point.x, point.y);
+				BufferedImage selImage = convertImage(selectedImage);
+				BufferedImage newImage = new BufferedImage(existing.getHeight(), existing.getWidth(),
+						BufferedImage.TYPE_INT_ARGB);
+				Graphics g = newImage.getGraphics();
+				g.drawImage(existing, 0, 0, null);
+				g.drawImage(selImage, 0, 0, null);
+				g.dispose();
+				p.tiles[point.x][point.y].setIcon(new ImageIcon(newImage));
+			} else
+				p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
+		}
+	}
+
+	/**
+	 * Converts an image to a BufferedImage.
+	 * 
+	 * @param img
+	 *            Image to be converted.
+	 * @return Converted image.
+	 */
+	private BufferedImage convertImage(Image img) {
+		BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		bimg.getGraphics().drawImage(img, 0, 0, null);
+		return bimg;
+	}
 }

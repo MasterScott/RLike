@@ -1,6 +1,7 @@
 package util.leveleditor;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
@@ -41,7 +42,8 @@ public class EditorPanel extends JPanel {
 	/**
 	 * Sets tileset displayed to the specified value.
 	 * 
-	 * @param name Name of GraphicFile.
+	 * @param name
+	 *            Name of GraphicFile.
 	 */
 	public void setParent(EditorWindow parent) {
 		this.parent = parent;
@@ -92,6 +94,26 @@ public class EditorPanel extends JPanel {
 			}
 
 		}
+	}
+
+	/**
+	 * Returns the image at the given coordinates.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @return Image at the given coordinates.
+	 */
+	public BufferedImage getImageAt(int x, int y) {
+		ImageIcon icon = (ImageIcon) tiles[x][y].getIcon();
+		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		// paint the Icon to the BufferedImage.
+		icon.paintIcon(null, g, 0, 0);
+		g.dispose();
+
+		return bi;
 	}
 
 }

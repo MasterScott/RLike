@@ -71,7 +71,7 @@ public class EditorMenu extends JPanel {
 		final JList list = new JList(arr.toArray());
 		list.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mousePressed(MouseEvent arg0) {
 				String selection = (String) list.getSelectedValue();
 				if (selection != null)
 					setTileset(selection);
@@ -128,6 +128,18 @@ public class EditorMenu extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent arg0) {
+				int x = arg0.getX();
+				int y = arg0.getY();
+
+				String selection = (String) list.getSelectedValue();
+				if (selection != null) {
+					int dx = tilesetScroller.getHorizontalScrollBar().getValue();
+					int dy = tilesetScroller.getVerticalScrollBar().getValue();
+					Image img = Graphic.getImage(GraphicFile.valueOf(selection), (y + dy) / 32, (x + dx) / 32);
+					lblTile.setIcon(new ImageIcon(img));
+					parent.setSelectedImage(img);
+					parent.setSelectedTileset(GraphicFile.valueOf(selection));
+				}
 			}
 
 			@Override
@@ -140,18 +152,6 @@ public class EditorMenu extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				int x = arg0.getX();
-				int y = arg0.getY();
-
-				String selection = (String) list.getSelectedValue();
-				if (selection != null) {
-					int dx = tilesetScroller.getHorizontalScrollBar().getValue();
-					int dy = tilesetScroller.getVerticalScrollBar().getValue();
-					Image img = Graphic.getImage(GraphicFile.valueOf(selection), (y + dy) / 32, (x + dx) / 32);
-					lblTile.setIcon(new ImageIcon(img));
-					parent.setSelectedImage(img);
-				}
-
 			}
 		});
 		// $hide<<$
