@@ -1,10 +1,6 @@
 package util.leveleditor;
 
 import java.awt.Color;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
@@ -42,10 +38,19 @@ public class EditorPanel extends JPanel {
 		this.height = height;
 	}
 
+	/**
+	 * Sets tileset displayed to the specified value.
+	 * 
+	 * @param name Name of GraphicFile.
+	 */
 	public void setParent(EditorWindow parent) {
 		this.parent = parent;
 	}
-	
+
+	/**
+	 * Method that sets dimensions and places blank icons in every tile. Called
+	 * upon instantiation and when modifying the dimensions of a map.
+	 */
 	public void initialize() {
 		StringBuilder wString = new StringBuilder("[32]");
 		StringBuilder hString = new StringBuilder("[32]");
@@ -54,40 +59,39 @@ public class EditorPanel extends JPanel {
 			width = 40;
 		if (height == 0)
 			height = 25;
-		
+
 		for (int i = 1; i < width; i++) {
 			wString.append("1[32]");
 		}
-		
+
 		for (int i = 1; i < height; i++) {
 			hString.append("1[32]");
 		}
-		
+
 		setLayout(new MigLayout("", wString.toString(), hString.toString()));
-		
+
 		tiles = new JLabel[width][height];
-		
+
 		// Delete
-		
+
 		BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
-		
+
 		for (int i = 0; i < 32; i++) {
 			for (int j = 0; j < 32; j++) {
 				img.setRGB(i, j, Color.WHITE.getRGB());
 			}
 		}
-		
+
 		ImageIcon ic = new ImageIcon(img);
-		
+
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j] = new JLabel();
 				tiles[i][j].setIcon(ic);
 				add(tiles[i][j], "cell " + i + " " + j);
 			}
-			
+
 		}
 	}
-
 
 }

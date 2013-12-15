@@ -33,7 +33,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		getContentPane().add(panel);
 		m = new EditorMenu();
 		panel.add(m);
-		
+
 		m.setParent(this);
 
 		JPanel panel_1 = new JPanel();
@@ -41,13 +41,13 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		getContentPane().add(panel_1);
 		p = new EditorPanel();
 		panel_1.add(p);
-		
+
 		p.setParent(this);
 
 		addMouseMotionListener(this);
 		addMouseListener(this);
 	}
-	
+
 	private void updateCoords(int x, int y) {
 		updateXStart();
 		updateYStart();
@@ -63,7 +63,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		} else {
 			m.setCoords(0, 0);
 		}
-		
+
 	}
 
 	@Override
@@ -79,11 +79,20 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	public void mouseMoved(MouseEvent e) {
 		updateCoords(e.getX(), e.getY());
 	}
-	
+
+	/**
+	 * Sets selected image from the menu to the specified image.
+	 * 
+	 * @param img Selected image.
+	 */
 	public void setSelectedImage(Image img) {
 		this.selectedImage = img;
 	}
-	
+
+	/**
+	 * Returns selected image.
+	 * @return Selected image.
+	 */
 	public Image getSelectedImage() {
 		return selectedImage;
 	}
@@ -105,13 +114,16 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -122,6 +134,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e) {
+	}
 
 }

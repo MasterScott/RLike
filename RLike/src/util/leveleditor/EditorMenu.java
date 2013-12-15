@@ -41,108 +41,114 @@ public class EditorMenu extends JPanel {
 	public EditorMenu() {
 		setLayout(new MigLayout("", "[]", "[18.00][28.00][][][][][][][]"));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		
+
 		ArrayList<String> arr = new ArrayList<String>();
 		for (GraphicFile gf : GraphicFile.values()) {
 			arr.add(gf.name());
 		}
-		
+
 		JLabel lblLevelEditor = new JLabel("Level Editor");
 		add(lblLevelEditor, "cell 0 0");
-		
+
 		JButton btnNew = new JButton("New");
 		add(btnNew, "flowx,cell 0 1");
-		
+
 		JButton btnOpen = new JButton("Open");
 		add(btnOpen, "cell 0 1");
-		
+
 		JButton btnSave = new JButton("Save");
 		add(btnSave, "cell 0 1");
-		
+
 		JButton btnSaveAs = new JButton("Save As");
 		add(btnSaveAs, "cell 0 1");
-		
+
 		JSeparator separator = new JSeparator();
 		separator.setForeground(Color.BLACK);
 		add(separator, "cell 0 2,growx");
-		
+
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final JList list = new JList(arr.toArray());
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				String selection = (String) list.getSelectedValue();
-				if (selection != null) 
+				if (selection != null)
 					setTileset(selection);
-				
+
 			}
 		});
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 		add(list, "cell 0 4,alignx left");
-		
+
 		JLabel lblWidth = new JLabel("Width: ");
 		add(lblWidth, "flowx,cell 0 3");
-		
+
 		textFieldWidth = new JTextField();
 		textFieldWidth.setPreferredSize(new Dimension(24, 24));
 		add(textFieldWidth, "cell 0 3");
 		textFieldWidth.setColumns(3);
-		
+
 		JLabel lblHeight = new JLabel("Height:");
 		add(lblHeight, "cell 0 3");
-		
+
 		textFieldHeight = new JTextField();
 		textFieldHeight.setPreferredSize(new Dimension(24, 24));
 		add(textFieldHeight, "cell 0 3");
 		textFieldHeight.setColumns(3);
-		
+
 		lblTileset = new JLabel();
 		Dimension d = new Dimension(250, 250);
 		add(lblTileset, "cell 0 5");
-		
+
+		// $hide>>$
 		final JScrollPane tilesetScroller = new JScrollPane(lblTileset);
 		tilesetScroller.setPreferredSize(d);
 		tilesetScroller.setMinimumSize(d);
 		add(tilesetScroller, "cell 0 5");
-		
+
 		tilesetScroller.addMouseListener(new MouseListener() {
-			
+
 			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			
+			public void mouseReleased(MouseEvent arg0) {
+			}
+
 			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			
+			public void mousePressed(MouseEvent arg0) {
+			}
+
 			@Override
-			public void mouseExited(MouseEvent arg0) {}
-			
+			public void mouseExited(MouseEvent arg0) {
+			}
+
 			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			
+			public void mouseEntered(MouseEvent arg0) {
+			}
+
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				int x = arg0.getX();
 				int y = arg0.getY();
-				
+
 				String selection = (String) list.getSelectedValue();
 				if (selection != null) {
-					int dx  = tilesetScroller.getHorizontalScrollBar().getValue();
+					int dx = tilesetScroller.getHorizontalScrollBar().getValue();
 					int dy = tilesetScroller.getVerticalScrollBar().getValue();
 					Image img = Graphic.getImage(GraphicFile.valueOf(selection), (y + dy) / 32, (x + dx) / 32);
 					parent.setSelectedImage(img);
 				}
-					
+
 			}
 		});
-		
+		// $hide<<$
+
 		lblX = new JLabel("X: ");
 		add(lblX, "flowx,cell 0 8");
-		
+
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		add(horizontalStrut, "cell 0 8");
-		
+
 		lblY = new JLabel("Y: ");
 		add(lblY, "cell 0 8");
 
@@ -154,22 +160,47 @@ public class EditorMenu extends JPanel {
 		add(listScroller, "cell 0 4,alignx left");
 		// $hide<<$
 	}
-	
+
+	/**
+	 * Sets coordinates to be displayed in the X and Y labels to the specified
+	 * values.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 */
 	public void setCoords(int x, int y) {
 		this.x = x;
 		this.y = y;
 		lblX.setText("X: " + x);
 		lblY.setText("Y: " + y);
 	}
-	
+
+	/**
+	 * Returns coordinates displayed in the X and Y labels.
+	 * 
+	 * @return Coordinates displayed in the X and Y labels.
+	 */
 	public Point getCoords() {
 		return new Point(x, y);
 	}
-	
+
+	/**
+	 * Sets the parent (enclosing EditorWindow) of this object.
+	 * 
+	 * @param parent
+	 *            Enclosing EditorWindow.
+	 */
 	public void setParent(EditorWindow parent) {
 		this.parent = parent;
 	}
 
+	/**
+	 * Sets tileset displayed to the specified value.
+	 * 
+	 * @param name Name of GraphicFile.
+	 */
 	public void setTileset(String name) {
 		Image img = Graphic.getImage(GraphicFile.valueOf(name).fileName);
 		lblTileset.setIcon(new ImageIcon(img));
