@@ -1,33 +1,37 @@
 package util.leveleditor;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
 import net.miginfocom.swing.MigLayout;
+import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JSeparator;
-import java.awt.Color;
-import javax.swing.JTextField;
-import java.awt.Component;
-import javax.swing.Box;
 
 public class EditorMenu extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5323835129443241111L;
 	private JTextField textFieldWidth;
 	private JTextField textFieldHeight;
 	private JLabel lblX, lblY, lblTileset;
+	private EditorWindow parent;
 
 	/**
 	 * Create the panel.
@@ -60,7 +64,17 @@ public class EditorMenu extends JPanel {
 		separator.setForeground(Color.BLACK);
 		add(separator, "cell 0 2,growx");
 		
-		JList list = new JList(arr.toArray());
+		@SuppressWarnings({ "rawtypes", "unchecked" })
+		final JList list = new JList(arr.toArray());
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				String selection = (String) list.getSelectedValue();
+				if (selection != null) 
+					setTileset(selection);
+				
+			}
+		});
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
@@ -83,7 +97,42 @@ public class EditorMenu extends JPanel {
 		textFieldHeight.setColumns(3);
 		
 		lblTileset = new JLabel();
+		Dimension d = new Dimension(250, 250);
 		add(lblTileset, "cell 0 5");
+		
+		JScrollPane tilesetScroller = new JScrollPane(lblTileset);
+		tilesetScroller.setPreferredSize(d);
+		tilesetScroller.setMinimumSize(d);
+		add(tilesetScroller, "cell 0 5");
+		
+		tilesetScroller.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int x = arg0.getX();
+				int y = arg0.getY();
+				
+				String selection = (String) list.getSelectedValue();
+				if (selection != null) {
+					Image img = Graphic.getImage(GraphicFile.valueOf(selection), y / 32, x / 32);
+					parent.setSelectedImage(img);
+				}
+					
+				
+			}
+		});
 		
 		lblX = new JLabel("X: ");
 		add(lblX, "flowx,cell 0 8");
@@ -107,5 +156,13 @@ public class EditorMenu extends JPanel {
 		lblX.setText("X: " + x);
 		lblY.setText("Y: " + y);
 	}
+	
+	public void setParent(EditorWindow parent) {
+		this.parent = parent;
+	}
 
+	public void setTileset(String name) {
+		Image img = Graphic.getImage(GraphicFile.valueOf(name).fileName);
+		lblTileset.setIcon(new ImageIcon(img));
+	}
 }

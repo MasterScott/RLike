@@ -1,5 +1,6 @@
 package util.leveleditor;
 
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
@@ -18,6 +19,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener {
 	EditorMenu m;
 	EditorPanel p;
 	int xStart = 0, yStart = 0;
+	Image selectedImage;
 
 	public EditorWindow() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -28,6 +30,8 @@ public class EditorWindow extends JFrame implements MouseMotionListener {
 		getContentPane().add(panel);
 		m = new EditorMenu();
 		panel.add(m);
+		
+		m.setParent(this);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(2, 2, 2, 2));
@@ -63,6 +67,15 @@ public class EditorWindow extends JFrame implements MouseMotionListener {
 		} else {
 			m.updateCoords(0, 0);
 		}
+		
+	}
+	
+	public void setSelectedImage(Image img) {
+		this.selectedImage = img;
+	}
+	
+	public Image getSelectedImage() {
+		return selectedImage;
 	}
 
 	/**
