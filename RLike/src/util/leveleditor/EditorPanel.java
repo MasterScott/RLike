@@ -1,6 +1,13 @@
 package util.leveleditor;
 
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import net.miginfocom.swing.MigLayout;
 
 public class EditorPanel extends JPanel {
@@ -8,9 +15,12 @@ public class EditorPanel extends JPanel {
 	private static final long serialVersionUID = -5584676219132420183L;
 
 	int width = 0, height = 0;
+	JLabel[][] tiles;
 
 	public EditorPanel() {
 		initialize();
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		setBackground(Color.BLACK);
 
 	}
 
@@ -36,14 +46,37 @@ public class EditorPanel extends JPanel {
 		if (height == 0)
 			height = 25;
 		
-		for (int i = 1; i <= width; i++) {
+		for (int i = 1; i < width; i++) {
 			wString.append("1[32]");
 		}
 		
-		for (int i = 1; i <= height; i++) {
+		for (int i = 1; i < height; i++) {
 			hString.append("1[32]");
 		}
 		
 		setLayout(new MigLayout("", wString.toString(), hString.toString()));
+		
+		tiles = new JLabel[width][height];
+		
+		// Delete
+		
+		BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
+		
+		for (int i = 0; i < 32; i++) {
+			for (int j = 0; j < 32; j++) {
+				img.setRGB(i, j, Color.WHITE.getRGB());
+			}
+		}
+		
+		ImageIcon ic = new ImageIcon(img);
+		
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				tiles[i][j] = new JLabel();
+				tiles[i][j].setIcon(ic);
+				add(tiles[i][j], "cell " + i + " " + j);
+			}
+			
+		}
 	}
 }

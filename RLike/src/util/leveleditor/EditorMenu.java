@@ -3,6 +3,7 @@ package util.leveleditor;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,6 +31,7 @@ public class EditorMenu extends JPanel {
 	 */
 	public EditorMenu() {
 		setLayout(new MigLayout("", "[]", "[18.00][28.00][][][][]"));
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
 		ArrayList<String> arr = new ArrayList<String>();
 		for (GraphicFile gf : GraphicFile.values()) {
