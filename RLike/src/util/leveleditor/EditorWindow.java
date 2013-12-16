@@ -217,15 +217,6 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 			}
 		}
 
-		/*
-		 * Idea is to use the key/value pairs to store definitions in the map
-		 * file, then use the character key/value to 'draw' the map to text.
-		 */
-		Iterator it = hm.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry pairs = (Map.Entry) it.next();
-			System.out.println(pairs.getKey() + " = " + pairs.getValue());
-			it.remove(); // avoids a ConcurrentModificationException
-		}
+		EditorUtils.saveMap(p.tileInfo, hm);
 	}
 }
