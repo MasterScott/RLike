@@ -11,6 +11,13 @@ import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
+/**
+ * Extension of JPanel where the user can place and edit tiles for the current
+ * level.
+ * 
+ * @author Dan
+ * 
+ */
 public class EditorPanel extends JPanel {
 
 	private static final long serialVersionUID = -5584676219132420183L;
@@ -19,7 +26,11 @@ public class EditorPanel extends JPanel {
 	int width = 0, height = 0;
 	JLabel[][] tiles;
 	String[][] tileInfo;
+	String[][] objectInfo;
 
+	/**
+	 * Creates a new instance of EditorPanel with the default settings.
+	 */
 	public EditorPanel() {
 		initialize();
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -56,15 +67,20 @@ public class EditorPanel extends JPanel {
 	 */
 	public void initialize() {
 		removeAll(); // In case there is data in the editor.
-		
+
 		StringBuilder wString = new StringBuilder("[32]");
 		StringBuilder hString = new StringBuilder("[32]");
 
+		// If width/height haven't been touched, set to defaults.
 		if (width == 0)
 			width = 40;
 		if (height == 0)
 			height = 25;
 
+		/*
+		 * For MigLayout - we want each cell to be 32x32 with a space of 1
+		 * between them, to act as a grid.
+		 */
 		for (int i = 1; i < width; i++) {
 			wString.append("1[32]");
 		}
@@ -75,19 +91,23 @@ public class EditorPanel extends JPanel {
 
 		setLayout(new MigLayout("", wString.toString(), hString.toString()));
 
+		/*
+		 * Clear any data by initializing the arrays.
+		 */
 		tiles = new JLabel[width][height];
 		tileInfo = new String[width][height];
-		
-		BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
+		objectInfo = new String[width][height];
 
+		// Create a new blank white 32x32 image.
+		BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
 		for (int i = 0; i < 32; i++) {
 			for (int j = 0; j < 32; j++) {
 				img.setRGB(i, j, Color.WHITE.getRGB());
 			}
 		}
 
+		// Set all cells to the previous white square.
 		ImageIcon ic = new ImageIcon(img);
-
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j] = new JLabel();
@@ -96,7 +116,7 @@ public class EditorPanel extends JPanel {
 			}
 
 		}
-		
+
 		revalidate();
 	}
 
@@ -113,8 +133,7 @@ public class EditorPanel extends JPanel {
 		ImageIcon icon = (ImageIcon) tiles[x][y].getIcon();
 		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
-		// paint the Icon to the BufferedImage.
-		icon.paintIcon(null, g, 0, 0);
+		icon.paintIcon(null, g, 0, 0); // paint the Icon to the BufferedImage.
 		g.dispose();
 
 		return bi;

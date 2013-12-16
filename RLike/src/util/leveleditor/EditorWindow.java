@@ -8,8 +8,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -162,10 +160,14 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 				g.drawImage(selImage, 0, 0, null);
 				g.dispose();
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(newImage));
-			} else
+				p.objectInfo[point.x][point.y] = selectedTileToString();
+			} else {
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
+				p.tileInfo[point.x][point.y] = selectedTileToString();
+			}
+				
 
-			p.tileInfo[point.x][point.y] = selectedTileToString();
+			
 		}
 	}
 
@@ -205,18 +207,29 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	}
 
 	public void saveMap() {
-		HashMap<String, Character> hm = new HashMap<String, Character>();
+		HashMap<String, Character> hmTiles = new HashMap<String, Character>();
+		HashMap<String, Character> hmObjects = new HashMap<String, Character>();
 
 		char c = 97; // 97 is the value for 'a'.
 		for (String[] sArr : p.tileInfo) {
 			for (String s : sArr) {
-				if (!hm.containsKey(s)) {
-					hm.put(s, c);
+				if (!hmTiles.containsKey(s)) {
+					hmTiles.put(s, c);
+					c++;
+				}
+			}
+		}
+		
+		c = 97; // 97 is the value for 'a'.
+		for (String[] sArr : p.objectInfo) {
+			for (String s : sArr) {
+				if (!hmObjects.containsKey(s)) {
+					hmObjects.put(s, c);
 					c++;
 				}
 			}
 		}
 
-		EditorUtils.saveMap(p.tileInfo, hm);
+		EditorUtils.saveMap(p.tileInfo, p.objectInfo, hmTiles, hmObjects);
 	}
 }
