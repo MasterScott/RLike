@@ -3,13 +3,19 @@ package util.leveleditor;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
+import roguelike.ui.graphics.Graphic;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
  * Extension of JPanel where the user can place and edit tiles for the current
@@ -121,6 +127,54 @@ public class EditorPanel extends JPanel {
 	}
 
 	/**
+	 * Loads a map from a pre-existing map file into the editor.
+	 * 
+	 * @param map
+	 *            ArrayList of Strings containing the data.
+	 */
+	public void loadMapFromText(ArrayList<String> map) {
+		initialize();
+
+		int i = map.indexOf("#START TILE KEY#");
+		i++;
+		
+//		JOptionPane.showMessageDialog(this, "Loading...");
+//
+//		new Thread() {
+//			@Override
+//		    public void run() {
+//
+//		       SwingUtilities.invokeLater(new Runnable() {
+//		           public void run() {
+//		              loadingDialog.setVisible(true);
+//		           }
+//		       });
+//
+//		    };
+//		};
+		// Place tile key into a hashmap.
+		HashMap<Character, String> hmTiles = new HashMap<Character, String>();
+		while (!map.get(i).equals("#END TILE KEY#")) {
+			hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
+			i++;
+		}
+
+		i = map.indexOf("#START TILES#");
+		for (int y = 0; y < (map.indexOf("#END TILES#") - i - 1); y++) {
+			for (int x = 0; x < map.get(i + 1).length(); x++) {
+				String params = hmTiles.get(map.get(y + i + 1).charAt(x));
+				String[] parts = params.split(",");
+				String tileset = parts[0];
+				int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
+				int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
+
+				tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
+			}
+		}
+
+	}
+
+	/**
 	 * Returns the image at the given coordinates.
 	 * 
 	 * @param x
@@ -140,3 +194,5 @@ public class EditorPanel extends JPanel {
 	}
 
 }
+
+

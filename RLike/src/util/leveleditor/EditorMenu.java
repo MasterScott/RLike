@@ -22,7 +22,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 import roguelike.ui.graphics.Graphic;
@@ -63,6 +62,12 @@ public class EditorMenu extends JPanel {
 		add(btnNew, "flowx,cell 0 1 2 1");
 
 		JButton btnOpen = new JButton("Open");
+		btnOpen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				EditorUtils.loadMap("test.rlmap", parent);
+			}
+		});
 		add(btnOpen, "cell 0 1 2 1");
 
 		JButton btnSave = new JButton("Save");
