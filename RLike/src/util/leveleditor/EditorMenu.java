@@ -53,6 +53,13 @@ public class EditorMenu extends JPanel {
 		add(lblLevelEditor, "cell 0 0 2 1");
 
 		JButton btnNew = new JButton("New");
+		btnNew.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				parent.p.initialize();
+			}
+		});
+		
 		add(btnNew, "flowx,cell 0 1 2 1");
 
 		JButton btnOpen = new JButton("Open");
@@ -86,11 +93,13 @@ public class EditorMenu extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				if (parent.selectedImage != null) {
 					final ImageIcon img = new ImageIcon(parent.selectedImage);
-					for (JLabel[] lArr : parent.p.tiles) {
-						for (JLabel l : lArr) {
-							l.setIcon(img);
+					for (int x = 0; x < parent.p.tiles.length; x++) {
+						for (int y = 0; y < parent.p.tiles[0].length; y++) {
+							parent.p.tiles[x][y].setIcon(img);
+							parent.p.tileInfo[x][y] = parent.selectedTileToString();
 						}
 					}
+					
 				}
 			}
 		});
@@ -157,6 +166,7 @@ public class EditorMenu extends JPanel {
 					lblTile.setIcon(new ImageIcon(img));
 					parent.setSelectedImage(img);
 					parent.setSelectedTileset(GraphicFile.valueOf(selection));
+					parent.setSelectedTilesetCoords((y + dy) / 32, (x + dx) / 32);
 				}
 			}
 

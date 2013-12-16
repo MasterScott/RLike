@@ -18,6 +18,7 @@ public class EditorPanel extends JPanel {
 	EditorWindow parent;
 	int width = 0, height = 0;
 	JLabel[][] tiles;
+	String[][] tileInfo;
 
 	public EditorPanel() {
 		initialize();
@@ -54,6 +55,8 @@ public class EditorPanel extends JPanel {
 	 * upon instantiation and when modifying the dimensions of a map.
 	 */
 	public void initialize() {
+		removeAll(); // In case there is data in the editor.
+		
 		StringBuilder wString = new StringBuilder("[32]");
 		StringBuilder hString = new StringBuilder("[32]");
 
@@ -73,9 +76,8 @@ public class EditorPanel extends JPanel {
 		setLayout(new MigLayout("", wString.toString(), hString.toString()));
 
 		tiles = new JLabel[width][height];
-
-		// Delete
-
+		tileInfo = new String[width][height];
+		
 		BufferedImage img = new BufferedImage(32, 32, BufferedImage.TYPE_INT_RGB);
 
 		for (int i = 0; i < 32; i++) {
@@ -94,6 +96,8 @@ public class EditorPanel extends JPanel {
 			}
 
 		}
+		
+		revalidate();
 	}
 
 	/**

@@ -25,11 +25,12 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 
 	EditorMenu m;
 	EditorPanel p;
-	int xStart = 0, yStart = 0;
+	int xStart = 0, yStart = 0, row = 0, col = 0;
 	Image selectedImage;
 	GraphicFile gf;
 
 	public EditorWindow() {
+		setTitle("Level Editor");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 
@@ -140,7 +141,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	public void setSelectedTileset(GraphicFile gf) {
 		this.gf = gf;
 	}
-	
+
 	/**
 	 * Called upon mouse click to update the current tile.
 	 */
@@ -160,6 +161,8 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(newImage));
 			} else
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
+			
+			p.tileInfo[point.x][point.y] = selectedTileToString();
 		}
 	}
 
@@ -174,5 +177,22 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		BufferedImage bimg = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 		bimg.getGraphics().drawImage(img, 0, 0, null);
 		return bimg;
+	}
+
+	/**
+	 * Sets the row and column of the currently selected tile.
+	 * 
+	 * @param row
+	 *            Row of selected tile.
+	 * @param col
+	 *            Column of selected tile.
+	 */
+	public void setSelectedTilesetCoords(int row, int col) {
+		this.row = row;
+		this.col = col;
+	}
+	
+	public String selectedTileToString() {
+		return gf.name() + ", " + row + ", " + col;
 	}
 }
