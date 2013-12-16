@@ -66,6 +66,12 @@ public class EditorMenu extends JPanel {
 		add(btnOpen, "cell 0 1 2 1");
 
 		JButton btnSave = new JButton("Save");
+		btnSave.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				parent.saveMap();
+			}
+		});
 		add(btnSave, "cell 0 1 2 1");
 
 		JButton btnSaveAs = new JButton("Save As");

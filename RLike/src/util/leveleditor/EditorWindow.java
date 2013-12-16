@@ -7,6 +7,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -161,7 +164,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(newImage));
 			} else
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
-			
+
 			p.tileInfo[point.x][point.y] = selectedTileToString();
 		}
 	}
@@ -191,8 +194,38 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		this.row = row;
 		this.col = col;
 	}
-	
+
+	/**
+	 * Returns a string representation of the selected tile.
+	 * 
+	 * @return String representation of the selected tile.
+	 */
 	public String selectedTileToString() {
 		return gf.name() + ", " + row + ", " + col;
+	}
+
+	public void saveMap() {
+		HashMap<String, Character> hm = new HashMap<String, Character>();
+
+		char c = 97; // 97 is the value for 'a'.
+		for (String[] sArr : p.tileInfo) {
+			for (String s : sArr) {
+				if (!hm.containsKey(s)) {
+					hm.put(s, c);
+					c++;
+				}
+			}
+		}
+
+		/*
+		 * Idea is to use the key/value pairs to store definitions in the map
+		 * file, then use the character key/value to 'draw' the map to text.
+		 */
+		Iterator it = hm.entrySet().iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry) it.next();
+			System.out.println(pairs.getKey() + " = " + pairs.getValue());
+			it.remove(); // avoids a ConcurrentModificationException
+		}
 	}
 }
