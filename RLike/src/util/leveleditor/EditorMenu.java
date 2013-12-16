@@ -21,11 +21,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import net.miginfocom.swing.MigLayout;
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
-import javax.swing.SwingConstants;
 
 public class EditorMenu extends JPanel {
 
@@ -78,37 +79,54 @@ public class EditorMenu extends JPanel {
 
 			}
 		});
+
+		JButton btnSetBackgroundTo = new JButton("Set Background to Selected Tile");
+		btnSetBackgroundTo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (parent.selectedImage != null) {
+					final ImageIcon img = new ImageIcon(parent.selectedImage);
+					for (JLabel[] lArr : parent.p.tiles) {
+						for (JLabel l : lArr) {
+							l.setIcon(img);
+						}
+					}
+				}
+			}
+		});
+		
+		add(btnSetBackgroundTo, "cell 0 3 2 1,alignx center");
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
 		list.setVisibleRowCount(-1);
 		add(list, "flowx,cell 0 4,alignx left");
 
 		JLabel lblWidth = new JLabel("Width: ");
-		add(lblWidth, "flowx,cell 0 3 2 1");
+		add(lblWidth, "flowx,cell 0 7 2 1");
 
 		textFieldWidth = new JTextField();
 		textFieldWidth.setPreferredSize(new Dimension(24, 24));
-		add(textFieldWidth, "cell 0 3 2 1");
+		add(textFieldWidth, "cell 0 7 2 1");
 		textFieldWidth.setColumns(3);
 
 		JLabel lblHeight = new JLabel("Height:");
-		add(lblHeight, "cell 0 3 2 1");
+		add(lblHeight, "cell 0 7 2 1");
 
 		textFieldHeight = new JTextField();
 		textFieldHeight.setPreferredSize(new Dimension(24, 24));
-		add(textFieldHeight, "cell 0 3 2 1");
+		add(textFieldHeight, "cell 0 7 2 1");
 		textFieldHeight.setColumns(3);
 
 		lblTileset = new JLabel();
-		Dimension d = new Dimension(250, 250);
-		
+		Dimension d = new Dimension(300, 250);
+
 		Box verticalBox = Box.createVerticalBox();
 		add(verticalBox, "flowx,cell 1 4,alignx center,aligny top");
-		
+
 		JLabel lblSelectedTile = new JLabel("Selected Tile:");
 		lblSelectedTile.setHorizontalAlignment(SwingConstants.CENTER);
 		verticalBox.add(lblSelectedTile);
-		
+
 		lblTile = new JLabel();
 		lblTile.setHorizontalAlignment(SwingConstants.CENTER);
 		verticalBox.add(lblTile);
@@ -164,8 +182,6 @@ public class EditorMenu extends JPanel {
 
 		lblY = new JLabel("Y: ");
 		add(lblY, "cell 0 8 2 1");
-		
-		
 
 		// WindowBuilder can't parse this.
 		// $hide>>$
@@ -214,7 +230,8 @@ public class EditorMenu extends JPanel {
 	/**
 	 * Sets tileset displayed to the specified value.
 	 * 
-	 * @param name Name of GraphicFile.
+	 * @param name
+	 *            Name of GraphicFile.
 	 */
 	public void setTileset(String name) {
 		Image img = Graphic.getImage(GraphicFile.valueOf(name).fileName);

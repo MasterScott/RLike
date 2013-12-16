@@ -30,7 +30,7 @@ public class Graphic {
 		DUNGEON("tilesets\\dg_dungeon32.gif", false), 
 		EDGING1("tilesets\\dg_edging132.gif", false), 
 		EDGING2("tilesets\\dg_edging232.gif", false), 
-		EDGING3("tilesets\\dg_edging332.gif", false), 
+		EDGING3("tilesets\\dg_edging332.gif", true), 
 		EFFECTS("tilesets\\dg_effects32.gif", true), 
 		EXTRA("tilesets\\dg_extra132.gif", false), 
 		FEATURES("tilesets\\dg_features32.gif", false), 
