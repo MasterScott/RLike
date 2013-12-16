@@ -2,7 +2,12 @@ package util.leveleditor;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -138,72 +143,109 @@ public class EditorPanel extends JPanel {
 		initialize();
 
 		final ArrayList<String> map = mapData;
-		final EditorPanel ep = this;
-		
+		final LoadingDialog ld = new LoadingDialog();
+
+		final SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
+
+			@Override
+			protected Void doInBackground() throws Exception {
+				ld.execute();
+				return null;
+			}
+
+		};
+
+		sw.execute();
+
 		final SwingWorker<String, String> sw2 = new SwingWorker<String, String>() {
 
 			@Override
 			protected String doInBackground() throws Exception {
 				int i = map.indexOf("#START TILE KEY#");
-	       		i++;
-	       		
-	        	// Place tile key into a hashmap.
-	       		HashMap<Character, String> hmTiles = new HashMap<Character, String>();
-	       		while (!map.get(i).equals("#END TILE KEY#")) {
-	       			hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
-	       			i++;
-	       		}
+				i++;
 
-	       		i = map.indexOf("#START TILES#");
-	       		for (int y = 0; y < (map.indexOf("#END TILES#") - i - 1); y++) {
-	       			for (int x = 0; x < map.get(i + 1).length(); x++) {
-	       				String params = hmTiles.get(map.get(y + i + 1).charAt(x));
-	       				String[] parts = params.split(",");
-	       				String tileset = parts[0];
-	       				int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
-	       				int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
-
-	       				tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
-	       			}
-	       		}
-				return null;
-			}
-			
-		};
-		
-		sw2.execute();
-		
-		SwingWorker<String, String> sw = new SwingWorker<String, String>() {
-
-			@Override
-			protected String doInBackground() throws Exception {
-				JOptionPane.showMessageDialog(ep, "Loading...");
-				while (!sw2.isDone()) {
-					
+				// Place tile key into a hashmap.
+				HashMap<Character, String> hmTiles = new HashMap<Character, String>();
+				while (!map.get(i).equals("#END TILE KEY#")) {
+					hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
+					i++;
 				}
-				
-				
+
+				i = map.indexOf("#START TILES#");
+				for (int y = 0; y < (map.indexOf("#END TILES#") - i - 1); y++) {
+					for (int x = 0; x < map.get(i + 1).length(); x++) {
+						String params = hmTiles.get(map.get(y + i + 1).charAt(x));
+						String[] parts = params.split(",");
+						String tileset = parts[0];
+						int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
+						int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
+
+						tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
+						ld.i = (int) ((((double) y * tiles.length + x) / ((double) tiles.length * tiles[0].length)) * 100);
+					}
+				}
 				return null;
 			}
-			
+
 		};
-		
-		sw.execute();		
+
+		sw2.execute();
 
 	}
-	
-//	private class LoadingDialog extends SwingWorker<Void, Void> {
-//
-//		private JProgressBar pb;
-//        private JDialog dialog;
-//        
-//		@Override
-//		protected Void doInBackground() throws Exception {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-//		
-//	}
+
+	private class LoadingDialog extends SwingWorker<Void, Void> {
+
+		private JProgressBar pb;
+		private JDialog dialog;
+		public int i;
+
+		public LoadingDialog() {
+			i = 0;
+
+			addPropertyChangeListener(new PropertyChangeListener() {
+				@Override
+				public void propertyChange(PropertyChangeEvent evt) {
+					if ("progress".equalsIgnoreCase(evt.getPropertyName())) {
+						if (dialog == null) {
+							dialog = new JDialog();
+							dialog.setTitle("Processing");
+							dialog.setLayout(new GridBagLayout());
+							dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+							GridBagConstraints gbc = new GridBagConstraints();
+							gbc.insets = new Insets(2, 2, 2, 2);
+							gbc.weightx = 1;
+							gbc.gridy = 0;
+							dialog.add(new JLabel("Processing..."), gbc);
+							pb = new JProgressBar();
+							gbc.gridy = 1;
+							dialog.add(pb, gbc);
+							dialog.pack();
+							dialog.setLocationRelativeTo(null);
+							dialog.setVisible(true);
+						}
+						pb.setValue(getProgress());
+					}
+				}
+
+			});
+		}
+
+		@Override
+		protected void done() {
+			if (dialog != null) {
+				dialog.dispose();
+			}
+		}
+
+		@Override
+		protected Void doInBackground() throws Exception {
+			while (i < 99) {
+				setProgress(i);
+			}
+			return null;
+		}
+
+	}
 
 	/**
 	 * Returns the image at the given coordinates.
@@ -225,5 +267,3 @@ public class EditorPanel extends JPanel {
 	}
 
 }
-
-
