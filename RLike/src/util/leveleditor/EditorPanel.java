@@ -8,10 +8,12 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
+import javax.swing.JProgressBar;
+import javax.swing.SwingWorker;
 
 import net.miginfocom.swing.MigLayout;
 import roguelike.ui.graphics.Graphic;
@@ -132,47 +134,76 @@ public class EditorPanel extends JPanel {
 	 * @param map
 	 *            ArrayList of Strings containing the data.
 	 */
-	public void loadMapFromText(ArrayList<String> map) {
+	public void loadMapFromText(ArrayList<String> mapData) {
 		initialize();
 
-		int i = map.indexOf("#START TILE KEY#");
-		i++;
+		final ArrayList<String> map = mapData;
+		final EditorPanel ep = this;
 		
-//		JOptionPane.showMessageDialog(this, "Loading...");
-//
-//		new Thread() {
-//			@Override
-//		    public void run() {
-//
-//		       SwingUtilities.invokeLater(new Runnable() {
-//		           public void run() {
-//		              loadingDialog.setVisible(true);
-//		           }
-//		       });
-//
-//		    };
-//		};
-		// Place tile key into a hashmap.
-		HashMap<Character, String> hmTiles = new HashMap<Character, String>();
-		while (!map.get(i).equals("#END TILE KEY#")) {
-			hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
-			i++;
-		}
+		final SwingWorker<String, String> sw2 = new SwingWorker<String, String>() {
 
-		i = map.indexOf("#START TILES#");
-		for (int y = 0; y < (map.indexOf("#END TILES#") - i - 1); y++) {
-			for (int x = 0; x < map.get(i + 1).length(); x++) {
-				String params = hmTiles.get(map.get(y + i + 1).charAt(x));
-				String[] parts = params.split(",");
-				String tileset = parts[0];
-				int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
-				int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
+			@Override
+			protected String doInBackground() throws Exception {
+				int i = map.indexOf("#START TILE KEY#");
+	       		i++;
+	       		
+	        	// Place tile key into a hashmap.
+	       		HashMap<Character, String> hmTiles = new HashMap<Character, String>();
+	       		while (!map.get(i).equals("#END TILE KEY#")) {
+	       			hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
+	       			i++;
+	       		}
 
-				tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
+	       		i = map.indexOf("#START TILES#");
+	       		for (int y = 0; y < (map.indexOf("#END TILES#") - i - 1); y++) {
+	       			for (int x = 0; x < map.get(i + 1).length(); x++) {
+	       				String params = hmTiles.get(map.get(y + i + 1).charAt(x));
+	       				String[] parts = params.split(",");
+	       				String tileset = parts[0];
+	       				int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
+	       				int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
+
+	       				tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
+	       			}
+	       		}
+				return null;
 			}
-		}
+			
+		};
+		
+		sw2.execute();
+		
+		SwingWorker<String, String> sw = new SwingWorker<String, String>() {
+
+			@Override
+			protected String doInBackground() throws Exception {
+				JOptionPane.showMessageDialog(ep, "Loading...");
+				while (!sw2.isDone()) {
+					
+				}
+				
+				
+				return null;
+			}
+			
+		};
+		
+		sw.execute();		
 
 	}
+	
+//	private class LoadingDialog extends SwingWorker<Void, Void> {
+//
+//		private JProgressBar pb;
+//        private JDialog dialog;
+//        
+//		@Override
+//		protected Void doInBackground() throws Exception {
+//			// TODO Auto-generated method stub
+//			return null;
+//		}
+//		
+//	}
 
 	/**
 	 * Returns the image at the given coordinates.
