@@ -157,10 +157,10 @@ public class EditorPanel extends JPanel {
 
 		sw.execute();
 
-		final SwingWorker<String, String> sw2 = new SwingWorker<String, String>() {
+		final SwingWorker<Void, Void> sw2 = new SwingWorker<Void, Void>() {
 
 			@Override
-			protected String doInBackground() throws Exception {
+			protected Void doInBackground() throws Exception {
 				int i = map.indexOf("#START TILE KEY#");
 				i++;
 
@@ -170,7 +170,19 @@ public class EditorPanel extends JPanel {
 					hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
 					i++;
 				}
+				
+				i += 2; // Object key starts two lines after end of tile key.
+				
+				// Place object key into a hashmap.
+				HashMap<Character, String> hmObjects = new HashMap<Character, String>();
+				while (!map.get(i).equals("#END OBJECT KEY#")) {
+					hmObjects.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
+					i++;
+				}
 
+				/*
+				 * Load background tiles.
+				 */
 				i = map.indexOf("#START TILES#");
 				for (int y = 0; y < (map.indexOf("#END TILES#") - i - 1); y++) {
 					for (int x = 0; x < map.get(i + 1).length(); x++) {
@@ -181,9 +193,31 @@ public class EditorPanel extends JPanel {
 						int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
 
 						tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
+						tileInfo[x][y] = parts[0] + ", " + row + ", " + col;
 						ld.i = (int) ((((double) y * tiles.length + x) / ((double) tiles.length * tiles[0].length)) * 100);
 					}
 				}
+				
+				/*
+				 * Load objects.
+				 */
+//				ld.setLabelText("Loading objects...");
+//				i = map.indexOf("#START OBJECTS#");
+//				for (int y = 0; y < (map.indexOf("#END OBJECTS#") - i - 1); y++) {
+//					for (int x = 0; x < map.get(i + 1).length(); x++) {
+//						String params = hmTiles.get(map.get(y + i + 1).charAt(x));
+//						String[] parts = params.split(",");
+//						String tileset = parts[0];
+//						int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
+//						int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
+//
+//						tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
+//						tileInfo[x][y] = parts[0] + ", " + row + ", " + col;
+//						ld.i = (int) ((((double) y * tiles.length + x) / ((double) tiles.length * tiles[0].length)) * 100);
+//					}
+//				}
+				
+				ld.i = 100;
 				return null;
 			}
 
@@ -197,6 +231,7 @@ public class EditorPanel extends JPanel {
 
 		private JProgressBar pb;
 		private JDialog dialog;
+		private JLabel label;
 		public int i;
 
 		public LoadingDialog() {
@@ -215,7 +250,8 @@ public class EditorPanel extends JPanel {
 							gbc.insets = new Insets(2, 2, 2, 2);
 							gbc.weightx = 1;
 							gbc.gridy = 0;
-							dialog.add(new JLabel("Processing..."), gbc);
+							label = new JLabel("Loading background...");
+							dialog.add(label, gbc);
 							pb = new JProgressBar();
 							gbc.gridy = 1;
 							dialog.add(pb, gbc);
@@ -229,6 +265,10 @@ public class EditorPanel extends JPanel {
 
 			});
 		}
+		
+		public void setLabelText(String text) {
+			label.setText(text);
+		}
 
 		@Override
 		protected void done() {
@@ -239,7 +279,7 @@ public class EditorPanel extends JPanel {
 
 		@Override
 		protected Void doInBackground() throws Exception {
-			while (i < 99) {
+			while (i < 100) {
 				setProgress(i);
 			}
 			return null;
