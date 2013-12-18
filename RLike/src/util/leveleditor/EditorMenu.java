@@ -29,6 +29,12 @@ import net.miginfocom.swing.MigLayout;
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
+/**
+ * Extension of JPanel that houses all menu operations for the level editor.
+ * 
+ * @author Dan
+ * 
+ */
 public class EditorMenu extends JPanel {
 
 	private static final long serialVersionUID = -5323835129443241111L;
@@ -46,12 +52,6 @@ public class EditorMenu extends JPanel {
 		setLayout(new MigLayout("", "[][]", "[18.00][28.00][][][][][][][]"));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setMaximumSize(new Dimension(350, 900));
-		
-
-		ArrayList<String> arr = new ArrayList<String>();
-		for (GraphicFile gf : GraphicFile.values()) {
-			arr.add(gf.name());
-		}
 
 		JLabel lblLevelEditor = new JLabel("Level Editor");
 		add(lblLevelEditor, "cell 0 0 2 1");
@@ -63,7 +63,7 @@ public class EditorMenu extends JPanel {
 				parent.p.initialize();
 			}
 		});
-		
+
 		add(btnNew, "flowx,cell 0 1 2 1");
 
 		final JButton btnOpen = new JButton("Open");
@@ -105,6 +105,15 @@ public class EditorMenu extends JPanel {
 		separator.setForeground(Color.BLACK);
 		add(separator, "cell 0 2 2 1,growx");
 
+		// Create a list of GraphicFile names so this can be used to create a
+		// graphical representation later.
+		ArrayList<String> arr = new ArrayList<String>();
+		for (GraphicFile gf : GraphicFile.values()) {
+			arr.add(gf.name());
+		}
+
+		// Warnings shouldn't matter, since the only type we're passing is
+		// String.
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		final JList list = new JList(arr.toArray());
 		list.addMouseListener(new MouseAdapter() {
@@ -121,19 +130,10 @@ public class EditorMenu extends JPanel {
 		btnSetBackgroundTo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				if (parent.selectedImage != null) {
-					final ImageIcon img = new ImageIcon(parent.selectedImage);
-					for (int x = 0; x < parent.p.tiles.length; x++) {
-						for (int y = 0; y < parent.p.tiles[0].length; y++) {
-							parent.p.tiles[x][y].setIcon(img);
-							parent.p.tileInfo[x][y] = parent.selectedTileToString();
-						}
-					}
-					
-				}
+				parent.p.setAllBackgroundTiles();
 			}
 		});
-		
+
 		add(btnSetBackgroundTo, "cell 0 3 2 1,alignx center");
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -171,6 +171,7 @@ public class EditorMenu extends JPanel {
 		verticalBox.add(lblTile);
 		add(lblTileset, "cell 0 5 2 1");
 
+		// WindowBuilder can't parse this.
 		// $hide>>$
 		final JScrollPane tilesetScroller = new JScrollPane(lblTileset);
 		tilesetScroller.setPreferredSize(d);

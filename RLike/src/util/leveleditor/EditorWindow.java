@@ -20,11 +20,15 @@ import javax.swing.border.EmptyBorder;
 
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
+/**
+ * Extension of JFrame that houses the menu and drawing panel components of the
+ * level editor.
+ * 
+ * @author Dan
+ * 
+ */
 public class EditorWindow extends JFrame implements MouseMotionListener, MouseListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2789411093618047798L;
 
 	EditorMenu m;
@@ -32,12 +36,17 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	int xStart = 0, yStart = 0, row = 0, col = 0;
 	Image selectedImage;
 	GraphicFile gf;
+	JScrollPane tilesetScroller;
 
+	/**
+	 * Constructs a new instance of an EditorWindow.
+	 */
 	public EditorWindow() {
 		setTitle("Level Editor");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
 
+		// Initialize menu, add transparent border to act as padding.
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(2, 2, 2, 2));
 		getContentPane().add(panel);
@@ -47,36 +56,49 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 
 		m.setParent(this);
 
+		// Initialize drawing panel. Add transparent border to act as padding.
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new EmptyBorder(2, 2, 2, 2));
 		getContentPane().add(panel_1);
 		p = new EditorPanel();
 		panel_1.add(p);
-		//panel_1.setPreferredSize(p.getPreferredSize());
-		
 
 		p.setParent(this);
-		
-		JScrollPane tilesetScroller = new JScrollPane(panel_1);
+
+		// Allow drawing panel to scroll if window size is too small to display
+		// everything.
+		tilesetScroller = new JScrollPane(panel_1);
 		tilesetScroller.setPreferredSize(p.getPreferredSize());
 		add(tilesetScroller);
 
-		addMouseMotionListener(this);
-		addMouseListener(this);
+		tilesetScroller.addMouseListener(this);
+		tilesetScroller.addMouseMotionListener(this);
+
 	}
 
+	/**
+	 * Updates the displayed coordinates to the values specified.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 */
 	private void updateCoords(int x, int y) {
 		updateXStart();
 		updateYStart();
 
 		if (x >= xStart && y >= yStart) {
+			int dx = tilesetScroller.getHorizontalScrollBar().getValue();
+			int dy = tilesetScroller.getVerticalScrollBar().getValue();
+
 			/*
 			 * Simplified equations. 31 * (x - xStart) / 1024 is the same as (x
 			 * - xStart - (x - xStart) / 32) / 32, which just gets the current
 			 * position minus the position the grid starts at and accounts for a
 			 * one pixel space between each tile.
 			 */
-			m.setCoords(31 * (x - xStart) / 1024, 31 * (y - yStart) / 1024 - 1);
+			m.setCoords(31 * (x - xStart + dx) / 1024, 31 * (y - yStart + dy) / 1024 - 1);
 		} else {
 			m.setCoords(0, 0);
 		}
@@ -117,7 +139,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	 */
 	private void updateXStart() {
 		if (xStart == 0)
-			xStart = m.getBounds().x + m.getBounds().width + 30;
+			xStart = 14; // TODO Not sure how to set dynamically yet.
 	}
 
 	/**
@@ -125,7 +147,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 	 */
 	private void updateYStart() {
 		if (yStart == 0)
-			yStart = p.getBounds().y + 5;
+			yStart = p.getBounds().y - 24;
 	}
 
 	@Override
@@ -175,9 +197,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 				p.tiles[point.x][point.y].setIcon(new ImageIcon(selectedImage));
 				p.tileInfo[point.x][point.y] = selectedTileToString();
 			}
-				
 
-			
 		}
 	}
 
@@ -216,10 +236,17 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		return gf.name() + ", " + row + ", " + col;
 	}
 
+	/**
+	 * Saves map to the specified file.
+	 * 
+	 * @param file
+	 *            File to save map to.
+	 */
 	public void saveMap(File file) {
 		HashMap<String, Character> hmTiles = new HashMap<String, Character>();
 		HashMap<String, Character> hmObjects = new HashMap<String, Character>();
 
+		// Assign each background tile a unique value.
 		char c = 97; // 97 is the value for 'a'.
 		for (String[] sArr : p.tileInfo) {
 			for (String s : sArr) {
@@ -229,7 +256,8 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 				}
 			}
 		}
-		
+
+		// Assign each foreground object a unique value.
 		c = 97; // 97 is the value for 'a'.
 		for (String[] sArr : p.objectInfo) {
 			for (String s : sArr) {

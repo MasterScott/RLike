@@ -147,6 +147,7 @@ public class EditorPanel extends JPanel {
 		final LoadingDialog ld = new LoadingDialog();
 		final EditorPanel ep = this;
 
+		// Define loading dialog.
 		final SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
 			@Override
@@ -154,11 +155,11 @@ public class EditorPanel extends JPanel {
 				ld.execute();
 				return null;
 			}
-
 		};
 
-		sw.execute();
+		sw.execute(); // Start loading dialog.
 
+		// Define actual loading process.
 		final SwingWorker<Void, Void> sw2 = new SwingWorker<Void, Void>() {
 
 			@Override
@@ -214,10 +215,11 @@ public class EditorPanel extends JPanel {
 							int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
 							int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
 
+							// TODO Can probably make this faster.
 							BufferedImage background = EditorUtils.getImageAt(x, y, ep);
 							BufferedImage foreground = EditorUtils.convertImage(
 									Graphic.getImage(GraphicFile.valueOf(tileset), row, col), ep);
-							
+
 							tiles[x][y].setIcon(new ImageIcon(EditorUtils.mergeImages(background, foreground, ep)));
 							objectInfo[x][y] = parts[0] + ", " + row + ", " + col;
 						}
@@ -229,20 +231,29 @@ public class EditorPanel extends JPanel {
 				ld.i = 100;
 				return null;
 			}
-
 		};
 
-		sw2.execute();
+		sw2.execute(); // Start actual loading process.
 
 	}
 
+	/**
+	 * Inner class used to display a dialog with loading time information. Runs
+	 * in a separate thread.
+	 * 
+	 * @author Dan
+	 * 
+	 */
 	private class LoadingDialog extends SwingWorker<Void, Void> {
 
 		private JProgressBar pb;
-		private JDialog dialog;
+		private JDialog d;
 		private JLabel label;
 		public int i;
 
+		/**
+		 * Create a new LoadingDialog.
+		 */
 		public LoadingDialog() {
 			i = 0;
 
@@ -250,23 +261,27 @@ public class EditorPanel extends JPanel {
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					if ("progress".equalsIgnoreCase(evt.getPropertyName())) {
-						if (dialog == null) {
-							dialog = new JDialog();
-							dialog.setTitle("Processing");
-							dialog.setLayout(new GridBagLayout());
-							dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+						if (d == null) {
+
+							// Create dialog.
+							d = new JDialog();
+							d.setTitle("Processing");
+							d.setLayout(new GridBagLayout());
+							d.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 							GridBagConstraints gbc = new GridBagConstraints();
 							gbc.insets = new Insets(2, 2, 2, 2);
 							gbc.weightx = 1;
 							gbc.gridy = 0;
+
+							// Add label and progress bar to dialog.
 							label = new JLabel("Loading background...");
-							dialog.add(label, gbc);
+							d.add(label, gbc);
 							pb = new JProgressBar();
 							gbc.gridy = 1;
-							dialog.add(pb, gbc);
-							dialog.pack();
-							dialog.setLocationRelativeTo(null);
-							dialog.setVisible(true);
+							d.add(pb, gbc);
+							d.pack();
+							d.setLocationRelativeTo(null);
+							d.setVisible(true);
 						}
 						pb.setValue(getProgress());
 					}
@@ -275,20 +290,26 @@ public class EditorPanel extends JPanel {
 			});
 		}
 
+		/**
+		 * Change currently displayed text.
+		 * 
+		 * @param text
+		 *            Text to display.
+		 */
 		public void setLabelText(String text) {
 			label.setText(text);
 		}
 
 		@Override
 		protected void done() {
-			if (dialog != null) {
-				dialog.dispose();
+			if (d != null) {
+				d.dispose();
 			}
 		}
 
 		@Override
 		protected Void doInBackground() throws Exception {
-			while (i < 100) {
+			while (i < 100) { // Once i = 100, loading is complete.
 				setProgress(i);
 			}
 			return null;
@@ -315,4 +336,19 @@ public class EditorPanel extends JPanel {
 		return bi;
 	}
 
+	/**
+	 * Sets all background tiles to the currently selected tile.
+	 */
+	public void setAllBackgroundTiles() {
+		if (parent.selectedImage != null) {
+			final ImageIcon img = new ImageIcon(parent.selectedImage);
+			for (int x = 0; x < tiles.length; x++) {
+				for (int y = 0; y < tiles[0].length; y++) {
+					tiles[x][y].setIcon(img);
+					tileInfo[x][y] = parent.selectedTileToString();
+				}
+			}
+
+		}
+	}
 }
