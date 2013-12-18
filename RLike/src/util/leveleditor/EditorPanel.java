@@ -1,6 +1,7 @@
 package util.leveleditor;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +16,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
@@ -46,6 +46,7 @@ public class EditorPanel extends JPanel {
 	 */
 	public EditorPanel() {
 		initialize();
+		setPreferredSize(new Dimension((32 * width) + 54, (32 * height) + 42));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		setBackground(Color.BLACK);
 		setFocusable(true);

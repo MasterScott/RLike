@@ -8,12 +8,14 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -34,6 +36,7 @@ public class EditorMenu extends JPanel {
 	private JTextField textFieldHeight;
 	private JLabel lblX, lblY, lblTileset, lblTile;
 	private EditorWindow parent;
+	private JFileChooser fc = new JFileChooser();
 	int x, y;
 
 	/**
@@ -42,6 +45,8 @@ public class EditorMenu extends JPanel {
 	public EditorMenu() {
 		setLayout(new MigLayout("", "[][]", "[18.00][28.00][][][][][][][]"));
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		setMaximumSize(new Dimension(350, 900));
+		
 
 		ArrayList<String> arr = new ArrayList<String>();
 		for (GraphicFile gf : GraphicFile.values()) {
@@ -61,11 +66,15 @@ public class EditorMenu extends JPanel {
 		
 		add(btnNew, "flowx,cell 0 1 2 1");
 
-		JButton btnOpen = new JButton("Open");
+		final JButton btnOpen = new JButton("Open");
 		btnOpen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				EditorUtils.loadMap("test.rlmap", parent);
+				int returnVal = fc.showOpenDialog(btnOpen);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					EditorUtils.loadMap(file, parent);
+				}
 			}
 		});
 		add(btnOpen, "cell 0 1 2 1");
@@ -74,12 +83,22 @@ public class EditorMenu extends JPanel {
 		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				parent.saveMap();
+				parent.saveMap(new File("test.rlmap")); // TODO Change this.
 			}
 		});
 		add(btnSave, "cell 0 1 2 1");
 
-		JButton btnSaveAs = new JButton("Save As");
+		final JButton btnSaveAs = new JButton("Save As");
+		btnSaveAs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int returnVal = fc.showOpenDialog(btnSaveAs);
+				if (returnVal == JFileChooser.APPROVE_OPTION) {
+					File file = fc.getSelectedFile();
+					parent.saveMap(file);
+				}
+			}
+		});
 		add(btnSaveAs, "cell 0 1 2 1");
 
 		JSeparator separator = new JSeparator();

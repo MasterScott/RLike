@@ -1,5 +1,6 @@
 package util.leveleditor;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -7,12 +8,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import roguelike.ui.graphics.Graphic.GraphicFile;
@@ -38,6 +41,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(2, 2, 2, 2));
 		getContentPane().add(panel);
+		panel.setMaximumSize(new Dimension(360, 900));
 		m = new EditorMenu();
 		panel.add(m);
 
@@ -48,8 +52,14 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		getContentPane().add(panel_1);
 		p = new EditorPanel();
 		panel_1.add(p);
+		//panel_1.setPreferredSize(p.getPreferredSize());
+		
 
 		p.setParent(this);
+		
+		JScrollPane tilesetScroller = new JScrollPane(panel_1);
+		tilesetScroller.setPreferredSize(p.getPreferredSize());
+		add(tilesetScroller);
 
 		addMouseMotionListener(this);
 		addMouseListener(this);
@@ -206,7 +216,7 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 		return gf.name() + ", " + row + ", " + col;
 	}
 
-	public void saveMap() {
+	public void saveMap(File file) {
 		HashMap<String, Character> hmTiles = new HashMap<String, Character>();
 		HashMap<String, Character> hmObjects = new HashMap<String, Character>();
 
@@ -230,6 +240,6 @@ public class EditorWindow extends JFrame implements MouseMotionListener, MouseLi
 			}
 		}
 
-		EditorUtils.saveMap(p.tileInfo, p.objectInfo, hmTiles, hmObjects);
+		EditorUtils.saveMap(p.tileInfo, p.objectInfo, hmTiles, hmObjects, file);
 	}
 }

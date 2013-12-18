@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,13 +36,14 @@ public class EditorUtils {
 	 *            HashMap tying descriptions of tiles to single characters.
 	 * @param objectDef
 	 *            HashMap tying descriptions of objects to single characters.
+	 * @param file File to save this map to.
 	 */
 	public static void saveMap(String[][] tiles, String[][] objects, HashMap<String, Character> tileDef,
-			HashMap<String, Character> objectDef) {
+			HashMap<String, Character> objectDef, File file) {
 		PrintWriter writer = null;
 
 		try {
-			writer = new PrintWriter("test.rlmap", "UTF-8");
+			writer = new PrintWriter(file, "UTF-8");
 
 			/*
 			 * Print key for tiles.
@@ -104,16 +106,16 @@ public class EditorUtils {
 	 * Loads map from the file given by filename into the specified
 	 * EditorWindow.
 	 * 
-	 * @param filename
+	 * @param file
 	 *            File to load map from.
 	 * @param w
 	 *            EditorWindow to load map into.
 	 */
-	public static void loadMap(String filename, EditorWindow w) {
+	public static void loadMap(File file, EditorWindow w) {
 		BufferedReader in = null;
 
 		try {
-			in = new BufferedReader(new FileReader(filename));
+			in = new BufferedReader(new FileReader(file));
 
 			ArrayList<String> lines = new ArrayList<String>();
 			String line = "";
