@@ -144,6 +144,7 @@ public class EditorPanel extends JPanel {
 
 		final ArrayList<String> map = mapData;
 		final LoadingDialog ld = new LoadingDialog();
+		final EditorPanel ep = this;
 
 		final SwingWorker<Void, Void> sw = new SwingWorker<Void, Void>() {
 
@@ -170,9 +171,9 @@ public class EditorPanel extends JPanel {
 					hmTiles.put(map.get(i).charAt(0), map.get(i).substring(3, map.get(i).length()));
 					i++;
 				}
-				
+
 				i += 2; // Object key starts two lines after end of tile key.
-				
+
 				// Place object key into a hashmap.
 				HashMap<Character, String> hmObjects = new HashMap<Character, String>();
 				while (!map.get(i).equals("#END OBJECT KEY#")) {
@@ -197,26 +198,33 @@ public class EditorPanel extends JPanel {
 						ld.i = (int) ((((double) y * tiles.length + x) / ((double) tiles.length * tiles[0].length)) * 100);
 					}
 				}
-				
+
 				/*
 				 * Load objects.
 				 */
-//				ld.setLabelText("Loading objects...");
-//				i = map.indexOf("#START OBJECTS#");
-//				for (int y = 0; y < (map.indexOf("#END OBJECTS#") - i - 1); y++) {
-//					for (int x = 0; x < map.get(i + 1).length(); x++) {
-//						String params = hmTiles.get(map.get(y + i + 1).charAt(x));
-//						String[] parts = params.split(",");
-//						String tileset = parts[0];
-//						int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
-//						int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
-//
-//						tiles[x][y].setIcon(new ImageIcon(Graphic.getImage(GraphicFile.valueOf(tileset), row, col)));
-//						tileInfo[x][y] = parts[0] + ", " + row + ", " + col;
-//						ld.i = (int) ((((double) y * tiles.length + x) / ((double) tiles.length * tiles[0].length)) * 100);
-//					}
-//				}
-				
+				ld.setLabelText("Loading objects...");
+				i = map.indexOf("#START OBJECTS#");
+				for (int y = 0; y < (map.indexOf("#END OBJECTS#") - i - 1); y++) {
+					for (int x = 0; x < map.get(i + 1).length(); x++) {
+						String params = hmObjects.get(map.get(y + i + 1).charAt(x));
+						if (!params.equals("null")) {
+							String[] parts = params.split(",");
+							String tileset = parts[0];
+							int row = Integer.valueOf(parts[1].replaceAll("[ ]", ""));
+							int col = Integer.valueOf(parts[2].replaceAll("[ ]", ""));
+
+							BufferedImage background = EditorUtils.getImageAt(x, y, ep);
+							BufferedImage foreground = EditorUtils.convertImage(
+									Graphic.getImage(GraphicFile.valueOf(tileset), row, col), ep);
+							
+							tiles[x][y].setIcon(new ImageIcon(EditorUtils.mergeImages(background, foreground, ep)));
+							objectInfo[x][y] = parts[0] + ", " + row + ", " + col;
+						}
+
+						ld.i = (int) ((((double) y * tiles.length + x) / ((double) tiles.length * tiles[0].length)) * 100);
+					}
+				}
+
 				ld.i = 100;
 				return null;
 			}
@@ -265,7 +273,7 @@ public class EditorPanel extends JPanel {
 
 			});
 		}
-		
+
 		public void setLabelText(String text) {
 			label.setText(text);
 		}
@@ -300,7 +308,7 @@ public class EditorPanel extends JPanel {
 		ImageIcon icon = (ImageIcon) tiles[x][y].getIcon();
 		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
-		icon.paintIcon(null, g, 0, 0); // paint the Icon to the BufferedImage.
+		icon.paintIcon(this, g, 0, 0); // paint the Icon to the BufferedImage.
 		g.dispose();
 
 		return bi;

@@ -1,5 +1,9 @@
 package util.leveleditor;
 
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,9 +11,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.ImageIcon;
 
 /**
  * Miscellaneous utilities for the level editor.
@@ -127,5 +132,63 @@ public class EditorUtils {
 			}
 		}
 
+	}
+
+	/**
+	 * Returns the image at the given coordinates.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @param p
+	 *            EditorPanel displaying the image.
+	 * @return Image at the given coordinates.
+	 */
+	public static BufferedImage getImageAt(int x, int y, EditorPanel p) {
+		ImageIcon icon = (ImageIcon) p.tiles[x][y].getIcon();
+		BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		icon.paintIcon(p, g, 0, 0); // paint the Icon to the BufferedImage.
+		g.dispose();
+
+		return bi;
+	}
+
+	/**
+	 * Converts an image to a BufferedImage.
+	 * 
+	 * @param img
+	 *            Image to be converted.
+	 * @param c
+	 *            Component to act as ImageObserver.
+	 * @return Converted image.
+	 */
+	public static BufferedImage convertImage(Image img, Component c) {
+		BufferedImage bimg = new BufferedImage(img.getWidth(c), img.getHeight(c), BufferedImage.TYPE_INT_ARGB);
+		bimg.getGraphics().drawImage(img, 0, 0, c);
+		return bimg;
+	}
+
+	/**
+	 * Merges two images so that one is overlayed on top of the other.
+	 * 
+	 * @param background
+	 *            Background image.
+	 * @param foreground
+	 *            Foreground image.
+	 * @param c
+	 *            Component this image is going to be displayed in.
+	 * @return Merged image.
+	 */
+	public static BufferedImage mergeImages(BufferedImage background, BufferedImage foreground, Component c) {
+		BufferedImage newImage = new BufferedImage(background.getHeight(), background.getWidth(),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics g = newImage.getGraphics();
+		g.drawImage(background, 0, 0, c);
+		g.drawImage(foreground, 0, 0, c);
+		g.dispose();
+		
+		return newImage;
 	}
 }

@@ -1,6 +1,7 @@
 package roguelike.ui.graphics;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -10,8 +11,10 @@ import java.awt.image.ImageFilter;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.awt.image.RescaleOp;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 /**
  * Class containing static references to all graphics files as well as a method
@@ -89,9 +92,20 @@ public class Graphic {
 	 * @return Graphic at the row and column specified.
 	 */
 	public static Image getImage(GraphicFile file, int row, int col) {
-		ImageIcon img = new ImageIcon(file.fileName);
+		BufferedImage in = null;
+		BufferedImage newImage = null;
 
-		return processImage(img, row, col);
+		try {
+			in = ImageIO.read(new File(file.fileName));
+			newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = newImage.createGraphics();
+			g.drawImage(in, 0, 0, null);
+			g.dispose();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return processImage(newImage, row, col);
 	}
 
 	/**
@@ -107,9 +121,20 @@ public class Graphic {
 	 * @return Graphic at the row and column specified.
 	 */
 	public static Image getImage(String fileName, int row, int col) {
-		ImageIcon img = new ImageIcon(fileName);
+		BufferedImage in = null;
+		BufferedImage newImage = null;
 
-		return processImage(img, row, col);
+		try {
+			in = ImageIO.read(new File(fileName));
+			newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = newImage.createGraphics();
+			g.drawImage(in, 0, 0, null);
+			g.dispose();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return processImage(newImage, row, col);
 	}
 
 	/**
@@ -120,13 +145,18 @@ public class Graphic {
 	 * @return Image specified by the file string.
 	 */
 	public static Image getImage(String file) {
-		ImageIcon img = new ImageIcon(file);
+		BufferedImage image = null;
 
-		Image image = img.getImage();
+		try {
+			image = ImageIO.read(new File(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		return image;
 	}
 
-	private static Image processImage(ImageIcon img, int row, int col) {
+	private static Image processImage(BufferedImage img, int row, int col) {
 		/*
 		 * Make image transparent.
 		 */
@@ -142,7 +172,7 @@ public class Graphic {
 			}
 		};
 
-		ImageProducer filteredImgProd = new FilteredImageSource(img.getImage().getSource(), filter);
+		ImageProducer filteredImgProd = new FilteredImageSource(img.getSource(), filter);
 		Image transparentImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
 
 		/*
