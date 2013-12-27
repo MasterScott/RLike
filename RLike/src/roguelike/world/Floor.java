@@ -48,6 +48,16 @@ public abstract class Floor {
 	public ArrayList<Floor> connectedFloors;
 
 	/**
+	 * Coordinates of the stairs leading downward on this floor.
+	 */
+	protected Point downstairs;
+
+	/**
+	 * Coordinates of the stairs leading upward on this floor.
+	 */
+	protected Point upstairs;
+
+	/**
 	 * Checks to see if there is an actor at the specified location that is not
 	 * traversable.
 	 * 
@@ -174,6 +184,27 @@ public abstract class Floor {
 	}
 
 	/**
+	 * Returns a random point accessible by the origin parameter.
+	 * 
+	 * @param origin
+	 *            Starting point to determine accessibility.
+	 * @return Random accessible point.
+	 */
+	public Point getRandomAccessibleTile(Point origin) {
+		// Need to clear list.
+		accessibleTiles = new ArrayList<Tile>();
+		
+		getAccessibleArea(origin.x, origin.y);
+
+		Random r = new Random();
+		Tile t = accessibleTiles.get(r.nextInt(accessibleTiles.size()));
+		int x = t.getX();
+		int y = t.getY();
+
+		return new Point(x, y);
+	}
+
+	/**
 	 * Encloses the current level with walls around the edges to prevent actors
 	 * trying to escape.
 	 * 
@@ -290,7 +321,7 @@ public abstract class Floor {
 
 		int x = player.getX();
 		int y = player.getY();
-		
+
 		getAccessibleArea(x, y);
 
 		Random r = new Random();
@@ -298,7 +329,7 @@ public abstract class Floor {
 		x = t.getX();
 		y = t.getY();
 		actors.remove(t);
-		
+
 		Image img = Graphic.getImage(tileset, row, col);
 
 		if (featureType == FeatureType.DOWNSTAIRS) {
@@ -355,5 +386,23 @@ public abstract class Floor {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Returns coordinates for the stairs leading to the next floor.
+	 * 
+	 * @return Coordinates for the stairs leading to the next floor.
+	 */
+	public Point getDownstairsCoordinates() {
+		return downstairs;
+	}
+	
+	/**
+	 * Returns coordinates for the stairs leading to the previous floor.
+	 * 
+	 * @return Coordinates for the stairs leading to the previous floor.
+	 */
+	public Point getUpstairsCoordinates() {
+		return upstairs;
 	}
 }
