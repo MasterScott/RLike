@@ -5,6 +5,7 @@ import roguelike.actors.abilities.ActionList;
 import roguelike.actors.classes.Classes;
 import roguelike.actors.classes.RLClass;
 import roguelike.actors.util.CreatureTemplate;
+import roguelike.actors.util.Stat;
 import roguelike.etc.Session;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 

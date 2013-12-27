@@ -1,4 +1,4 @@
-package roguelike.actors;
+package roguelike.actors.util;
 
 /**
  * Template for a stat to be used by an actor.

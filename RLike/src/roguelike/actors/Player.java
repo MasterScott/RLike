@@ -1,5 +1,7 @@
 package roguelike.actors;
 
+import roguelike.actors.util.Stat;
+
 
 /**
  * Contains all relevant data for the player's avatar in-game.
