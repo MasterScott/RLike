@@ -39,4 +39,5 @@ public class Session {
 	 * Queue that holds all actions.
 	 */
 	public static ActionQueue actionQueue = new ActionQueue();
+	
 }
