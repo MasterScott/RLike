@@ -1,6 +1,5 @@
 package roguelike.world;
 
-import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,7 +10,6 @@ import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
-import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
 public abstract class Floor {
@@ -193,7 +191,7 @@ public abstract class Floor {
 	public Point getRandomAccessibleTile(Point origin) {
 		// Need to clear list.
 		accessibleTiles = new ArrayList<Tile>();
-		
+
 		getAccessibleArea(origin.x, origin.y);
 
 		Random r = new Random();
@@ -216,7 +214,6 @@ public abstract class Floor {
 	 *            Column of tileset icon is located on.
 	 */
 	protected void encloseLevel(GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset, row, col);
 
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
@@ -258,18 +255,12 @@ public abstract class Floor {
 	 */
 	protected void createStairs(FeatureType featureType, GraphicFile tileset, int row, int col) {
 		Point p = getRandomOpenTile();
-		Image img = Graphic.getImage(tileset, row, col);
 
-		if (featureType == FeatureType.DOWNSTAIRS) {
-			Feature f = new Feature(p.x, p.y, true, FeatureType.DOWNSTAIRS);
-			f.setImage(img);
-			actors.add(f);
-		} else if (featureType == FeatureType.UPSTAIRS) {
-			Feature f = new Feature(p.x, p.y, true, FeatureType.UPSTAIRS);
-			f.setImage(img);
-			actors.add(f);
-		}
+		Tile t = getTileAt(p.x, p.y);
+		actors.remove(t);
 
+		Feature f = new Feature(p.x, p.y, true, tileset, row, col, featureType);
+		actors.add(f);
 	}
 
 	/**
@@ -290,17 +281,13 @@ public abstract class Floor {
 	 *            Column of tileset icon is located on.
 	 */
 	protected void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset, row, col);
+		Feature f = new Feature(x, y, true, tileset, row, col, featureType);
 
-		if (featureType == FeatureType.DOWNSTAIRS) {
-			Feature f = new Feature(x, y, true, FeatureType.DOWNSTAIRS);
-			f.setImage(img);
-			actors.add(f);
-		} else if (featureType == FeatureType.UPSTAIRS) {
-			Feature f = new Feature(x, y, true, FeatureType.UPSTAIRS);
-			f.setImage(img);
-			actors.add(f);
-		}
+		Tile t = getTileAt(x, y);
+		actors.remove(t);
+
+		actors.add(f);
+		System.out.println("Stairs at: " + x + " " + y);
 	}
 
 	/**
@@ -330,20 +317,11 @@ public abstract class Floor {
 		y = t.getY();
 		actors.remove(t);
 
-		Image img = Graphic.getImage(tileset, row, col);
+		Feature f = new Feature(x, y, true, tileset, row, col, FeatureType.UPSTAIRS);
+		f.setImage(tileset, row, col);
 
-		if (featureType == FeatureType.DOWNSTAIRS) {
-			Feature f = new Feature(x, y, true, FeatureType.DOWNSTAIRS);
-			f.setImage(img);
-			actors.add(f);
-		} else if (featureType == FeatureType.UPSTAIRS) {
-			Feature f = new Feature(x, y, true, FeatureType.UPSTAIRS);
-			f.setImage(img);
-			actors.add(f);
-		} else {
-			System.out.println("Failure to add.");
-		}
-
+		// DEBUG
+		System.out.println("Stairs at: " + x + " " + y);
 	}
 
 	/**
@@ -375,8 +353,17 @@ public abstract class Floor {
 		}
 	}
 
+	/**
+	 * Files the entire floor with the specified tile.
+	 * 
+	 * @param tileset
+	 *            Tileset this tile's icon is located on.
+	 * @param row
+	 *            Row of tileset icon is located on.
+	 * @param col
+	 *            Column of tileset icon is located on.
+	 */
 	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col) {
-		Image img = Graphic.getImage(tileset, row, col);
 
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
@@ -396,7 +383,7 @@ public abstract class Floor {
 	public Point getDownstairsCoordinates() {
 		return downstairs;
 	}
-	
+
 	/**
 	 * Returns coordinates for the stairs leading to the previous floor.
 	 * 

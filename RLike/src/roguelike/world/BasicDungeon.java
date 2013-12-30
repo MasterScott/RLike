@@ -120,8 +120,7 @@ public class BasicDungeon extends Floor {
 		// Floor
 		for (int i = x; i < x + width; i++) {
 			for (int j = y; j < y + height; j++) {
-				Tile t = new Tile(i, j, true);
-				t.setImage(GraphicFile.DUNGEON, 6, 3);
+				Tile t = new Tile(i, j, true, GraphicFile.DUNGEON, 6, 3);
 				actors.add(t);
 			}
 		}
@@ -166,7 +165,7 @@ public class BasicDungeon extends Floor {
 				for (int i = y1; i <= y2; ++i) {
 					Actor actor = getActorAt(p1.x, i);
 					if (actor == null) {
-						actors.add(new Tile(p1.x, i, true));
+						actors.add(new Tile(p1.x, i, true, null, 0, 0));
 					} else {
 						actor.setTraversable(true);
 					}
@@ -187,7 +186,7 @@ public class BasicDungeon extends Floor {
 				for (int i = x1; i <= x2; ++i) {
 					Actor actor = getActorAt(i, p1.y);
 					if (actor == null) {
-						actors.add(new Tile(i, p1.y, true));
+						actors.add(new Tile(i, p1.y, true, null, 0, 0));
 					} else {
 						actor.setTraversable(true);
 					}

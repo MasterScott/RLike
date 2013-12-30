@@ -1,11 +1,10 @@
 package roguelike.world;
 
-import java.awt.Point;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
-import roguelike.actors.Tile;
 import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.Tile;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
 /**
