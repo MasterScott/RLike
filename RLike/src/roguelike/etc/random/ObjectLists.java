@@ -15,6 +15,7 @@ public class ObjectLists {
 		public int getMinLevel() { return minLevel; }
 		public int getMaxLevel() { return maxLevel; }
 		public int getWeight() { return weight; }
+		public String getName() { return name(); }
 
 		private Creatures(int minLevel, int maxLevel, int weight) {
 			this.minLevel = minLevel;

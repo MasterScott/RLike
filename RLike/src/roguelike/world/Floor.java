@@ -8,8 +8,13 @@ import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.util.CreatureTemplate;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
+import roguelike.etc.Session;
+import roguelike.etc.random.ObjectLists;
+import roguelike.etc.random.RLRandom;
+import roguelike.etc.random.WeightedRandom;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
 public abstract class Floor {
@@ -46,6 +51,11 @@ public abstract class Floor {
 	public ArrayList<Floor> connectedFloors;
 
 	/**
+	 * The level of this floor (in terms of depth).
+	 */
+	protected int depth;
+
+	/**
 	 * Coordinates of the stairs leading downward on this floor.
 	 */
 	protected Point downstairs;
@@ -77,7 +87,12 @@ public abstract class Floor {
 	/**
 	 * Create initial layout for floor.
 	 */
-	public abstract void generateFloor();
+	public void generateFloor() {
+		if (Session.floors.isEmpty()) {
+			this.depth = 1;
+			Session.floors.add(this);
+		}
+	}
 
 	/**
 	 * Returns actor at the specified coordinate. If there is no actor present,
@@ -391,5 +406,43 @@ public abstract class Floor {
 	 */
 	public Point getUpstairsCoordinates() {
 		return upstairs;
+	}
+
+	/**
+	 * Returns the depth of this floor.
+	 * 
+	 * @return Depth of this floor.
+	 */
+	public int getDepth() {
+		return depth;
+	}
+
+	/**
+	 * Sets the depth of this floor.
+	 * 
+	 * @param depth
+	 *            Depth of this floor.
+	 */
+	public void setDepth(int depth) {
+		this.depth = depth;
+	}
+	
+	/**
+	 * Populates this floor with creatures of the appropriate level.
+	 */
+	public void populateWithCreatures() {
+		if (depth < 1) throw new NullPointerException("Depth was never specified for this floor.");
+		
+		RLRandom random = new RLRandom();
+		int num = (int) (Math.random() * 8); // TODO Better range for # of creatures.
+		for (int i = 0; i < num; i++) {
+			Point ps = getRandomOpenTile();
+			WeightedRandom choice = random.generate(ObjectLists.Creatures.values(), this.depth);
+			
+			Creature c = Creature.constructCreature(CreatureTemplate.valueOf(choice.getName()));
+			c.setCoords(ps.x, ps.y);
+			c.setFloor(this);
+			actors.add(c);
+		}
 	}
 }

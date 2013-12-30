@@ -76,20 +76,6 @@ public class Window extends JFrame implements KeyListener {
 				Session.player.setX(point.x);
 				Session.player.setY(point.y);
 				f.actors.add(Session.player);
-
-				for (int i = 0; i < 4; i++) {
-					Point ps = f.getRandomOpenTile();
-					Creature c = null;
-					if (Math.random() > 0.5) {
-						c = Creature.constructCreature(CreatureTemplate.GOBLIN);
-					} else {
-						c = Creature.constructCreature(CreatureTemplate.RAT_WHITE);
-					}
-					c.setCoords(ps.x, ps.y);
-					c.setFloor(f);
-					//c.setAI(new BasicAI());
-					f.actors.add(c);
-				}
 				
 				p.setFloor(f);
 

@@ -23,7 +23,7 @@ public class Session {
 	/**
 	 * List of all floors in the session.
 	 */
-	public static ArrayList<Floor> floors;
+	public static ArrayList<Floor> floors = new ArrayList<Floor>();
 	
 	/**
 	 * Window the game is running in.

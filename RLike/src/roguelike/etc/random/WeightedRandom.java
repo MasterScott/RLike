@@ -31,4 +31,10 @@ public interface WeightedRandom {
 	 */
 	public int getWeight();
 
+	/**
+	 * Returns the name of this element.
+	 * 
+	 * @return Name of this element.
+	 */
+	public String getName();
 }

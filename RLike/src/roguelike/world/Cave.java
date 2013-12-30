@@ -44,7 +44,8 @@ public class Cave extends Floor {
 
 	@Override
 	public void generateFloor() {
-
+		super.generateFloor();
+		
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (Math.random() > tolerance) {
@@ -84,6 +85,7 @@ public class Cave extends Floor {
 		
 		downstairs = getRandomOpenTile();
 		createStairs(downstairs.x, downstairs.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
+		populateWithCreatures();
 		
 	}
 
