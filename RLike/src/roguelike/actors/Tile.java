@@ -16,8 +16,6 @@ public class Tile extends Actor {
 	private long turnSeen;
 	private double distance;
 	private final double BIG_DIST = 10000;
-	private GraphicFile gf;
-	private int row, col;
 
 	/**
 	 * Creates a tile that is not traversable by default.

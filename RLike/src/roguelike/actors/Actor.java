@@ -23,9 +23,10 @@ public abstract class Actor {
 	 * the map to see if said image was already loaded in, and if so, pull from
 	 * this map.
 	 */
-	static HashMap<String, Image> images = new HashMap<String, Image>();
+	static HashMap<String, Image> imageMap = new HashMap<String, Image>();
 	
-	int x, y;
+	GraphicFile gf;
+	int x, y, row, col;
 	boolean traversable;
 	boolean previouslySeen;
 	Floor floor;
@@ -155,7 +156,13 @@ public abstract class Actor {
 	 *            Column of icon to use.
 	 */
 	public void setImage(GraphicFile gf, int row, int col) {
-		this.image = Graphic.getImage(gf, row, col);
+		String args = gf.name() + row + col;
+		if (imageMap.containsKey(args)) {
+			this.image = imageMap.get(args);
+		} else {
+			this.image = Graphic.getImage(gf, row, col);
+			imageMap.put(args, this.image);
+		}
 	}
 
 	/**
