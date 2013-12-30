@@ -10,6 +10,7 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
 public enum CreatureTemplate {
 	GOBLIN("Goblin", 10, 0, 9, 9, 10, true, 4, null, BasicAI.class, Graphic.getImage(GraphicFile.MONSTER1, 7, 0)),
 	RAT_WHITE("White Rat", 4, 0, 5, 3, 11, true, 1, null, BasicAI.class, Graphic.getImage(GraphicFile.MONSTER1, 4, 0)),
+	BAT_BROWN("Brown Bat", 5, 0, 4, 3, 14, true, 2, null, BasicAI.class, Graphic.getImage(GraphicFile.MONSTER4, 0, 2))
 	;
 
 	public String name;
@@ -32,7 +33,6 @@ public enum CreatureTemplate {
 		this.c = c;
 		this.ai = ai;
 		
-
 		this.img = img;
 	}
 }
