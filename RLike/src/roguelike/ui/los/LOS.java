@@ -88,12 +88,16 @@ public class LOS {
 			if (tile != null && !tile.isTraversable()) {
 				if (!inSight.contains(tile)) {
 					tile.setDistance(dist);
+					if (tile.getTurnSeen() == -1)
+						tile.loadImage();
 					tile.setTurnSeen();
 					inSight.add(tile);
 				}
 			} else {
 				if (tile != null && !inSight.contains(tile)) {
 					tile.setDistance(dist);
+					if (tile.getTurnSeen() == -1)
+						tile.loadImage();
 					tile.setTurnSeen();
 					inSight.add(tile);
 				}
@@ -109,11 +113,11 @@ public class LOS {
 		}
 
 	}
-	
+
 	private double getDistance(int x1, int y1, int x2, int y2) {
 		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
-	
+
 	private class Delta {
 		int dx1, dx2, dy1, dy2;
 

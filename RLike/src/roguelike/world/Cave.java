@@ -49,8 +49,7 @@ public class Cave extends Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (Math.random() > tolerance) {
-					Tile t = new Tile(x, y, false);
-					t.setImage(GraphicFile.FEATURES, 0, 3);
+					Tile t = new Tile(x, y, false, GraphicFile.FEATURES, 0, 3);
 					actors.add(t);
 				}
 			}
@@ -70,8 +69,7 @@ public class Cave extends Floor {
 					Actor a = getActorAt(x, y);
 
 					if (n >= 6 && a == null) { // If birth conditions are met
-						Tile t = new Tile(x, y, false);
-						t.setImage(GraphicFile.FEATURES, 0, 3);
+						Tile t = new Tile(x, y, false, GraphicFile.FEATURES, 0, 3);
 						actors.add(t);
 						count++;
 					} else if (n < 3 && a != null) { // If survival not met

@@ -221,11 +221,11 @@ public abstract class Floor {
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
 			if (getActorAt(x, 0) == null) {
-				Tile t = new Tile(x, 0, false, img);
+				Tile t = new Tile(x, 0, false, tileset, row, col);
 				actors.add(t);
 			}
 			if (getActorAt(x, YMAX) == null) {
-				Tile t = new Tile(x, YMAX - 1, false, img);
+				Tile t = new Tile(x, YMAX - 1, false, tileset, row, col);
 				actors.add(t);
 			}
 		}
@@ -233,11 +233,11 @@ public abstract class Floor {
 		// Create walls along left and right.
 		for (int y = 0; y < YMAX; y++) {
 			if (getActorAt(0, y) == null) {
-				Tile t = new Tile(0, y, false, img);
+				Tile t = new Tile(0, y, false, tileset, row, col);
 				actors.add(t);
 			}
 			if (getActorAt(XMAX, y) == null) {
-				Tile t = new Tile(XMAX - 1, y, false, img);
+				Tile t = new Tile(XMAX - 1, y, false, tileset, row, col);
 				actors.add(t);
 			}
 		}
@@ -381,7 +381,7 @@ public abstract class Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					Tile t = new Tile(x, y, true, img);
+					Tile t = new Tile(x, y, true, tileset, row, col);
 					actors.add(t);
 				}
 			}

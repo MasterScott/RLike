@@ -16,6 +16,8 @@ public class Tile extends Actor {
 	private long turnSeen;
 	private double distance;
 	private final double BIG_DIST = 10000;
+	private GraphicFile gf;
+	private int row, col;
 
 	/**
 	 * Creates a tile that is not traversable by default.
@@ -25,6 +27,7 @@ public class Tile extends Actor {
 	 * @param y
 	 *            y-coordinate.
 	 */
+	@Deprecated
 	public Tile(int x, int y) {
 		super(x, y);
 		this.traversable = false;
@@ -42,6 +45,7 @@ public class Tile extends Actor {
 	 * @param traversable
 	 *            Whether or not this tile can be walked over.
 	 */
+	@Deprecated
 	public Tile(int x, int y, boolean traversable) {
 		super(x, y);
 
@@ -68,31 +72,33 @@ public class Tile extends Actor {
 	 */
 	public Tile(int x, int y, boolean traversable, GraphicFile graphicFile, int row, int col) {
 		super(x, y);
-		setImage(graphicFile, row, col);
+		this.gf = graphicFile;
+		this.row = row;
+		this.col = col;
 		this.traversable = traversable;
 		this.turnSeen = -1;
 		this.distance = BIG_DIST;
 	}
 
-	/**
-	 * Creates a new Tile at the given coordinates with the specified image.
-	 * 
-	 * @param x
-	 *            x-coordinate.
-	 * @param y
-	 *            y-coordinate.
-	 * @param traversable
-	 *            Whether or not this tile can be walked over.
-	 * @param Image
-	 *            Image to represent this tile.
-	 */
-	public Tile(int x, int y, boolean traversable, Image image) {
-		super(x, y);
-		setImage(image);
-		this.traversable = traversable;
-		this.turnSeen = -1;
-		this.distance = BIG_DIST;
-	}
+//	/**
+//	 * Creates a new Tile at the given coordinates with the specified image.
+//	 * 
+//	 * @param x
+//	 *            x-coordinate.
+//	 * @param y
+//	 *            y-coordinate.
+//	 * @param traversable
+//	 *            Whether or not this tile can be walked over.
+//	 * @param Image
+//	 *            Image to represent this tile.
+//	 */
+//	public Tile(int x, int y, boolean traversable, Image image) {
+//		super(x, y);
+//		setImage(image);
+//		this.traversable = traversable;
+//		this.turnSeen = -1;
+//		this.distance = BIG_DIST;
+//	}
 
 	/**
 	 * Sets turn this tile was last seen.
@@ -110,6 +116,15 @@ public class Tile extends Actor {
 		return turnSeen;
 	}
 
+	/**
+	 * Loads this tile's image into memory.
+	 */
+	public void loadImage() {
+		if (gf == null) throw new NullPointerException("Image not specified.");
+		
+		setImage(gf, row, col);
+	}
+	
 	/**
 	 * Sets distance from the player when tile was last seen.
 	 * 

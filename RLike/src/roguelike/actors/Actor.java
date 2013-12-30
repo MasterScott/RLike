@@ -2,6 +2,7 @@ package roguelike.actors;
 
 import java.awt.Image;
 import java.awt.Point;
+import java.util.HashMap;
 
 import roguelike.ui.graphics.Graphic;
 import roguelike.ui.graphics.Graphic.GraphicFile;
@@ -16,6 +17,14 @@ import roguelike.world.Floor;
  */
 public abstract class Actor {
 
+	/**
+	 * Static map that contains all previously loaded images. Instead of
+	 * recreating an image that was already loaded into memory, actors can check
+	 * the map to see if said image was already loaded in, and if so, pull from
+	 * this map.
+	 */
+	static HashMap<String, Image> images = new HashMap<String, Image>();
+	
 	int x, y;
 	boolean traversable;
 	boolean previouslySeen;
