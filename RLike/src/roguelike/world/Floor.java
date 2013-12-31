@@ -90,8 +90,11 @@ public abstract class Floor {
 	public void generateFloor() {
 		if (Session.floors.isEmpty()) {
 			this.depth = 1;
-			Session.floors.add(this);
+		} else {
+			this.depth = Session.floors.size() + 1;
 		}
+		
+		Session.floors.add(this);
 	}
 
 	/**
@@ -377,8 +380,10 @@ public abstract class Floor {
 	 *            Row of tileset icon is located on.
 	 * @param col
 	 *            Column of tileset icon is located on.
+	 * @param traversable
+	 *            Whether or not these tiles should be traversable by default.
 	 */
-	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col) {
+	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col, boolean traversable) {
 
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
@@ -426,19 +431,21 @@ public abstract class Floor {
 	public void setDepth(int depth) {
 		this.depth = depth;
 	}
-	
+
 	/**
 	 * Populates this floor with creatures of the appropriate level.
 	 */
 	public void populateWithCreatures() {
-		if (depth < 1) throw new NullPointerException("Depth was never specified for this floor.");
-		
+		if (depth < 1)
+			throw new NullPointerException("Depth was never specified for this floor.");
+
 		RandomGenerator random = new RandomGenerator();
-		int num = (int) (Math.random() * 8); // TODO Better range for # of creatures.
+		int num = (int) (Math.random() * 8); // TODO Better range for # of
+												// creatures.
 		for (int i = 0; i < 8; i++) {
 			Point ps = getRandomOpenTile();
 			WeightedRandom choice = random.generate(ObjectLists.Creatures.values(), this.depth);
-			
+
 			Creature c = Creature.constructCreature(CreatureTemplate.valueOf(choice.getName()));
 			c.setCoords(ps.x, ps.y);
 			c.setFloor(this);

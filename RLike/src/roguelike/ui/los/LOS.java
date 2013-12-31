@@ -77,6 +77,9 @@ public class LOS {
 	 */
 	private void recursiveShadowCast(int x, int y, Delta d) {
 		Floor floor = actor.getFloor();
+		if (floor == null)
+			throw new NullPointerException("No floor specified for player.");
+		
 		Tile tile = floor.getTileAt(x, y);
 
 		/*

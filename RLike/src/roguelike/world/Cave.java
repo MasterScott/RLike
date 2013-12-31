@@ -81,7 +81,7 @@ public class Cave extends Floor {
 		}
 
 		encloseLevel(GraphicFile.FEATURES, 0, 3);
-		fillLevelWithTiles(GraphicFile.GROUNDS, 0, 4);
+		fillLevelWithTiles(GraphicFile.GROUNDS, 0, 4, true);
 		
 		downstairs = getRandomOpenTile();
 		createStairs(downstairs.x, downstairs.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
