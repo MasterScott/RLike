@@ -15,7 +15,7 @@ public class LoadBasicDungeon {
 	public static void main(String[] args) {
 		Window w = new Window();
 		
-		Player p = new Player(2, 2);
+		Player p = new Player(20, 10);
 		Session.player = p;
 		p.setImage(GraphicFile.CLASSM, 2, 5);
 		

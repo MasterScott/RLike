@@ -67,6 +67,23 @@ public class BaseDungeon extends Floor {
 		fillLevelWithTiles(GraphicFile.DUNGEON, 0, 0, true);
 
 		createRoom(20, 10, 5, 5);
+		
+		Point p = getRandomWall();
+		
+		if (p.x == cursorRoom.minX) { // West
+			createRoom(16, p.y - 1, 5, 3);
+		} else if (p.x == cursorRoom.maxX) { // East
+			createRoom(24, p.y - 1, 5, 3);
+		} else if (p.y == cursorRoom.minY) { // North
+			createRoom(p.x - 1, 6, 3, 5);
+		} else if (p.y == cursorRoom.maxY) { // South
+			createRoom(p.x - 1, 14, 3, 5);
+		}
+		
+		Tile t = getTileAt(p.x, p.y);
+		actors.remove(t);
+		t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 0, 3);
+		actors.add(t);
 
 		encloseLevel(GraphicFile.DUNGEON, 6, 3);
 	}
@@ -114,7 +131,7 @@ public class BaseDungeon extends Floor {
 			return false;
 
 		for (Room r2 : rooms) {
-			if (r1.maxX >= r2.minX && r1.minX <= r2.maxX && r1.maxY >= r2.minY && r1.minY <= r2.maxY) {
+			if (r1.maxX > r2.minX && r1.minX < r2.maxX && r1.maxY > r2.minY && r1.minY < r2.maxY) {
 				return true;
 			}
 
