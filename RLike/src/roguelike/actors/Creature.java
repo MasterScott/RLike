@@ -78,7 +78,7 @@ public class Creature extends Actor {
 	 * @return A new creature of the specified CreatureTemplate type.
 	 */
 	public static Creature constructCreature(CreatureTemplate type) {
-		Creature c = new Creature(0, 0, type.name);
+		Creature c = new Creature(0, 0, type.name, type.gf, type.row, type.col);
 		c.hp = new Stat(type.hp);
 		c.mp = new Stat(type.mp);
 		c.strength = new Stat(type.str);
@@ -95,8 +95,6 @@ public class Creature extends Actor {
 		} catch (InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-
-		c.setImage(type.img);
 
 		return c;
 	}

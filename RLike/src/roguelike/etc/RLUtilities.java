@@ -34,6 +34,7 @@ public class RLUtilities {
 		return result;
 	}
 	
+	
 	/**
 	 * Class used to display a dialog with loading time information. Runs
 	 * in a separate thread.

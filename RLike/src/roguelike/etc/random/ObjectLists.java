@@ -4,8 +4,9 @@ public class ObjectLists {
 
 	public static enum Creatures implements WeightedRandom {
 		GOBLIN(0, 8, 10),
-		RAT_WHITE(0, 4, 20),
+		RAT_WHITE(0, 4, 18),
 		BAT_BROWN(0, 5, 15),
+		SNAKE_GREEN(0, 6, 11),
 		;
 		
 		private int minLevel;

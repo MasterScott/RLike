@@ -13,7 +13,7 @@ import roguelike.actors.Player;
 import roguelike.actors.Tile;
 import roguelike.etc.Session;
 import roguelike.etc.random.ObjectLists;
-import roguelike.etc.random.RLRandom;
+import roguelike.etc.random.RandomGenerator;
 import roguelike.etc.random.WeightedRandom;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
@@ -433,9 +433,9 @@ public abstract class Floor {
 	public void populateWithCreatures() {
 		if (depth < 1) throw new NullPointerException("Depth was never specified for this floor.");
 		
-		RLRandom random = new RLRandom();
+		RandomGenerator random = new RandomGenerator();
 		int num = (int) (Math.random() * 8); // TODO Better range for # of creatures.
-		for (int i = 0; i < num; i++) {
+		for (int i = 0; i < 8; i++) {
 			Point ps = getRandomOpenTile();
 			WeightedRandom choice = random.generate(ObjectLists.Creatures.values(), this.depth);
 			

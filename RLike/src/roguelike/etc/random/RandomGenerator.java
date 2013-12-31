@@ -11,14 +11,14 @@ import java.util.Random;
  * @author Dan
  * 
  */
-public class RLRandom {
+public class RandomGenerator {
 
 	Random random;
 
 	/**
 	 * Create a new RLRandom object with a randomized seed.
 	 */
-	public RLRandom() {
+	public RandomGenerator() {
 		random = new Random();
 	}
 
