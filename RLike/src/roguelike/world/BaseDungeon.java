@@ -14,10 +14,12 @@ public class BaseDungeon extends Floor {
 	private ArrayList<Room> rooms;
 	private Room cursorRoom;
 	private final double TOLERANCE = 0.75;
+	private Random rand;
 
 	public BaseDungeon() {
 		actors = new ArrayList<Actor>();
 		rooms = new ArrayList<Room>();
+		rand = new Random();
 	}
 
 	/**
@@ -66,20 +68,12 @@ public class BaseDungeon extends Floor {
 		// TODO Change to false after done debugging.
 		fillLevelWithTiles(GraphicFile.DUNGEON, 0, 0, true);
 
-		createRoom(20, 10, 5, 5);
-		
+		createRoom(20, 10, 6, 6);
+
 		Point p = getRandomWall();
-		
-		if (p.x == cursorRoom.minX) { // West
-			createRoom(16, p.y - 1, 5, 3);
-		} else if (p.x == cursorRoom.maxX) { // East
-			createRoom(24, p.y - 1, 5, 3);
-		} else if (p.y == cursorRoom.minY) { // North
-			createRoom(p.x - 1, 6, 3, 5);
-		} else if (p.y == cursorRoom.maxY) { // South
-			createRoom(p.x - 1, 14, 3, 5);
-		}
-		
+
+		appendPassageway(p);
+
 		Tile t = getTileAt(p.x, p.y);
 		actors.remove(t);
 		t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 0, 3);
@@ -89,13 +83,32 @@ public class BaseDungeon extends Floor {
 	}
 
 	/**
+	 * Appends a random length passageway to the specified point leading away
+	 * from the cursor room.
+	 * 
+	 * @param p Point on cursor room's wall.
+	 */
+	private void appendPassageway(Point p) {
+		int length = RLUtilities.getRandom(5, 9);
+		if (p.x == cursorRoom.minX) { // West
+			createRoom(cursorRoom.minX - length + 1, p.y - 1, length, 3);
+		} else if (p.x == cursorRoom.maxX) { // East
+			createRoom(cursorRoom.maxX, p.y - 1, length, 3);
+		} else if (p.y == cursorRoom.minY) { // North
+			createRoom(p.x - 1, cursorRoom.minY - length + 1, 3, length);
+		} else if (p.y == cursorRoom.maxY) { // South
+			createRoom(p.x - 1, cursorRoom.maxY, 3, length);
+		}
+	}
+
+	/**
 	 * Returns a random point on a wall of all eligible rooms and sets the
 	 * cursor room to the room the wall is in.
 	 * 
 	 * @return Random point on a wall.
 	 */
 	private Point getRandomWall() {
-		Random rand = new Random();
+
 		Room r = rooms.get(rand.nextInt(rooms.size()));
 		cursorRoom = r;
 
