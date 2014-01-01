@@ -14,13 +14,12 @@ public class BaseDungeon extends Floor {
 	private ArrayList<Room> rooms;
 	private Room cursorRoom;
 	private final double TOLERANCE = 0.65;
+	private final int NUMBER_ROOMS = 18;
 	private Random rand;
 
 	public BaseDungeon() {
 		actors = new ArrayList<Actor>();
 		rooms = new ArrayList<Room>();
-
-		// ADD BOUNDARY ROOMS
 		rand = new Random();
 	}
 
@@ -70,15 +69,16 @@ public class BaseDungeon extends Floor {
 	@Override
 	public void generateFloor() {
 		super.generateFloor();
-		// TODO Change to false after done debugging.
-		fillLevelWithTiles(GraphicFile.DUNGEON, 0, 0, true);
+
+		// Can change to true if debugging is needed.
+		fillLevelWithTiles(GraphicFile.DUNGEON, 0, 0, false);
 
 		createRoom(RLUtilities.getRandom(15, 25), RLUtilities.getRandom(8, 14), RLUtilities.getRandom(5, 8),
 				RLUtilities.getRandom(5, 8), false);
 
 		boolean isPassageway = false;
 		int roomCount = 0;
-		while (roomCount < 15) {
+		while (roomCount < NUMBER_ROOMS) {
 			Point p = getRandomWall();
 
 			boolean success;
@@ -213,7 +213,7 @@ public class BaseDungeon extends Floor {
 			}
 
 			// Check for room stretching out of bounds.
-			if (r1.minX < 0 || r1.maxX > XMAX || r1.minY < 0 || r1.maxY > YMAX) {
+			if (r1.minX < 0 || r1.maxX > XMAX - 1|| r1.minY < 0 || r1.maxY > YMAX - 1) {
 				return true;
 			}
 

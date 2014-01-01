@@ -388,7 +388,7 @@ public abstract class Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					Tile t = new Tile(x, y, true, tileset, row, col);
+					Tile t = new Tile(x, y, traversable, tileset, row, col);
 					actors.add(t);
 				}
 			}

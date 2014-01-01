@@ -1,6 +1,7 @@
 package roguelike.main;
 
 import java.awt.Color;
+import java.awt.Point;
 
 import roguelike.actors.Player;
 import roguelike.etc.Session;
@@ -23,6 +24,8 @@ public class LoadBasicDungeon {
 		dungeon.generateFloor();
 		dungeon.actors.add(p);
 		p.setFloor(dungeon);
+		Point point = dungeon.getRandomOpenTile();
+		p.setCoords(point.x, point.y);
 		
 		StatsPanel sp = new StatsPanel();
 		sp.setPreferredSize(sp.getSize());
