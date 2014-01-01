@@ -13,12 +13,14 @@ public class BaseDungeon extends Floor {
 
 	private ArrayList<Room> rooms;
 	private Room cursorRoom;
-	private final double TOLERANCE = 0.75;
+	private final double TOLERANCE = 0.65;
 	private Random rand;
 
 	public BaseDungeon() {
 		actors = new ArrayList<Actor>();
 		rooms = new ArrayList<Room>();
+
+		// ADD BOUNDARY ROOMS
 		rand = new Random();
 	}
 
@@ -35,10 +37,12 @@ public class BaseDungeon extends Floor {
 	 *            Width of room.
 	 * @param height
 	 *            Height of room.
+	 * @param isPassageway
+	 *            Whether or not this room is a single-tile wide passageway.
 	 * @return True if room creation was successful; false otherwise.
 	 */
-	private boolean createRoom(int x, int y, int width, int height) {
-		Room r = new Room(x, y, width, height);
+	private boolean createRoom(int x, int y, int width, int height, boolean isPassageway) {
+		Room r = new Room(x, y, width, height, isPassageway);
 
 		// Don't try to create if an intersection is found.
 		if (isIntersecting(r))
@@ -58,7 +62,8 @@ public class BaseDungeon extends Floor {
 		}
 
 		rooms.add(r);
-
+		// Debug
+		System.out.println(r.toString());
 		return true;
 	}
 
@@ -68,37 +73,95 @@ public class BaseDungeon extends Floor {
 		// TODO Change to false after done debugging.
 		fillLevelWithTiles(GraphicFile.DUNGEON, 0, 0, true);
 
-		createRoom(20, 10, 6, 6);
+		createRoom(RLUtilities.getRandom(15, 25), RLUtilities.getRandom(8, 14), RLUtilities.getRandom(5, 8),
+				RLUtilities.getRandom(5, 8), false);
 
-		Point p = getRandomWall();
+		boolean isPassageway = false;
+		int roomCount = 0;
+		while (roomCount < 15) {
+			Point p = getRandomWall();
 
-		appendPassageway(p);
+			boolean success;
+			if (Math.random() < TOLERANCE) { // Try and place room.
+				success = appendRoom(p);
+			} else { // Try and place passageway.
+				success = appendPassageway(p);
+				isPassageway = true;
+			}
 
-		Tile t = getTileAt(p.x, p.y);
-		actors.remove(t);
-		t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 0, 3);
-		actors.add(t);
+			/*
+			 * If placement was successful, either place a door (if
+			 * non-consecutive hallways) or a floor tile (if consecutive
+			 * hallways) and increment room count.
+			 */
+			if (success) {
+				Tile t = getTileAt(p.x, p.y);
+				actors.remove(t);
+
+				if (cursorRoom.isPassageway && isPassageway) {
+					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 6, 3);
+				} else {
+					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 0, 3);
+				}
+
+				actors.add(t);
+				roomCount++;
+			}
+
+			isPassageway = false;
+		}
 
 		encloseLevel(GraphicFile.DUNGEON, 6, 3);
+	}
+
+	/**
+	 * Appends a room of random dimensions to the specified point leading away
+	 * from the cursor room.
+	 * 
+	 * @param p
+	 *            Point on cursor room's wall.
+	 * @return True if room creation was successful; false otherwise.
+	 */
+	private boolean appendRoom(Point p) {
+		int width = RLUtilities.getRandom(5, 11);
+		int height = RLUtilities.getRandom(5, 9);
+
+		if (p.x == cursorRoom.minX) { // West
+			return createRoom(cursorRoom.minX - width + 1, RLUtilities.getRandom(p.y - height + 2, p.y - 1), width,
+					height, false);
+		} else if (p.x == cursorRoom.maxX) { // East
+			return createRoom(cursorRoom.maxX, RLUtilities.getRandom(p.y - height + 2, p.y - 1), width, height, false);
+		} else if (p.y == cursorRoom.minY) { // North
+			return createRoom(RLUtilities.getRandom(p.x - width + 2, p.x - 1), cursorRoom.minY - height + 1, width,
+					height, false);
+		} else if (p.y == cursorRoom.maxY) { // South
+			return createRoom(RLUtilities.getRandom(p.x - width + 2, p.x - 1), cursorRoom.maxY, width, height, false);
+		}
+
+		return false;
 	}
 
 	/**
 	 * Appends a random length passageway to the specified point leading away
 	 * from the cursor room.
 	 * 
-	 * @param p Point on cursor room's wall.
+	 * @param p
+	 *            Point on cursor room's wall.
+	 * @return True if room creation was successful; false otherwise.
 	 */
-	private void appendPassageway(Point p) {
+	private boolean appendPassageway(Point p) {
 		int length = RLUtilities.getRandom(5, 9);
 		if (p.x == cursorRoom.minX) { // West
-			createRoom(cursorRoom.minX - length + 1, p.y - 1, length, 3);
+			return createRoom(cursorRoom.minX - length + 1, p.y - 1, length, 3, true);
 		} else if (p.x == cursorRoom.maxX) { // East
-			createRoom(cursorRoom.maxX, p.y - 1, length, 3);
+			return createRoom(cursorRoom.maxX, p.y - 1, length, 3, true);
 		} else if (p.y == cursorRoom.minY) { // North
-			createRoom(p.x - 1, cursorRoom.minY - length + 1, 3, length);
+			return createRoom(p.x - 1, cursorRoom.minY - length + 1, 3, length, true);
 		} else if (p.y == cursorRoom.maxY) { // South
-			createRoom(p.x - 1, cursorRoom.maxY, 3, length);
+			return createRoom(p.x - 1, cursorRoom.maxY, 3, length, true);
 		}
+
+		return false;
 	}
 
 	/**
@@ -144,7 +207,13 @@ public class BaseDungeon extends Floor {
 			return false;
 
 		for (Room r2 : rooms) {
+			// Check for intersection with other rooms.
 			if (r1.maxX > r2.minX && r1.minX < r2.maxX && r1.maxY > r2.minY && r1.minY < r2.maxY) {
+				return true;
+			}
+
+			// Check for room stretching out of bounds.
+			if (r1.minX < 0 || r1.maxX > XMAX || r1.minY < 0 || r1.maxY > YMAX) {
 				return true;
 			}
 
@@ -162,12 +231,14 @@ public class BaseDungeon extends Floor {
 	private class Room {
 
 		int minY, maxY, maxX, minX;
+		boolean isPassageway;
 
-		public Room(int x, int y, int width, int height) {
+		public Room(int x, int y, int width, int height, boolean isPassageway) {
 			this.minX = x;
 			this.maxX = x + width - 1;
 			this.minY = y;
 			this.maxY = y + height - 1;
+			this.isPassageway = isPassageway;
 		}
 
 		public String toString() {
