@@ -1,5 +1,6 @@
 package roguelike.world;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import roguelike.actors.Actor;
@@ -83,8 +84,8 @@ public class Cave extends Floor {
 		encloseLevel(GraphicFile.FEATURES, 0, 3);
 		fillLevelWithTiles(GraphicFile.GROUNDS, 0, 4, true);
 
-		downstairs = getRandomOpenTile();
-		createStairs(downstairs.x, downstairs.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
+		Point p = getRandomOpenTile();
+		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
 		populateWithCreatures();
 
 	}

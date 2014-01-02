@@ -5,6 +5,7 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
 public class Feature extends Tile {
 
 	private FeatureType featureType;
+	private Feature connectingStaircase;
 
 	/**
 	 * Creates a feature with the specified traversability.
@@ -32,6 +33,27 @@ public class Feature extends Tile {
 	 */
 	public FeatureType getFeatureType() {
 		return featureType;
+	}
+
+	/**
+	 * Used with the stairway feature type. Sets the staircase this stairway is
+	 * connected to.
+	 * 
+	 * @param floor
+	 *            Floor this stairway is connected to.
+	 */
+	public void setConnectingStaircase(Feature staircase) {
+		this.connectingStaircase = staircase;
+	}
+
+	/**
+	 * Used with the stairway feature type. Returns the staircase this stairway
+	 * is connected to.
+	 * 
+	 * @return Staircase this stairway is connected to.
+	 */
+	public Feature getConnectingStaircase() {
+		return connectingStaircase;
 	}
 
 	/**

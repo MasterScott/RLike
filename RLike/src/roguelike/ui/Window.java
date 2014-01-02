@@ -71,11 +71,12 @@ public class Window extends JFrame implements KeyListener {
 				Floor f = new Cave();
 				f.generateFloor();
 
-				Point point = f.getRandomAccessibleTile(f.getDownstairsCoordinates());
+				Point point = f.getRandomAccessibleTile(f.getDownstairs().getCoords());
 				Session.player.setFloor(f);
 				Session.player.setX(point.x);
 				Session.player.setY(point.y);
 				f.actors.add(Session.player);
+				f.setDepth(0);
 				
 				p.setFloor(f);
 

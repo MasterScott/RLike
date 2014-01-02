@@ -58,12 +58,12 @@ public abstract class Floor {
 	/**
 	 * Coordinates of the stairs leading downward on this floor.
 	 */
-	protected Point downstairs;
+	protected Feature downstairs;
 
 	/**
 	 * Coordinates of the stairs leading upward on this floor.
 	 */
-	protected Point upstairs;
+	protected Feature upstairs;
 
 	/**
 	 * Checks to see if there is an actor at the specified location that is not
@@ -271,13 +271,20 @@ public abstract class Floor {
 	 * @param col
 	 *            Column of tileset icon is located on.
 	 */
-	protected void createStairs(FeatureType featureType, GraphicFile tileset, int row, int col) {
+	public void createStairs(FeatureType featureType, GraphicFile tileset, int row, int col) {
 		Point p = getRandomOpenTile();
 
 		Tile t = getTileAt(p.x, p.y);
 		actors.remove(t);
 
 		Feature f = new Feature(p.x, p.y, true, tileset, row, col, featureType);
+		
+		if (f.getFeatureType() == FeatureType.DOWNSTAIRS) {
+			downstairs = f;
+		} else if (f.getFeatureType() == FeatureType.UPSTAIRS) {
+			upstairs = f;
+		}
+		
 		actors.add(f);
 	}
 
@@ -298,12 +305,18 @@ public abstract class Floor {
 	 * @param col
 	 *            Column of tileset icon is located on.
 	 */
-	protected void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int row, int col) {
+	public void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int row, int col) {
 		Feature f = new Feature(x, y, true, tileset, row, col, featureType);
 
 		Tile t = getTileAt(x, y);
 		actors.remove(t);
 
+		if (f.getFeatureType() == FeatureType.DOWNSTAIRS) {
+			downstairs = f;
+		} else if (f.getFeatureType() == FeatureType.UPSTAIRS) {
+			upstairs = f;
+		}
+		
 		actors.add(f);
 		System.out.println("Stairs at: " + x + " " + y);
 	}
@@ -338,8 +351,12 @@ public abstract class Floor {
 		Feature f = new Feature(x, y, true, tileset, row, col, FeatureType.UPSTAIRS);
 		f.setImage(tileset, row, col);
 
-		// DEBUG
-		System.out.println("Stairs at: " + x + " " + y);
+		if (f.getFeatureType() == FeatureType.DOWNSTAIRS) {
+			downstairs = f;
+		} else if (f.getFeatureType() == FeatureType.UPSTAIRS) {
+			upstairs = f;
+		}
+		
 	}
 
 	/**
@@ -396,20 +413,20 @@ public abstract class Floor {
 	}
 
 	/**
-	 * Returns coordinates for the stairs leading to the next floor.
+	 * Returns the stairs leading to the next floor.
 	 * 
-	 * @return Coordinates for the stairs leading to the next floor.
+	 * @return Stairs leading to the next floor.
 	 */
-	public Point getDownstairsCoordinates() {
+	public Feature getDownstairs() {
 		return downstairs;
 	}
 
 	/**
-	 * Returns coordinates for the stairs leading to the previous floor.
+	 * Returns the stairs leading to the previous floor.
 	 * 
-	 * @return Coordinates for the stairs leading to the previous floor.
+	 * @return Stairs leading to the previous floor.
 	 */
-	public Point getUpstairsCoordinates() {
+	public Feature getUpstairs() {
 		return upstairs;
 	}
 

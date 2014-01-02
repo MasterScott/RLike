@@ -1,5 +1,6 @@
 package roguelike.etc;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -12,6 +13,7 @@ import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
 import roguelike.ui.graphics.Graphic.GraphicFile;
+import roguelike.world.BaseDungeon;
 import roguelike.world.Floor;
 
 /**
@@ -80,7 +82,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			if (e.isShiftDown()) {
 				Tile tile = floor.getTileAt(Session.player.getX(), Session.player.getY());
 				if (tile.getClass() == Feature.class && ((Feature) tile).getFeatureType() == FeatureType.DOWNSTAIRS) {
-					// TODO Do downstairs stuff.
+					changeFloor((Feature) tile);
 				}
 			}
 			break;
@@ -88,7 +90,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			if (e.isShiftDown()) {
 				Tile tile = floor.getTileAt(Session.player.getX(), Session.player.getY());
 				if (tile.getClass() == Feature.class && ((Feature) tile).getFeatureType() == FeatureType.UPSTAIRS) {
-					// TODO Do upstairs stuff.
+					changeFloor((Feature) tile);
 				}
 			}
 			break;
@@ -192,6 +194,31 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 
 	}
 
-	public abstract void changeFloor(int index);
+	public void changeFloor(Feature stairs) {
+		Floor newFloor = null;
+		Point p = null;
+		
+		if (stairs.getConnectingStaircase() == null) {
+			newFloor = new BaseDungeon();
+			newFloor.generateFloor();
+			
+			p = newFloor.getRandomOpenTile();
+			
+			newFloor.createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 4, 8);
+			newFloor.getUpstairs().setConnectingStaircase(stairs);
+			stairs.setConnectingStaircase(newFloor.getUpstairs());
+			Session.floors.add(newFloor);
+		} else {
+			newFloor = stairs.getConnectingStaircase().getFloor();
+			p = stairs.getConnectingStaircase().getCoords();
+		}
+		
+		newFloor.actors.add(Session.player);
+		floor.actors.remove(Session.player);
+		Session.player.setFloor(newFloor);
+		Session.player.setCoords(p.x, p.y);
+		
+		floor = newFloor;
+	}
 
 }

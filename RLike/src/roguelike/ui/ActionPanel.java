@@ -112,10 +112,4 @@ public class ActionPanel extends ActionKeyListener {
 		return floor;
 	}
 
-	@Override
-	public void changeFloor(int index) {
-		// TODO Auto-generated method stub
-
-	}
-
 }
