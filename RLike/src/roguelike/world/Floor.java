@@ -285,6 +285,7 @@ public abstract class Floor {
 			upstairs = f;
 		}
 		
+		f.setFloor(this);
 		actors.add(f);
 	}
 
@@ -317,6 +318,7 @@ public abstract class Floor {
 			upstairs = f;
 		}
 		
+		f.setFloor(this);
 		actors.add(f);
 		System.out.println("Stairs at: " + x + " " + y);
 	}
@@ -357,6 +359,8 @@ public abstract class Floor {
 			upstairs = f;
 		}
 		
+		f.setFloor(this);
+		actors.add(f);
 	}
 
 	/**
