@@ -45,7 +45,7 @@ public class Cave extends Floor {
 	@Override
 	public void generateFloor() {
 		super.generateFloor();
-		
+
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (Math.random() > tolerance) {
@@ -82,11 +82,11 @@ public class Cave extends Floor {
 
 		encloseLevel(GraphicFile.FEATURES, 0, 3);
 		fillLevelWithTiles(GraphicFile.GROUNDS, 0, 4, true);
-		
+
 		downstairs = getRandomOpenTile();
 		createStairs(downstairs.x, downstairs.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
 		populateWithCreatures();
-		
+
 	}
 
 	/**
@@ -105,13 +105,17 @@ public class Cave extends Floor {
 
 		int count = 0;
 		for (int i = 0; i < XARR.length; i++) {
-			if (XARR[i] >= 0 && XARR[i] <= XMAX && YARR[i] >= 0
-					&& YARR[i] <= YMAX) {
+			if (XARR[i] >= 0 && XARR[i] <= XMAX && YARR[i] >= 0 && YARR[i] <= YMAX) {
 				if (getActorAt(XARR[i], YARR[i]) != null)
 					count++;
 			}
 		}
 
 		return count;
+	}
+
+	@Override
+	public Tile getFloorTile(int x, int y) {
+		return new Tile(x, y, true, GraphicFile.GROUNDS, 0, 4);
 	}
 }

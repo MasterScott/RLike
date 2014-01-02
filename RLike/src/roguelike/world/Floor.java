@@ -93,7 +93,7 @@ public abstract class Floor {
 		} else {
 			this.depth = Session.floors.size() + 1;
 		}
-		
+
 		Session.floors.add(this);
 	}
 
@@ -452,4 +452,17 @@ public abstract class Floor {
 			actors.add(c);
 		}
 	}
+
+	/**
+	 * Returns the tile used for the floor tile of this level.
+	 * 
+	 * @param x
+	 *            X-coordinate of this tile.
+	 * @param y
+	 *            Y-coordinate of this tile.
+	 * 
+	 * @return Tile used for the floor tile of this level.
+	 */
+	public abstract Tile getFloorTile(int x, int y);
+
 }

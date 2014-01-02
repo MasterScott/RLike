@@ -11,14 +11,24 @@ import roguelike.actors.Tile;
 import roguelike.etc.RLUtilities;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 
+/**
+ * Layout for a basic dungeon (rooms connected to other rooms or via hallways)
+ * type floor.
+ * 
+ * @author Dan
+ * 
+ */
 public class BaseDungeon extends Floor {
 
 	private ArrayList<Room> rooms;
 	private Room cursorRoom;
-	private final double TOLERANCE = 0.65;
+	private final double TOLERANCE = 0.75;
 	private final int NUMBER_ROOMS = 18;
 	private Random rand;
 
+	/**
+	 * Creates a new instance of a basic dungeon floor.
+	 */
 	public BaseDungeon() {
 		actors = new ArrayList<Actor>();
 		rooms = new ArrayList<Room>();
@@ -63,8 +73,7 @@ public class BaseDungeon extends Floor {
 		}
 
 		rooms.add(r);
-		// Debug
-		System.out.println(r.toString());
+
 		return true;
 	}
 
@@ -215,7 +224,7 @@ public class BaseDungeon extends Floor {
 			}
 
 			// Check for room stretching out of bounds.
-			if (r1.minX < 0 || r1.maxX > XMAX - 1|| r1.minY < 0 || r1.maxY > YMAX - 1) {
+			if (r1.minX < 0 || r1.maxX > XMAX - 1 || r1.minY < 0 || r1.maxY > YMAX - 1) {
 				return true;
 			}
 
@@ -246,5 +255,10 @@ public class BaseDungeon extends Floor {
 		public String toString() {
 			return ("x1: " + minX + " y1: " + minY + " x2: " + maxX + " y2: " + maxY);
 		}
+	}
+
+	@Override
+	public Tile getFloorTile(int x, int y) {
+		return new Tile(x, y, true, GraphicFile.DUNGEON, 6, 3);
 	}
 }

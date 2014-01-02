@@ -170,9 +170,10 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 
 			p.movement = true;
 		} else if (t != null && t.getClass() == Feature.class){
+			// Open door if one is present.
 			if (((Feature) t).getFeatureType() == FeatureType.DOOR){
 				floor.actors.remove(t);
-				floor.actors.add(new Tile(t.getX(), t.getY(), true, GraphicFile.DUNGEON, 6, 3));
+				floor.actors.add(floor.getFloorTile(t.getX(), t.getY()));
 			}
 		}
 
