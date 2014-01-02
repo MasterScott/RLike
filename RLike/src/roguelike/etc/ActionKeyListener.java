@@ -11,6 +11,7 @@ import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Floor;
 
 /**
@@ -150,6 +151,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		}
 
 		Creature c = floor.getCreatureAt(x + xDiff, y + yDiff);
+		Tile t = floor.getTileAt(x + xDiff, y + yDiff);
 
 		/*
 		 * Can't walk through an actor unless they are explicitly set to be
@@ -167,6 +169,11 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			}
 
 			p.movement = true;
+		} else if (t != null && t.getClass() == Feature.class){
+			if (((Feature) t).getFeatureType() == FeatureType.DOOR){
+				floor.actors.remove(t);
+				floor.actors.add(new Tile(t.getX(), t.getY(), true, GraphicFile.DUNGEON, 6, 3));
+			}
 		}
 
 		// Need to reprocess LOS so creatures function correctly.

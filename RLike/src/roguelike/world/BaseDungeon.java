@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import roguelike.actors.Actor;
+import roguelike.actors.Feature;
+import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Tile;
 import roguelike.etc.RLUtilities;
 import roguelike.ui.graphics.Graphic.GraphicFile;
@@ -101,7 +103,7 @@ public class BaseDungeon extends Floor {
 				if (cursorRoom.isPassageway && isPassageway) {
 					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 6, 3);
 				} else {
-					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 0, 3);
+					t = new Feature(p.x, p.y, false, GraphicFile.DUNGEON, 0, 3, FeatureType.DOOR);
 				}
 
 				actors.add(t);

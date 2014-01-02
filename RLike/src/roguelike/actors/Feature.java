@@ -41,7 +41,7 @@ public class Feature extends Tile {
 	 * 
 	 */
 	public static enum FeatureType {
-		UPSTAIRS, DOWNSTAIRS
+		UPSTAIRS, DOWNSTAIRS, DOOR
 	}
 
 }
