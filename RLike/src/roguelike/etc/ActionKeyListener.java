@@ -171,9 +171,9 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			}
 
 			p.movement = true;
-		} else if (t != null && t.getClass() == Feature.class){
+		} else if (t != null && t.getClass() == Feature.class) {
 			// Open door if one is present.
-			if (((Feature) t).getFeatureType() == FeatureType.DOOR){
+			if (((Feature) t).getFeatureType() == FeatureType.DOOR) {
 				floor.actors.remove(t);
 				floor.actors.add(floor.getFloorTile(t.getX(), t.getY()));
 			}
@@ -185,26 +185,33 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyTyped(KeyEvent e) {}
 
-	}
-
-	public void changeFloor(Feature stairs) {
+	/**
+	 * Moves up or down a flight of stairs and displays the new level.
+	 * 
+	 * @param stairs Staircase being traveled.
+	 */
+	private void changeFloor(Feature stairs) {
 		Floor newFloor = null;
 		Point p = null;
-		
+
+		/*
+		 * If this staircase has never been descended before, create a new floor
+		 * and assign that to the connecting floor of the staircase. Otherwise,
+		 * go to the existing connecting floor.
+		 */
 		if (stairs.getConnectingStaircase() == null) {
 			newFloor = new BaseDungeon();
 			newFloor.generateFloor();
-			
+
 			p = newFloor.getRandomOpenTile();
-			
 			newFloor.createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 4, 8);
+
+			// Assign connecting floors to both ends of the staircase.
 			newFloor.getUpstairs().setConnectingStaircase(stairs);
 			stairs.setConnectingStaircase(newFloor.getUpstairs());
 			Session.floors.add(newFloor);
@@ -212,12 +219,14 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			newFloor = stairs.getConnectingStaircase().getFloor();
 			p = stairs.getConnectingStaircase().getCoords();
 		}
-		
+
+		// Add player to new floor and set player coords to staircase coords.
 		newFloor.actors.add(Session.player);
 		floor.actors.remove(Session.player);
 		Session.player.setFloor(newFloor);
 		Session.player.setCoords(p.x, p.y);
-		
+
+		// Change displayed floor to new floor.
 		floor = newFloor;
 	}
 
