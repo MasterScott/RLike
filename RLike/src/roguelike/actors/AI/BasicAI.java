@@ -25,7 +25,7 @@ public class BasicAI extends AI {
 	public void doPrioritizedAction() {
 		Tile t = c.getFloor().getTileAt(c.getX(), c.getY());
 
-		if (t.getTurnSeen() == Session.turnCount) { // In LOS
+		if (t.getTurnSeen() >= Session.turnCount - 2) { // In LOS or was just in LOS
 			Point closest = getClosestTile(c.getX(), c.getY());
 
 			int x = c.getX();
@@ -58,7 +58,7 @@ public class BasicAI extends AI {
 
 		for (int i = 0; i < dx.length; i++) {
 			Tile tile = c.getFloor().getTileAt(x + dx[i], y + dy[i]);
-			if (tile.getDistance() < initial.getDistance() && tile.isTraversable()) {
+			if ((tile.getDistance() < initial.getDistance() || tile.getTurnSeen() > initial.getTurnSeen() )&& tile.isTraversable() ) {
 				initial = tile;
 				result = new Point(dx[i], dy[i]);
 			} 
