@@ -1,5 +1,6 @@
 package roguelike.etc;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import roguelike.actors.Player;
@@ -40,4 +41,8 @@ public class Session {
 	 */
 	public static ActionQueue actionQueue = new ActionQueue();
 	
+	/**
+	 * Stack that holds all messages to be delivered to the UI.
+	 */
+	public static ArrayDeque<String> messageStack = new ArrayDeque<String>();
 }
