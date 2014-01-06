@@ -88,6 +88,15 @@ public class ActionPanel extends ActionKeyListener {
 				}
 			}
 		}
+		
+		// DELETE LATER
+		String[] messages = Session.messageStack.getRecent();
+		g.setColor(Color.WHITE);
+		if (messages != null) {
+			for (int i = 0; i < messages.length; i++) {
+				g.drawString(messages[i], 20, this.getBounds().height - 90 + i * 16);
+			}
+		}
 
 	}
 	

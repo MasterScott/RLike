@@ -4,7 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import roguelike.actors.Actor;
+import roguelike.etc.Session;
 
+/**
+ * Enumerated type that contains all actions performed by creatures to recipients.
+ * 
+ * @author Dan
+ * 
+ */
 public enum ActionList implements Action {
 	MELEE_ATTACK("meleeAttack", "Melee Attack", "attacks")
 
@@ -17,6 +24,7 @@ public enum ActionList implements Action {
 
 	private ActionList(String methodName, String name, String action) {
 		try {
+			// Use reflection to create an instance of the specified method.
 			this.m = ActionMethods.class.getMethod(methodName, Actor.class, Actor.class);
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -42,6 +50,9 @@ public enum ActionList implements Action {
 		}
 
 		damage = ActionMethods.getDamage();
+		
+		// Add message text to the stack.
+		Session.messageStack.addFirst(getActionText());
 	}
 
 	@Override
@@ -54,7 +65,7 @@ public enum ActionList implements Action {
 		if (performer == null || recipient == null)
 			return null;
 
-		return performer + " " + action + " " + recipient + " for " + damage + " damage.";
+		return performer.getName() + " " + action + " " + recipient.getName() + " for " + damage + " damage.";
 	}
 
 }

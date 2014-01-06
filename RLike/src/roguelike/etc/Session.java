@@ -44,5 +44,5 @@ public class Session {
 	/**
 	 * Stack that holds all messages to be delivered to the UI.
 	 */
-	public static ArrayDeque<String> messageStack = new ArrayDeque<String>();
+	public static MessageStack messageStack = new MessageStack();
 }

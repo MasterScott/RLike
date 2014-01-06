@@ -29,6 +29,7 @@ public abstract class Actor {
 	int x, y, row, col;
 	boolean traversable;
 	boolean previouslySeen;
+	String name;
 	Floor floor;
 	Image image;
 
@@ -184,6 +185,25 @@ public abstract class Actor {
 		return previouslySeen;
 	}
 
+	/**
+	 * Returns this creature's name.
+	 * 
+	 * @return Creature's name.
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Sets this creature's name.
+	 * 
+	 * @param name
+	 *            Creature's name.
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	/**
 	 * Sets whether or not this actor has been previously seen by the player.
 	 * 

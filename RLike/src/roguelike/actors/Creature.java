@@ -23,7 +23,6 @@ public class Creature extends Actor {
 
 	public Stat hp, mp, strength, intelligence, dexterity;
 
-	String name;
 	int regenRate = DEFAULT_REGEN_RATE;
 	int regenAmount = DEFAULT_REGEN_AMOUNT;
 	RLClass c;
@@ -44,6 +43,7 @@ public class Creature extends Actor {
 	 */
 	public Creature(int x, int y, String name) {
 		super(x, y);
+		this.name = name;
 		traversable = false;
 		hostile = true;
 	}
@@ -137,16 +137,7 @@ public class Creature extends Actor {
 	public long getExpGiven() {
 		return expGiven;
 	}
-
-	/**
-	 * Returns this creature's name.
-	 * 
-	 * @return Creature's name.
-	 */
-	public String getName() {
-		return name;
-	}
-
+	
 	/**
 	 * Returns the denominator of the creature's 1/x chance to regenerate on a
 	 * given turn.
@@ -234,16 +225,6 @@ public class Creature extends Actor {
 	 */
 	public void setHostile(boolean hostile) {
 		this.hostile = hostile;
-	}
-
-	/**
-	 * Sets this creature's name.
-	 * 
-	 * @param name
-	 *            Creature's name.
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**
