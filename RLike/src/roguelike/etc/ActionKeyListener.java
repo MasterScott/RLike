@@ -3,6 +3,7 @@ package roguelike.etc;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyVetoException;
 
 import javax.swing.JPanel;
 
@@ -12,6 +13,7 @@ import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
+import roguelike.ui.InventoryFrame;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.BaseDungeon;
 import roguelike.world.Floor;
@@ -77,6 +79,18 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			xDiff++;
 			yDiff--;
 			movement = true;
+			break;
+		case KeyEvent.VK_I: // Open inventory
+			if (Session.inventoryFrame.isIcon()) {
+				try {
+					Session.inventoryFrame.setIcon(false);
+				} catch (PropertyVetoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				Session.inventoryFrame.setVisible(true);
+			}
 			break;
 		case KeyEvent.VK_PERIOD: // For going down stairs. Requires shift+'.'
 			if (e.isShiftDown()) {

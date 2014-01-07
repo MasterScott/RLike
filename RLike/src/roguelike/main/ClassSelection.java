@@ -1,5 +1,6 @@
 package roguelike.main;
 
+import roguelike.etc.Session;
 import roguelike.ui.CharacterSelectPanel;
 import roguelike.ui.Window;
 

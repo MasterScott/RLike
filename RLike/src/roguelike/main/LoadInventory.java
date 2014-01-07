@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Point;
 
 import javax.swing.JDesktopPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.ColorUIResource;
 
 import roguelike.actors.Player;
 import roguelike.etc.Session;
@@ -17,6 +19,8 @@ import roguelike.world.BaseDungeon;
 public class LoadInventory {
 
 	public static void main(String[] args) {
+		
+		Session.initialize();
         
 		Window w = new Window();
 		JDesktopPane jdp = new JDesktopPane();
@@ -46,7 +50,6 @@ public class LoadInventory {
 		ap.requestFocusInWindow();
 
 		InventoryFrame ip = new InventoryFrame();
-		ip.ap = ap;
 		jdp.add(ip);
 		ip.setVisible(true);
 		

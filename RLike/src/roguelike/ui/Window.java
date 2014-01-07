@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -28,6 +29,9 @@ import roguelike.world.Floor;
 public class Window extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = -5680894051148117655L;
+	private ActionPanel p;
+	private StatsPanel s;
+	private JDesktopPane jdp;
 
 	/**
 	 * Creates a new console window with default parameters.
@@ -66,8 +70,10 @@ public class Window extends JFrame implements KeyListener {
 			@Override
 			public void run() {
 				// TODO Need to rework all of this.
-				ActionPanel p = new ActionPanel();
-				StatsPanel s = new StatsPanel();
+				Session.initialize();
+				
+				p = new ActionPanel();
+				s = new StatsPanel();
 				Floor f = new Cave();
 				f.generateFloor();
 
@@ -88,8 +94,12 @@ public class Window extends JFrame implements KeyListener {
 				getContentPane().removeAll();
 				setBounds(100, 10, 1536, 1024);
 				
-				getContentPane().add(p);
-				getContentPane().add(s);
+				jdp = new JDesktopPane();
+				getContentPane().add(jdp);
+				jdp.add(p);
+				jdp.add(s);
+				jdp.add(Session.inventoryFrame);
+
 				p.setVisible(true);
 				p.setBackground(Color.BLACK);
 
@@ -105,20 +115,17 @@ public class Window extends JFrame implements KeyListener {
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		//repaint();
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		//repaint();
-		
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		//repaint();
-		
+
 	}
 
 }
