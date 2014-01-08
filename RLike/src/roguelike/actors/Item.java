@@ -9,6 +9,11 @@ public class Item extends Actor {
 		this.itemtype = itemtype;
 		this.traversable = true;
 	}
+	
+	public Item(int x, int y, String name, ItemType itemtype) {
+		this(x, y, itemtype);
+		this.name = name;
+	}
 
 	/**
 	 * Returns type of item this is.
