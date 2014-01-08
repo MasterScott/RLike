@@ -125,7 +125,7 @@ public abstract class Floor {
 				item = new Item(p.x, p.y, "Sword", ItemType.SWORD, GraphicFile.WEAPONS, 0, 8);
 				actors.add(item);
 			}
-			System.out.println("Item " + i + " at X: " + p.x + " Y: " + p.y);
+
 		}
 	}
 

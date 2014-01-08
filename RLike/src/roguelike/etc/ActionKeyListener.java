@@ -11,9 +11,9 @@ import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
+import roguelike.actors.Item;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
-import roguelike.ui.InventoryFrame;
 import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.BaseDungeon;
 import roguelike.world.Floor;
@@ -90,6 +90,13 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 				}
 			} else {
 				Session.inventoryFrame.setVisible(true);
+			}
+			break;
+		case KeyEvent.VK_G: // Pick up item
+			Item i = Session.player.getFloor().getItemAt(Session.player.getX(), Session.player.getY());
+			if (i != null) {
+				Session.player.getInventory().add(i);
+				Session.player.getFloor().actors.remove(i);
 			}
 			break;
 		case KeyEvent.VK_PERIOD: // For going down stairs. Requires shift+'.'
