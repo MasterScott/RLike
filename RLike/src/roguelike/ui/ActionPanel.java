@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Creature;
+import roguelike.actors.Item;
 import roguelike.actors.Tile;
 import roguelike.etc.ActionKeyListener;
 import roguelike.etc.Session;
@@ -48,7 +49,7 @@ public class ActionPanel extends ActionKeyListener {
 			throw new NullPointerException("A floor was not defined for this ActionPanel.");
 
 		ArrayList<Actor> inSight = Session.player.getLOS().getVisible();
-		
+
 		/*
 		 * If actor is in sight, display in normal color and set previously seen
 		 * to true. If not in sight, display at an obscured color if the actor
@@ -72,15 +73,17 @@ public class ActionPanel extends ActionKeyListener {
 		 * types will generally be drawn on top of non-creatures.
 		 */
 		for (Actor actor : floor.actors) {
-			if (inSight.contains(actor) && actor instanceof Creature) {
+			if (inSight.contains(actor) && actor instanceof Item) {
+				g.drawImage(actor.getImage(), actor.getX() * xScale + xPlus, actor.getY() * yScale + yPlus, this);
+			} else if (inSight.contains(actor) && actor instanceof Creature) {
 				Creature c = (Creature) actor;
-				
+
 				g.drawImage(c.getImage(), c.getX() * xScale + xPlus, c.getY() * yScale + yPlus, this);
 
 				// Draw health bars.
 				if (c.hp.max > c.hp.current) {
 					int v = (int) (((double) c.hp.current / (double) c.hp.max) * 30);
-					
+
 					g.setColor(new Color(255, 0, 0));
 					g.fillRect(c.getX() * xScale + xPlus + 1, c.getY() * yScale + yPlus + 30, 30, 2);
 					g.setColor(new Color(0, 255, 0));
@@ -88,7 +91,7 @@ public class ActionPanel extends ActionKeyListener {
 				}
 			}
 		}
-		
+
 		// DELETE LATER
 		String[] messages = Session.messageStack.getRecent();
 		g.setColor(Color.WHITE);
@@ -99,8 +102,6 @@ public class ActionPanel extends ActionKeyListener {
 		}
 
 	}
-	
-	
 
 	/**
 	 * Sets floor to be displayed.

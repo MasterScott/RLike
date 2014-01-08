@@ -87,7 +87,7 @@ public class Cave extends Floor {
 		Point p = getRandomOpenTile();
 		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
 		populateWithCreatures();
-
+		generateItems();
 	}
 
 	/**

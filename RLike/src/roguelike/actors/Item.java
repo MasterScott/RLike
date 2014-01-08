@@ -1,5 +1,7 @@
 package roguelike.actors;
 
+import roguelike.ui.graphics.Graphic.GraphicFile;
+
 public class Item extends Actor {
 
 	private ItemType itemtype;
@@ -10,9 +12,13 @@ public class Item extends Actor {
 		this.traversable = true;
 	}
 	
-	public Item(int x, int y, String name, ItemType itemtype) {
+	public Item(int x, int y, String name, ItemType itemtype, GraphicFile gf, int row, int col) {
 		this(x, y, itemtype);
 		this.name = name;
+		this.gf = gf;
+		this.row = row;
+		this.col = col;
+		setImage(gf, row, col);
 	}
 
 	/**

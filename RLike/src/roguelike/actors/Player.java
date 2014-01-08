@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import roguelike.actors.Item.ItemType;
 import roguelike.actors.util.Stat;
+import roguelike.ui.graphics.Graphic.GraphicFile;
 
 
 /**
@@ -33,9 +34,9 @@ public class Player extends Creature {
 		
 		// TODO Placeholder values
 		inventory = new ArrayList<Item>();
-		inventory.add(new Item(0, 0, "Salmon", ItemType.SWORD));
-		inventory.add(new Item(0, 0, "Ham", ItemType.HELMET));
-		inventory.add(new Item(0, 0, "Tropical Island Song", ItemType.MISC));
+		inventory.add(new Item(0, 0, "Salmon", ItemType.SWORD, GraphicFile.ARMOR, 0, 0));
+		inventory.add(new Item(0, 0, "Ham", ItemType.HELMET, GraphicFile.FOOD, 0, 4));
+		inventory.add(new Item(0, 0, "Tropical Island Song", ItemType.MISC, GraphicFile.MISC, 2, 4));
 	}
 	
 	public ArrayList<Item> getInventory() {

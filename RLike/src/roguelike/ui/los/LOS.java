@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import roguelike.actors.Actor;
 import roguelike.actors.Creature;
+import roguelike.actors.Item;
 import roguelike.actors.Tile;
 import roguelike.world.Floor;
 
@@ -108,6 +109,11 @@ public class LOS {
 				Creature c = floor.getCreatureAt(x, y);
 				if (c != null && !inSight.contains(c)) {
 					inSight.add(c);
+				}
+				
+				Item i = floor.getItemAt(x, y);
+				if (i != null && !inSight.contains(i)) {
+					inSight.add(i);
 				}
 
 				recursiveShadowCast(x + d.dx1, y + d.dy1, d);

@@ -8,9 +8,12 @@ import roguelike.actors.Actor;
 import roguelike.actors.Creature;
 import roguelike.actors.Feature;
 import roguelike.actors.Feature.FeatureType;
-import roguelike.actors.util.CreatureTemplate;
+import roguelike.actors.Item;
+import roguelike.actors.Item.ItemType;
 import roguelike.actors.Player;
 import roguelike.actors.Tile;
+import roguelike.actors.util.CreatureTemplate;
+import roguelike.etc.RLUtilities;
 import roguelike.etc.Session;
 import roguelike.etc.random.ObjectLists;
 import roguelike.etc.random.RandomGenerator;
@@ -98,6 +101,35 @@ public abstract class Floor {
 	}
 
 	/**
+	 * Generates items to be randomly placed throughout the floor.
+	 */
+	public void generateItems() {
+		if (actors == null)
+			return;
+
+		RandomGenerator random = new RandomGenerator();
+		int minItems = 4;
+		int maxItems = 14;
+		int numItems = RLUtilities.getRandom(minItems, maxItems);
+
+		for (int i = 0; i < numItems; i++) {
+			Point p = getRandomOpenTile();
+			WeightedRandom choice = random.generate(ObjectLists.Items.values(), this.depth);
+
+			// TODO Replace with a generation method.
+			Item item = null;
+			if (choice.getName().equals("MONEY")) {
+				item = new Item(p.x, p.y, "Gold", ItemType.MONEY, GraphicFile.MISC, 1, 2);
+				actors.add(item);
+			} else if (choice.getName().equals("SWORD")) {
+				item = new Item(p.x, p.y, "Sword", ItemType.SWORD, GraphicFile.WEAPONS, 0, 8);
+				actors.add(item);
+			}
+			System.out.println("Item " + i + " at X: " + p.x + " Y: " + p.y);
+		}
+	}
+
+	/**
 	 * Returns actor at the specified coordinate. If there is no actor present,
 	 * returns null.
 	 * 
@@ -150,6 +182,25 @@ public abstract class Floor {
 		for (Actor actor : actors) {
 			if (actor.getX() == x && actor.getY() == y && (actor instanceof Tile)) {
 				return (Tile) actor;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Returns item at the specified coordinate. If there is no item present,
+	 * returns null.
+	 * 
+	 * @param x
+	 *            x-coordinate.
+	 * @param y
+	 *            y-coordinate.
+	 * @return Item at the specified coordinate.
+	 */
+	public Item getItemAt(int x, int y) {
+		for (Actor actor : actors) {
+			if (actor.getX() == x && actor.getY() == y && (actor instanceof Item)) {
+				return (Item) actor;
 			}
 		}
 		return null;
@@ -278,13 +329,13 @@ public abstract class Floor {
 		actors.remove(t);
 
 		Feature f = new Feature(p.x, p.y, true, tileset, row, col, featureType);
-		
+
 		if (f.getFeatureType() == FeatureType.DOWNSTAIRS) {
 			downstairs = f;
 		} else if (f.getFeatureType() == FeatureType.UPSTAIRS) {
 			upstairs = f;
 		}
-		
+
 		f.setFloor(this);
 		actors.add(f);
 	}
@@ -317,10 +368,9 @@ public abstract class Floor {
 		} else if (f.getFeatureType() == FeatureType.UPSTAIRS) {
 			upstairs = f;
 		}
-		
+
 		f.setFloor(this);
 		actors.add(f);
-		System.out.println("Stairs at: " + x + " " + y);
 	}
 
 	/**
@@ -358,7 +408,7 @@ public abstract class Floor {
 		} else if (f.getFeatureType() == FeatureType.UPSTAIRS) {
 			upstairs = f;
 		}
-		
+
 		f.setFloor(this);
 		actors.add(f);
 	}
