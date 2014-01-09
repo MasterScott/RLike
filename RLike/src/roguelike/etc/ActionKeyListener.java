@@ -229,14 +229,12 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 			newFloor = new BaseDungeon();
 			newFloor.generateFloor();
 
-			p = newFloor.getRandomOpenTile();
-			// TODO Keep stair tile in a variable in the floor.
-			newFloor.createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 4, 6);
-
 			// Assign connecting floors to both ends of the staircase.
 			newFloor.getUpstairs().setConnectingStaircase(stairs);
 			stairs.setConnectingStaircase(newFloor.getUpstairs());
 			Session.floors.add(newFloor);
+			
+			p = new Point(newFloor.getUpstairs().getCoords());
 		} else {
 			newFloor = stairs.getConnectingStaircase().getFloor();
 			p = stairs.getConnectingStaircase().getCoords();

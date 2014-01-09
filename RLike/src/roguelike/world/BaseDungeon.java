@@ -123,6 +123,17 @@ public class BaseDungeon extends Floor {
 		}
 
 		encloseLevel(GraphicFile.DUNGEON, 6, 3);
+		
+		Point p = getRandomOpenTile();
+		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
+		
+		if (depth > 0) {
+			p = getRandomAccessibleTile(downstairs.getCoords());
+			createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 4, 6);
+		}
+		
+		populateWithCreatures();
+		generateItems();
 	}
 
 	/**

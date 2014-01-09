@@ -428,7 +428,7 @@ public abstract class Floor {
 		if (t == null || accessibleTiles.contains(t))
 			return;
 
-		if (t.isTraversable()) {
+		if (t.isTraversable() || (t.getClass() == Feature.class && ((Feature) t).getFeatureType() == FeatureType.DOOR)) {
 			accessibleTiles.add(t);
 			// 7 ms with just NSWE, 15 ms with diagonals + NSWE.
 			getAccessibleArea(x + 1, y);
