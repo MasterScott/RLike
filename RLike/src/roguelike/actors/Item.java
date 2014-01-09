@@ -5,13 +5,15 @@ import roguelike.ui.graphics.Graphic.GraphicFile;
 public class Item extends Actor {
 
 	private ItemType itemtype;
+	private int quantity;
 
 	public Item(int x, int y, ItemType itemtype) {
 		super(x, y);
 		this.itemtype = itemtype;
 		this.traversable = true;
+		this.quantity = 1;
 	}
-	
+
 	public Item(int x, int y, String name, ItemType itemtype, GraphicFile gf, int row, int col) {
 		this(x, y, itemtype);
 		this.name = name;
@@ -38,6 +40,40 @@ public class Item extends Actor {
 	 */
 	public void setItemType(ItemType itemtype) {
 		this.itemtype = itemtype;
+	}
+
+	/**
+	 * Returns how many instances of this item this represents.
+	 * 
+	 * @return Number of items.
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
+
+	/**
+	 * Sets the number of items this represents.
+	 * 
+	 * @param quantity
+	 *            Number of items.
+	 */
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	/**
+	 * Adds the specified amount to the number of items this represents.
+	 * 
+	 * @param quantity
+	 *            Number of items.
+	 */
+	public void addQuantity(int quantity) {
+		this.quantity += quantity;
+	}
+
+	@Override
+	public String toString() {
+		return name + " GF: " + gf.name() + " Row: " + row + " Col: " + col;
 	}
 
 	/**

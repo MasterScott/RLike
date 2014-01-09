@@ -10,13 +10,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import roguelike.actors.Creature;
-import roguelike.actors.Feature.FeatureType;
-import roguelike.actors.util.CreatureTemplate;
-import roguelike.actors.util.Stat;
-import roguelike.actors.AI.BasicAI;
 import roguelike.etc.Session;
-import roguelike.ui.graphics.Graphic.GraphicFile;
 import roguelike.world.Cave;
 import roguelike.world.Floor;
 

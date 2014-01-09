@@ -67,7 +67,7 @@ public class InventoryFrame extends JInternalFrame {
 				jdp = getEnclosingJDesktopPane();
 				loadInventory();
 			}
-			
+
 			@Override
 			public void internalFrameDeiconified(InternalFrameEvent e) {
 				// Reload inventory when the panel is opened.
@@ -83,7 +83,7 @@ public class InventoryFrame extends JInternalFrame {
 					}
 				}
 			}
-			
+
 		});
 	}
 
@@ -93,23 +93,35 @@ public class InventoryFrame extends JInternalFrame {
 	private void loadInventory() {
 		// Need to clear the list first.
 		if (entries != null) {
-			for (JLabel j: entries) {
-				if (j != null) remove(j);
+			for (JLabel j : entries) {
+				if (j != null)
+					remove(j);
 			}
 		}
 		revalidate();
-		
+
 		final int MAX_LENGTH = 10;
 		// Create the list of predefined max length.
 		entries = new JLabel[MAX_LENGTH];
 		for (int i = 0; i < Math.min(Session.player.getInventory().size(), entries.length); i++) {
-			entries[i] = new JLabel(Session.player.getInventory().get(i).getName());
+
+			/*
+			 * Include number of items in the label if there is more than one in
+			 * the player's inventory.
+			 */
+			if (Session.player.getInventory().get(i).getQuantity() > 1) {
+				entries[i] = new JLabel(Session.player.getInventory().get(i).getQuantity() + " "
+						+ Session.player.getInventory().get(i).getName());
+			} else {
+				entries[i] = new JLabel(Session.player.getInventory().get(i).getName());
+			}
+
 			entries[i].setForeground(Color.WHITE);
 			entries[i].setFont(new Font("Tahoma", Font.BOLD, 12));
 			add(entries[i], "cell 0 " + i + ",alignx left");
 		}
 	}
-	
+
 	/**
 	 * Returns the JDesktopPane that this is enclosed in.
 	 * 

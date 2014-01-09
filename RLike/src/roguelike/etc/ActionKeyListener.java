@@ -95,7 +95,7 @@ public abstract class ActionKeyListener extends JPanel implements KeyListener {
 		case KeyEvent.VK_G: // Pick up item
 			Item i = Session.player.getFloor().getItemAt(Session.player.getX(), Session.player.getY());
 			if (i != null) {
-				Session.player.getInventory().add(i);
+				Session.player.addToInventory(i);
 				Session.player.getFloor().actors.remove(i);
 			}
 			break;
