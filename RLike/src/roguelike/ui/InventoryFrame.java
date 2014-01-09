@@ -4,13 +4,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.KeyStroke;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import net.miginfocom.swing.MigLayout;
@@ -47,8 +55,10 @@ public class InventoryFrame extends JInternalFrame {
 	/**
 	 * Create the frame.
 	 */
+	@SuppressWarnings("serial")
 	public InventoryFrame() {
 		super("Inventory", false, false, false, true);
+		final InventoryFrame inventoryFrame = this;
 		getContentPane().setBackground(Color.BLACK);
 		setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.LIGHT_GRAY, Color.WHITE));
 
@@ -84,6 +94,21 @@ public class InventoryFrame extends JInternalFrame {
 				}
 			}
 
+		});
+		
+		// Close menu upon pressing escape.
+		this.getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "closeWindow");
+		this.getActionMap().put("closeWindow",  new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					inventoryFrame.setIcon(true);
+				} catch (PropertyVetoException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		});
 	}
 
