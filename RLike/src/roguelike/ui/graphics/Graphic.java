@@ -29,16 +29,21 @@ public class Graphic {
 		// @formatter:off
 		ARMOR("tilesets\\dg_armor32.gif", true), 
 		CLASSM("tilesets\\dg_classm32.gif", true), 
+		CHAR("graphics\\char.png", true),
 		DRAGON("tilesets\\dg_dragon32.gif", true), 
 		DUNGEON("tilesets\\dg_dungeon32.gif", false), 
+		DUNGEON_FEATURES("graphics\\dungeon_features.png", true),
 		EDGING1("tilesets\\dg_edging132.gif", false), 
 		EDGING2("tilesets\\dg_edging232.gif", false), 
 		EDGING3("tilesets\\dg_edging332.gif", true), 
 		EFFECTS("tilesets\\dg_effects32.gif", true), 
+		ENVIRONMENT("graphics\\environment.png", false),
 		EXTRA("tilesets\\dg_extra132.gif", false), 
 		FEATURES("tilesets\\dg_features32.gif", false), 
 		FOOD("tilesets\\dg_food32.gif", true), 
+		GLYPHS("graphics\\glyphs.png", true),
 		GROUNDS("tilesets\\dg_grounds32.gif", false), 
+		HALLS("graphics\\halls.png", true),
 		HUMANS("tilesets\\dg_humans32.gif", true), 
 		ISO("tilesets\\dg_iso32.gif", false), 
 		JEWLS("tilesets\\dg_jewls32.gif", true), 
@@ -51,6 +56,7 @@ public class Graphic {
 		MONSTER5("tilesets\\dg_monster532.gif", true), 
 		MONSTER6("tilesets\\dg_monster632.gif", true), 
 		MONSTER7("tilesets\\dg_monster732.gif", true), 
+		OBJ("graphics\\obj.png", true),
 		PEOPLE("tilesets\\dg_people32.gif", true), 
 		POTIONS("tilesets\\dg_potions32.gif", true), 
 		TOWN0("tilesets\\dg_town032.gif", false), 
@@ -76,8 +82,6 @@ public class Graphic {
 			this.overlay = overlay;
 		}
 	}
-
-	public static Image TILESET;
 
 	/**
 	 * Returns a graphic at the row and column from the tileset specified by the
