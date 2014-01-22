@@ -41,9 +41,9 @@ public class Player extends Creature {
 		dexterity = new Stat(14);
 
 		// TODO Placeholder values
-		inventory.add(new Item(0, 0, "Salmon", ItemType.SWORD, GraphicFile.ARMOR, 0, 0));
-		inventory.add(new Item(0, 0, "Ham", ItemType.HELMET, GraphicFile.FOOD, 0, 4));
-		inventory.add(new Item(0, 0, "Tropical Island Song", ItemType.MISC, GraphicFile.MISC, 2, 4));
+		inventory.add(new Item(0, 0, "Salmon", ItemType.SWORD, GraphicFile.ARMOR, 0));
+		inventory.add(new Item(0, 0, "Ham", ItemType.HELMET, GraphicFile.FOOD, 3));
+		inventory.add(new Item(0, 0, "Tropical Island Song", ItemType.MISC, GraphicFile.MISC, 15));
 	}
 
 	/**

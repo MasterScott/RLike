@@ -84,64 +84,6 @@ public class Graphic {
 	}
 
 	/**
-	 * Returns a graphic at the row and column from the tileset specified by the
-	 * file argument.
-	 * 
-	 * @param file
-	 *            GraphicFile to search through.
-	 * @param row
-	 *            Row of the graphic wanted, starting at 0.
-	 * @param col
-	 *            Column of the graphic wanted, starting at 0.
-	 * @return Graphic at the row and column specified.
-	 */
-	public static Image getImage(GraphicFile file, int row, int col) {
-		BufferedImage in = null;
-		BufferedImage newImage = null;
-
-		try {
-			in = ImageIO.read(new File(file.fileName));
-			newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = newImage.createGraphics();
-			g.drawImage(in, 0, 0, null);
-			g.dispose();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return processImage(newImage, row, col);
-	}
-
-	/**
-	 * Returns a graphic at the row and column from the tileset specified by the
-	 * filepath given.
-	 * 
-	 * @param file
-	 *            Filepath of the graphic file to search through.
-	 * @param row
-	 *            Row of the graphic wanted, starting at 0.
-	 * @param col
-	 *            Column of the graphic wanted, starting at 0.
-	 * @return Graphic at the row and column specified.
-	 */
-	public static Image getImage(String fileName, int row, int col) {
-		BufferedImage in = null;
-		BufferedImage newImage = null;
-
-		try {
-			in = ImageIO.read(new File(fileName));
-			newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = newImage.createGraphics();
-			g.drawImage(in, 0, 0, null);
-			g.dispose();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return processImage(newImage, row, col);
-	}
-
-	/**
 	 * Returns an image specified by the file string.
 	 * 
 	 * @param file
@@ -160,7 +102,78 @@ public class Graphic {
 		return image;
 	}
 
-	private static Image processImage(BufferedImage img, int row, int col) {
+	/**
+	 * Returns an image cropped from the specified graphics file.
+	 * 
+	 * @param gf
+	 *            Graphics file to crop from.
+	 * @param index
+	 *            Index of tile to crop.
+	 * @return Image cropped from file.
+	 */
+	public static Image getImage(GraphicFile gf, int index) {
+		if (index < 0 || index > 255)
+			throw new IndexOutOfBoundsException();
+
+		BufferedImage in = null;
+		BufferedImage newImage = null;
+
+		try {
+			in = ImageIO.read(new File(gf.fileName));
+			newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = newImage.createGraphics();
+			g.drawImage(in, 0, 0, null);
+			g.dispose();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return processImage(newImage, index, 32, 32);
+	}
+
+	/**
+	 * Returns an image cropped from the specified graphics file.
+	 * 
+	 * @param file
+	 *            Graphics file to crop from.
+	 * @param index
+	 *            Index of tile to crop.
+	 * @return Image cropped from file.
+	 */
+	public static Image getImage(String file, int index) {
+		if (index < 0 || index > 255)
+			throw new IndexOutOfBoundsException();
+
+		BufferedImage in = null;
+		BufferedImage newImage = null;
+
+		try {
+			in = ImageIO.read(new File(file));
+			newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g = newImage.createGraphics();
+			g.drawImage(in, 0, 0, null);
+			g.dispose();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return processImage(newImage, index, 32, 32);
+	}
+
+	/**
+	 * Creates a transparent, cropped image from the specified parameters.
+	 * 
+	 * @param img
+	 *            Image to modify.
+	 * @param index
+	 *            Index of tile wanted.
+	 * @param width
+	 *            Width of tiles in the specified image.
+	 * @param height
+	 *            Height of tiles in the specified image.
+	 * @return Transparent, cropped image.
+	 */
+	private static Image processImage(Image img, int index, int width, int height) {
 		/*
 		 * Make image transparent.
 		 */
@@ -182,8 +195,8 @@ public class Graphic {
 		/*
 		 * Crop image.
 		 */
-
-		filter = new CropImageFilter(col * 32, row * 32, 32, 32);
+		int columns = img.getWidth(null) / 32;
+		filter = new CropImageFilter((index % columns) * width, (index / columns) * height, width, height);
 		filteredImgProd = new FilteredImageSource(transparentImg.getSource(), filter);
 		Image finalImg = Toolkit.getDefaultToolkit().createImage(filteredImgProd);
 

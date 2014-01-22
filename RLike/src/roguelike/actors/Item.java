@@ -14,13 +14,12 @@ public class Item extends Actor {
 		this.quantity = 1;
 	}
 
-	public Item(int x, int y, String name, ItemType itemtype, GraphicFile gf, int row, int col) {
+	public Item(int x, int y, String name, ItemType itemtype, GraphicFile gf, int index) {
 		this(x, y, itemtype);
 		this.name = name;
 		this.gf = gf;
-		this.row = row;
-		this.col = col;
-		setImage(gf, row, col);
+		this.index = index;
+		setImage(gf, index);
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class Item extends Actor {
 
 	@Override
 	public String toString() {
-		return name + " GF: " + gf.name() + " Row: " + row + " Col: " + col;
+		return name + " GF: " + gf.name() + " Index: " + index;
 	}
 
 	/**

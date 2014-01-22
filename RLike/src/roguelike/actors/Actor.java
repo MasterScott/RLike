@@ -26,7 +26,7 @@ public abstract class Actor {
 	static HashMap<String, Image> imageMap = new HashMap<String, Image>();
 	
 	GraphicFile gf;
-	int x, y, row, col;
+	int x, y, index;
 	boolean traversable;
 	boolean previouslySeen;
 	String name;
@@ -151,17 +151,15 @@ public abstract class Actor {
 	 * 
 	 * @param gf
 	 *            Tileset to use.
-	 * @param row
-	 *            Row of icon to use.
-	 * @param col
-	 *            Column of icon to use.
+	 * @param index
+	 *            Index of icon to use
 	 */
-	public void setImage(GraphicFile gf, int row, int col) {
-		String args = gf.name() + row + col;
+	public void setImage(GraphicFile gf, int index) {
+		String args = gf.name() + index;
 		if (imageMap.containsKey(args)) {
 			this.image = imageMap.get(args);
 		} else {
-			this.image = Graphic.getImage(gf, row, col);
+			this.image = Graphic.getImage(gf, index);
 			imageMap.put(args, this.image);
 		}
 	}

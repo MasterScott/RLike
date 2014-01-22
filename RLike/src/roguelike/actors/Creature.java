@@ -59,14 +59,12 @@ public class Creature extends Actor {
 	 *            Name of creature.
 	 * @param graphicFile
 	 *            Tileset to use.
-	 * @param row
-	 *            Row of icon to use.
-	 * @param col
-	 *            Column of icon to use.
+	 * @param index
+	 *            Index of icon to use.
 	 */
-	public Creature(int x, int y, String name, GraphicFile graphicFile, int row, int col) {
+	public Creature(int x, int y, String name, GraphicFile graphicFile, int index) {
 		this(x, y, name);
-		setImage(graphicFile, row, col);
+		setImage(graphicFile, index);
 	}
 
 	/**
@@ -78,7 +76,7 @@ public class Creature extends Actor {
 	 * @return A new creature of the specified CreatureTemplate type.
 	 */
 	public static Creature constructCreature(CreatureTemplate type) {
-		Creature c = new Creature(0, 0, type.name, type.gf, type.row, type.col);
+		Creature c = new Creature(0, 0, type.name, type.gf, type.index);
 		c.hp = new Stat(type.hp);
 		c.mp = new Stat(type.mp);
 		c.strength = new Stat(type.str);

@@ -26,16 +26,13 @@ public class Tile extends Actor {
 	 *            Whether or not this tile can be walked over.
 	 * @param graphicFile
 	 *            Tileset to use.
-	 * @param row
-	 *            Row of icon to use.
-	 * @param col
-	 *            Column of icon to use.
+	 * @param index
+	 * 			  Index of icon to use.
 	 */
-	public Tile(int x, int y, boolean traversable, GraphicFile graphicFile, int row, int col) {
+	public Tile(int x, int y, boolean traversable, GraphicFile graphicFile, int index) {
 		super(x, y);
 		this.gf = graphicFile;
-		this.row = row;
-		this.col = col;
+		this.index = index;
 		this.traversable = traversable;
 		this.turnSeen = -1;
 		this.distance = BIG_DIST;
@@ -63,7 +60,7 @@ public class Tile extends Actor {
 	public void loadImage() {
 		if (gf == null) throw new NullPointerException("Image not specified.");
 		
-		setImage(gf, row, col);
+		setImage(gf, index);
 	}
 	
 	/**

@@ -32,7 +32,7 @@ public class CharacterSelectPanel extends JPanel {
 
 	private static final long serialVersionUID = -1903352894149762144L;
 	private JTextField textField;
-	int row, col;
+	int index;
 	JLabel lblImage;
 
 	/**
@@ -191,7 +191,7 @@ public class CharacterSelectPanel extends JPanel {
 						// TODO Do something with the null value.
 					}
 					
-					Session.player.setImage(GraphicFile.CLASSM, row, col);
+					Session.player.setImage(GraphicFile.CLASSM, index);
 					Session.window.notifyCharacterSelected();
 				}
 			}
@@ -210,15 +210,12 @@ public class CharacterSelectPanel extends JPanel {
 	 * 
 	 * @param tileset
 	 *            Tileset to pull graphic from.
-	 * @param row
-	 *            Row of graphic.
-	 * @param col
-	 *            Column of graphic.
+	 * @param index
+	 *            Index of graphic.
 	 */
-	public void setImage(GraphicFile tileset, int row, int col) {
-		this.row = row;
-		this.col = col;
-		Image img = Graphic.getImage(GraphicFile.CLASSM, row, col);
+	public void setImage(GraphicFile tileset, int index) {
+		this.index = index;
+		Image img = Graphic.getImage(GraphicFile.CLASSM, index);
 		lblImage.setIcon(new ImageIcon(img));
 	}
 }
@@ -286,9 +283,9 @@ class MenuLabel extends JLabel {
 
 				label.setForeground(new Color(255, 220, 200));
 				label.setFont(new Font("Tahoma", Font.BOLD, 12));
-				Point p = getSelectedCoordinates();
-				if (p != null) {
-					parent.setImage(GraphicFile.CLASSM, p.x, p.y);
+				int index = getSelectedCoordinates();
+				if (index != -1) {
+					parent.setImage(GraphicFile.CLASSM, index);
 				}
 
 			}
@@ -315,14 +312,14 @@ class MenuLabel extends JLabel {
 	}
 
 	/**
-	 * If a race and a class have both been selected, returns a point
+	 * If a race and a class have both been selected, returns an integer
 	 * representing the row/column needed to load an image.
 	 * 
-	 * @return Point representing the row/column needed to load an image.
+	 * @return Integer representing the row/column needed to load an image.
 	 */
-	public Point getSelectedCoordinates() {
+	public int getSelectedCoordinates() {
 		if (selectedRace == null || selectedClass == null) {
-			return null;
+			return -1;
 		}
 
 		int y = 0, x = 0, row = 0, col = 0;
@@ -339,8 +336,9 @@ class MenuLabel extends JLabel {
 					x++;
 			}
 		}
-
-		return new Point(row, col);
+		
+		
+		return row * 8 + col;
 	}
 
 	/**

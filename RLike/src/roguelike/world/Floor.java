@@ -119,10 +119,10 @@ public abstract class Floor {
 			// TODO Replace with a generation method.
 			Item item = null;
 			if (choice.getName().equals("MONEY")) {
-				item = new Item(p.x, p.y, "Gold", ItemType.MONEY, GraphicFile.MISC, 1, 2);
+				item = new Item(p.x, p.y, "Gold", ItemType.MONEY, GraphicFile.MISC, 9);
 				actors.add(item);
 			} else if (choice.getName().equals("SWORD")) {
-				item = new Item(p.x, p.y, "Sword", ItemType.SWORD, GraphicFile.WEAPONS, 0, 8);
+				item = new Item(p.x, p.y, "Sword", ItemType.SWORD, GraphicFile.WEAPONS, 7);
 				actors.add(item);
 			}
 
@@ -277,21 +277,19 @@ public abstract class Floor {
 	 * 
 	 * @param tileset
 	 *            Tileset this tile's icon is located on.
-	 * @param row
-	 *            Row of tileset icon is located on.
-	 * @param col
-	 *            Column of tileset icon is located on.
+	 * @param index
+	 *            Index this tile is located on.
 	 */
-	protected void encloseLevel(GraphicFile tileset, int row, int col) {
+	protected void encloseLevel(GraphicFile tileset, int index) {
 
 		// Create walls along top and bottom.
 		for (int x = 0; x < XMAX; x++) {
 			if (getActorAt(x, 0) == null) {
-				Tile t = new Tile(x, 0, false, tileset, row, col);
+				Tile t = new Tile(x, 0, false, tileset, index);
 				actors.add(t);
 			}
 			if (getActorAt(x, YMAX) == null) {
-				Tile t = new Tile(x, YMAX - 1, false, tileset, row, col);
+				Tile t = new Tile(x, YMAX - 1, false, tileset, index);
 				actors.add(t);
 			}
 		}
@@ -299,11 +297,11 @@ public abstract class Floor {
 		// Create walls along left and right.
 		for (int y = 0; y < YMAX; y++) {
 			if (getActorAt(0, y) == null) {
-				Tile t = new Tile(0, y, false, tileset, row, col);
+				Tile t = new Tile(0, y, false, tileset, index);
 				actors.add(t);
 			}
 			if (getActorAt(XMAX, y) == null) {
-				Tile t = new Tile(XMAX - 1, y, false, tileset, row, col);
+				Tile t = new Tile(XMAX - 1, y, false, tileset, index);
 				actors.add(t);
 			}
 		}
@@ -317,18 +315,16 @@ public abstract class Floor {
 	 *            enumeration.
 	 * @param tileset
 	 *            Tileset this tile's icon is located on.
-	 * @param row
-	 *            Row of tileset icon is located on.
-	 * @param col
-	 *            Column of tileset icon is located on.
+	 * @param index
+	 *            Index of tileset this icon is located on.
 	 */
-	public void createStairs(FeatureType featureType, GraphicFile tileset, int row, int col) {
+	public void createStairs(FeatureType featureType, GraphicFile tileset, int index) {
 		Point p = getRandomOpenTile();
 
 		Tile t = getTileAt(p.x, p.y);
 		actors.remove(t);
 
-		Feature f = new Feature(p.x, p.y, true, tileset, row, col, featureType);
+		Feature f = new Feature(p.x, p.y, true, tileset, index, featureType);
 
 		if (f.getFeatureType() == FeatureType.DOWNSTAIRS) {
 			downstairs = f;
@@ -352,13 +348,11 @@ public abstract class Floor {
 	 *            enumeration.
 	 * @param tileset
 	 *            Tileset this tile's icon is located on.
-	 * @param row
-	 *            Row of tileset icon is located on.
-	 * @param col
-	 *            Column of tileset icon is located on.
+	 * @param index
+	 *            Index of tileset this icon is located on.
 	 */
-	public void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int row, int col) {
-		Feature f = new Feature(x, y, true, tileset, row, col, featureType);
+	public void createStairs(int x, int y, FeatureType featureType, GraphicFile tileset, int index) {
+		Feature f = new Feature(x, y, true, tileset, index, featureType);
 
 		Tile t = getTileAt(x, y);
 		actors.remove(t);
@@ -382,7 +376,7 @@ public abstract class Floor {
 	 *            Either UPSTAIRS or DOWNSTAIRS from the Feature.FeatureType
 	 *            enumeration.
 	 */
-	public void createAccessibleStairs(Player player, FeatureType featureType, GraphicFile tileset, int row, int col) {
+	public void createAccessibleStairs(Player player, FeatureType featureType, GraphicFile tileset, int index) {
 		/*
 		 * Have to clear list in order for the recursive getAccessibleArea() to
 		 * work.
@@ -400,8 +394,8 @@ public abstract class Floor {
 		y = t.getY();
 		actors.remove(t);
 
-		Feature f = new Feature(x, y, true, tileset, row, col, FeatureType.UPSTAIRS);
-		f.setImage(tileset, row, col);
+		Feature f = new Feature(x, y, true, tileset, index, FeatureType.UPSTAIRS);
+		f.setImage(tileset, index);
 
 		if (f.getFeatureType() == FeatureType.DOWNSTAIRS) {
 			downstairs = f;
@@ -447,19 +441,17 @@ public abstract class Floor {
 	 * 
 	 * @param tileset
 	 *            Tileset this tile's icon is located on.
-	 * @param row
-	 *            Row of tileset icon is located on.
-	 * @param col
-	 *            Column of tileset icon is located on.
+	 * @param index
+	 *            Index of tileset this icon is located on.
 	 * @param traversable
 	 *            Whether or not these tiles should be traversable by default.
 	 */
-	protected void fillLevelWithTiles(GraphicFile tileset, int row, int col, boolean traversable) {
+	protected void fillLevelWithTiles(GraphicFile tileset, int index, boolean traversable) {
 
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (getActorAt(x, y) == null) {
-					Tile t = new Tile(x, y, traversable, tileset, row, col);
+					Tile t = new Tile(x, y, traversable, tileset, index);
 					actors.add(t);
 				}
 			}

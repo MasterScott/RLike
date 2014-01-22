@@ -67,7 +67,7 @@ public class BaseDungeon extends Floor {
 			for (int j = y + 1; j < y + height - 1; j++) {
 				Tile t = getTileAt(i, j);
 				actors.remove(t);
-				t = new Tile(i, j, true, GraphicFile.DUNGEON, 6, 3);
+				t = new Tile(i, j, true, GraphicFile.DUNGEON, 57);
 				actors.add(t);
 			}
 		}
@@ -82,7 +82,7 @@ public class BaseDungeon extends Floor {
 		super.generateFloor();
 
 		// Can change to true if debugging is needed.
-		fillLevelWithTiles(GraphicFile.DUNGEON, 0, 0, false);
+		fillLevelWithTiles(GraphicFile.DUNGEON, 0, false);
 
 		createRoom(RLUtilities.getRandom(15, 25), RLUtilities.getRandom(8, 14), RLUtilities.getRandom(5, 8),
 				RLUtilities.getRandom(5, 8), false);
@@ -110,9 +110,9 @@ public class BaseDungeon extends Floor {
 				actors.remove(t);
 
 				if (cursorRoom.isPassageway && isPassageway) {
-					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 6, 3);
+					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 57);
 				} else {
-					t = new Feature(p.x, p.y, false, GraphicFile.DUNGEON, 0, 3, FeatureType.DOOR);
+					t = new Feature(p.x, p.y, false, GraphicFile.DUNGEON, 4, FeatureType.DOOR);
 				}
 
 				actors.add(t);
@@ -122,14 +122,14 @@ public class BaseDungeon extends Floor {
 			isPassageway = false;
 		}
 
-		encloseLevel(GraphicFile.DUNGEON, 6, 3);
+		encloseLevel(GraphicFile.DUNGEON, 57);
 		
 		Point p = getRandomOpenTile();
-		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
+		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 42);
 		
 		if (depth > 0) {
 			p = getRandomAccessibleTile(downstairs.getCoords());
-			createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 4, 6);
+			createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 41);
 		}
 		
 		populateWithCreatures();
@@ -270,6 +270,6 @@ public class BaseDungeon extends Floor {
 
 	@Override
 	public Tile getFloorTile(int x, int y) {
-		return new Tile(x, y, true, GraphicFile.DUNGEON, 6, 3);
+		return new Tile(x, y, true, GraphicFile.DUNGEON, 57);
 	}
 }

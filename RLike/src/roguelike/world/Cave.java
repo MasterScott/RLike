@@ -50,7 +50,7 @@ public class Cave extends Floor {
 		for (int x = 0; x < XMAX; x++) {
 			for (int y = 0; y < YMAX; y++) {
 				if (Math.random() > tolerance) {
-					Tile t = new Tile(x, y, false, GraphicFile.FEATURES, 0, 3);
+					Tile t = new Tile(x, y, false, GraphicFile.FEATURES, 2);
 					actors.add(t);
 				}
 			}
@@ -70,7 +70,7 @@ public class Cave extends Floor {
 					Actor a = getActorAt(x, y);
 
 					if (n >= 6 && a == null) { // If birth conditions are met
-						Tile t = new Tile(x, y, false, GraphicFile.FEATURES, 0, 3);
+						Tile t = new Tile(x, y, false, GraphicFile.FEATURES, 2);
 						actors.add(t);
 						count++;
 					} else if (n < 3 && a != null) { // If survival not met
@@ -81,15 +81,15 @@ public class Cave extends Floor {
 			}
 		}
 
-		encloseLevel(GraphicFile.FEATURES, 0, 3);
-		fillLevelWithTiles(GraphicFile.GROUNDS, 0, 4, true);
+		encloseLevel(GraphicFile.FEATURES, 2);
+		fillLevelWithTiles(GraphicFile.GROUNDS, 3, true);
 
 		Point p = getRandomOpenTile();
-		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 4, 7);
+		createStairs(p.x, p.y, FeatureType.DOWNSTAIRS, GraphicFile.DUNGEON, 42);
 		
 		if (depth > 0) {
 			p = getRandomAccessibleTile(downstairs.getCoords());
-			createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 4, 6);
+			createStairs(p.x, p.y, FeatureType.UPSTAIRS, GraphicFile.DUNGEON, 41);
 		}
 		
 		populateWithCreatures();
@@ -123,6 +123,6 @@ public class Cave extends Floor {
 
 	@Override
 	public Tile getFloorTile(int x, int y) {
-		return new Tile(x, y, true, GraphicFile.GROUNDS, 0, 4);
+		return new Tile(x, y, true, GraphicFile.GROUNDS, 3);
 	}
 }

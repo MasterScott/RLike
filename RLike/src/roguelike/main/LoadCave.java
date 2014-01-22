@@ -15,7 +15,7 @@ public class LoadCave {
 		Window w = new Window();
 
 		Session.player = new Player(0,0);
-		Session.player.setImage(GraphicFile.CLASSM, 2, 5);
+		Session.player.setImage(GraphicFile.CLASSM, 20);
 		
 		w.notifyCharacterSelected();
 

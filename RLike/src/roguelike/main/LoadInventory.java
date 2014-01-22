@@ -28,7 +28,7 @@ public class LoadInventory {
 		w.add(jdp);
 		Player p = new Player(20, 10);
 		Session.player = p;
-		p.setImage(GraphicFile.CLASSM, 2, 5);
+		p.setImage(GraphicFile.CLASSM, 20);
 
 		BaseDungeon dungeon = new BaseDungeon();
 		dungeon.generateFloor();
