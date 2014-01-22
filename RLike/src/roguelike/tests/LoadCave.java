@@ -1,4 +1,4 @@
-package roguelike.main;
+package roguelike.tests;
 
 import roguelike.actors.Player;
 import roguelike.etc.Session;

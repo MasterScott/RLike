@@ -1,4 +1,4 @@
-package roguelike.main;
+package roguelike.tests;
 
 import roguelike.ui.CharacterSelectPanel;
 import roguelike.ui.Window;

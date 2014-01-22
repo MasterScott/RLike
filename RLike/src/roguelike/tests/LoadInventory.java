@@ -1,4 +1,4 @@
-package roguelike.main;
+package roguelike.tests;
 
 import java.awt.Color;
 import java.awt.Point;

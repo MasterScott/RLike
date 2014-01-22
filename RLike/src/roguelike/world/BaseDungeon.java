@@ -112,7 +112,7 @@ public class BaseDungeon extends Floor {
 				if (cursorRoom.isPassageway && isPassageway) {
 					t = new Tile(p.x, p.y, true, GraphicFile.DUNGEON, 57);
 				} else {
-					t = new Feature(p.x, p.y, false, GraphicFile.DUNGEON, 4, FeatureType.DOOR);
+					t = new Feature(p.x, p.y, false, GraphicFile.DUNGEON, 3, FeatureType.DOOR);
 				}
 
 				actors.add(t);
